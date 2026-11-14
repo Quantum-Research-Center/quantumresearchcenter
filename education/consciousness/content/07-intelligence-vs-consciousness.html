@@ -1,0 +1,62 @@
+<p class="chapter-intro">Why does functional intelligence alone not automatically account for unified first-person experience?</p>
+<section class="book-section" id="section-7-1" aria-labelledby="section-7-1-heading">
+<h2 id="section-7-1-heading">7.1 Function, behavior, and the third-person view</h2>
+<h3>7.1.1 What external tests of intelligence can and cannot establish</h3>
+<p>In Chapter 4 we defined intelligence functionally: an agent is intelligent if its sensory-motor channels compress history, minimize prediction error, and steer its environment toward goals within energy and memory bounds. Notice that this criterion inspects only the <strong>external input-output map</strong> and resource footprint of the agent.</p>
+<p>Now consider two physically distinct implementations that produce the exact same input-output behavior over a finite horizon:</p>
+<ul>
+<li><strong>Architecture 1</strong>: A giant, disconnected look-up table or a purely feedforward pipeline of isolated gates with no feedback, no global integration, and no internal self-monitoring.</li>
+<li><strong>Architecture 2</strong>: A tightly coupled, recurrent dynamical system that continuously integrates sensory streams into a single unified world-and-self model.</li>
+</ul>
+<p>To an external behavioral test (a generalized Turing test), both machines score identically on intelligence. Yet internally, Architecture 1 is a mosaic of independent fragments, while Architecture 2 forms a single causal whole. Functional intelligence and conscious experience are therefore <strong>logically and physically distinct</strong>: intelligence is about <em>what a system can do</em>; consciousness concerns <em>what the system’s unified internal state is like from the inside</em>.</p>
+<div class="exercise"><p><strong>Worked check 7.1.</strong> Can a system be conscious without being highly intelligent (in the sense of solving abstract puzzles)? Give a biological example.</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Yes. A mammal experiencing pain, warmth, or visual unity possesses a unified, self-maintaining phenomenal state even if it cannot perform symbolic logic or long-horizon planning.</p></details></div>
+</section>
+
+<section class="book-section" id="section-7-2" aria-labelledby="section-7-2-heading">
+<h2 id="section-7-2-heading">7.2 The binding problem and phenomenal unity</h2>
+<h3>7.2.1 Why separate degrees of freedom must form one intrinsic state</h3>
+<p>Look around a room: you do not experience color in one isolated corner, shape in another, sound in a third, and bodily posture in a fourth. You experience one unified scene. In neuroscience and physics, explaining how physically separated degrees of freedom combine into a single unified whole is called the <strong>binding problem</strong>.</p>
+<p>In quantum mechanics, the mathematics of composition makes the distinction between a mere collection and a unified whole unusually sharp. Given two subsystems \(A_1\) and \(A_2\) inside \(\mathcal{H}_{A_1} \otimes \mathcal{H}_{A_2}\):</p>
+<ul>
+<li>If the joint state and effective generator factorize as \(\rho_{A_1 A_2} = \rho_{A_1} \otimes \rho_{A_2}\) and \(U = U_1 \otimes U_2\), then \(A_1\) and \(A_2\) are physically two separate systems placed side by side.</li>
+<li>Conversely, when \(A_1\) and \(A_2\) interact strongly enough that neither \(\rho\) nor its dynamical transitions factorize across any bipartition \(A_1 \mid A_2\), the composite possesses irreducible joint structure not captured by its parts alone.</li>
+</ul>
+<p>Notice a key subtlety: <strong>non-factorizability can occur either quantum-mechanically (via entanglement) or classically (via dynamical causal coupling among stabilized pointer states)</strong>. Understanding which kind of unity matters for real minds is the central task of Chapter 8.</p>
+<figure class="book-drawing">
+<svg viewBox="0 0 600 185" width="600" height="185" role="img" aria-label="Comparison of disconnected factorizable subsystems versus recurrently integrated subsystems">
+  <defs>
+    <marker id="ch7-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="20" y="20" width="245" height="145" rx="12" fill="none" stroke="currentColor" stroke-width="1.3"/>
+  <text x="142" y="42" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" data-math="Factorizable (\(\Phi = 0\))">Factorizable (Phi = 0)</text>
+  <circle cx="85" cy="96" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="85" y="100" text-anchor="middle" font-size="12" fill="currentColor" data-tex="A_1">A_1</text>
+  <circle cx="198" cy="96" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="198" y="100" text-anchor="middle" font-size="12" fill="currentColor" data-tex="A_2">A_2</text>
+  <path d="M 142 54 Q 142 100 142 150" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 4" opacity="0.5"/>
+  <rect x="335" y="20" width="245" height="145" rx="12" fill="none" stroke="currentColor" stroke-width="1.3"/>
+  <text x="457" y="42" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" data-math="Integrated (\(\Phi &gt; 0\))">Integrated (Phi &gt; 0)</text>
+  <circle cx="400" cy="96" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="400" y="100" text-anchor="middle" font-size="12" fill="currentColor" data-tex="A_1">A_1</text>
+  <circle cx="513" cy="96" r="24" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <text x="513" y="100" text-anchor="middle" font-size="12" fill="currentColor" data-tex="A_2">A_2</text>
+  <path d="M 422 84 C 446 60, 468 60, 491 84" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ch7-arrow)"/>
+  <path d="M 491 108 C 468 132, 446 132, 422 108" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ch7-arrow)"/>
+</svg>
+<figcaption>Independent parallel modules (\(\rho_{A_1}\otimes\rho_{A_2}\)) remain separate even inside one chassis, whereas reciprocal curved couplings bind \(A_1\) and \(A_2\) into one irreducible whole.</figcaption>
+</figure>
+<div class="exercise"><p><strong>Worked check 7.2.</strong> Suppose two independent computers sit inside the same metal box, running unrelated programs without exchanging signals. Why is their joint mutual information \(I(A_1 : A_2)\) zero?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Without interaction or shared correlation, \(\rho_{A_1 A_2} = \rho_{A_1} \otimes \rho_{A_2}\), so \(S(\rho_{A_1 A_2}) = S(\rho_{A_1}) + S(\rho_{A_2})\) and \(I(A_1 : A_2) = 0\). Putting a box around two independent systems does not physically bind them.</p></details></div>
+</section>
+
+<section class="book-section" id="section-7-3" aria-labelledby="section-7-3-heading">
+<h2 id="section-7-3-heading">7.3 First-person perspective inside a unitary universe</h2>
+<h3>7.3.1 Bridging objective density operators and intrinsic states</h3>
+<p>A third-person physicist describes the universe using a global state \(\rho\) (or universal ket \(\ket{\Psi}\)) and Hamiltonian \(H\). Where does a “first-person perspective” live inside that equation? It cannot be an extra magical variable hovering outside \(\mathcal{H}\), because any extra variable would either have no effect on physics (epiphenomenalism) or break unitarity.</p>
+<p>Instead, a first-person perspective corresponds to the <strong>intrinsic, conditional information structure</strong> defined relative to a specific subsystem \(A\) across its own internal Markov/pointer cut. Just as temperature is not a separate particle added to a gas—it is a real macroscopic property of molecular kinetic energy—first-person perspective is an intrinsic structural property of how an autonomous, self-modeling subsystem’s coarse-grained states constrain and represent one another over time.</p>
+<p>To turn this intuition into a rigorous, non-circular definition, we must first check what quantum mechanics permits and forbids for physical theories of consciousness.</p>
+<div class="exercise"><p><strong>Worked check 7.3.</strong> Why does identifying first-person experience with an intrinsic subsystem structure avoid epiphenomenalism?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Because the integrated self-model is encoded directly in physical pointer states and causal dynamics inside \(\mathcal{H}_A\), those very states drive the agent’s actuators, reports, and future memory updates—so experience is physically efficacious rather than an inert add-on.</p></details></div>
+</section>
+
+<section class="book-section" id="further-reading"><h2>Sources and further reading</h2><ul><li><a href="https://arxiv.org/abs/1401.1219">Max Tegmark, Consciousness as a state of matter</a>. Explores physical criteria (integration, autonomy, dynamics) for subsystems in quantum mechanics.</li><li><a href="https://arxiv.org/abs/2008.00675">Johannes Kleiner and Sean Tull, The mathematical structure of Integrated Information Theory</a>. Formalizes intrinsic structure and partitions mathematically.</li></ul></section>

@@ -1,0 +1,69 @@
+<p class="chapter-intro">How can we define intelligence purely in terms of open physical systems, information, and control?</p>
+<section class="book-section" id="section-4-1" aria-labelledby="section-4-1-heading">
+<h2 id="section-4-1-heading">4.1 The agent–environment cut</h2>
+<h3>4.1.1 Boundaries, sensors, actuators, and internal states</h3>
+<p>Every physical description of an intelligent system begins by partitioning a larger Hilbert space into an <strong>agent</strong> \(A\) and an <strong>environment</strong> \(E\):</p>
+\[\mathcal{H}_{\text{total}} = \mathcal{H}_A \otimes \mathcal{H}_E.\]
+<p>Within \(\mathcal{H}_A\), the agent’s degrees of freedom decompose functionally into sensory registers \(S_A\) (which couple to incoming environmental signals), an internal memory and model register \(M_A\) (which persists across cycles), and actuator registers \(C_A\) (which exert forces or apply feedback operations back onto \(E\)).</p>
+<p>What distinguishes an agent from an ordinary rock sitting in a stream? Both sit inside \(\mathcal{H}_A \otimes \mathcal{H}_E\), and both exchange energy and correlations with \(E\). A rock, however, responds passively to local forces without maintaining a protected internal state that guides systematic, goal-directed counter-actions. An agent maintains a <strong>Markov-like or decoherence-stabilized boundary</strong>: its sensory channels map environmental regularities into \(M_A\), and its internal state selects actuator responses that steer future environmental trajectories toward preferred target regions.</p>
+<figure class="book-drawing">
+<svg viewBox="0 0 640 250" width="640" height="250" role="img" aria-label="Curved cybernetic feedback loop between Agent A and Environment E across a physical boundary">
+  <defs>
+    <marker id="ch4-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <rect x="20" y="42" width="234" height="166" rx="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <text x="137" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor" data-math="Agent \(A\) (\(\mathcal{H}_A\))">Agent A (H_A)</text>
+  <rect x="34" y="82" width="96" height="110" rx="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <text x="82" y="132" text-anchor="middle" font-size="12" fill="currentColor">Internal Model</text>
+  <text x="82" y="149" text-anchor="middle" font-size="12" fill="currentColor" data-tex="M_A">M_A</text>
+  <rect x="150" y="82" width="90" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <text x="195" y="108" text-anchor="middle" font-size="12" fill="currentColor">Sensors</text>
+  <rect x="150" y="148" width="90" height="44" rx="8" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <text x="195" y="174" text-anchor="middle" font-size="12" fill="currentColor">Actuators</text>
+  <path d="M 150 104 Q 139 104 132 118" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#ch4-arrow)"/>
+  <path d="M 132 156 Q 139 170 150 170" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#ch4-arrow)"/>
+  <path d="M 320 26 Q 328 131 320 238" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.45"/>
+  <text x="320" y="18" text-anchor="middle" font-size="11" fill="currentColor">Boundary</text>
+  <rect x="386" y="42" width="234" height="166" rx="14" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <text x="503" y="64" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor" data-math="Environment \(E\) (\(\mathcal{H}_E\))">Environment E (H_E)</text>
+  <text x="503" y="122" text-anchor="middle" font-size="12" fill="currentColor">External Dynamics &amp;</text>
+  <text x="503" y="140" text-anchor="middle" font-size="12" fill="currentColor">Thermal Reservoir</text>
+  <path d="M 386 104 C 345 64, 285 64, 242 104" fill="none" stroke="currentColor" stroke-width="1.7" marker-end="url(#ch4-arrow)"/>
+  <text x="320" y="56" text-anchor="middle" font-size="11" fill="currentColor" data-math="Observation \(o_t\)">Observation o_t</text>
+  <path d="M 240 170 C 285 212, 345 212, 384 170" fill="none" stroke="currentColor" stroke-width="1.7" marker-end="url(#ch4-arrow)"/>
+  <text x="320" y="228" text-anchor="middle" font-size="11" fill="currentColor" data-math="Action / Feedback \(a_t\)">Action / Feedback a_t</text>
+</svg>
+<figcaption>An open physical agent \(A\) coupled to an environment \(E\): curved sensory and actuator channels close a continuous perception–prediction–action loop across the boundary.</figcaption>
+</figure>
+<div class="exercise"><p><strong>Worked check 4.1.</strong> Why does a passive thermal conductor (like a copper rod between hot and cold baths) fail to qualify as an intelligent agent?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Although it exchanges energy across a boundary, a copper rod does not encode compressed representations of varying external states into an internal memory \(M_A\) or select conditional feedback actions to optimize an objective.</p></details></div>
+</section>
+
+<section class="book-section" id="section-4-2" aria-labelledby="section-4-2-heading">
+<h2 id="section-4-2-heading">4.2 World-models, prediction, and control</h2>
+<h3>4.2.1 Minimizing surprise and maximizing goal achievement</h3>
+<p>Suppose at discrete time steps \(t = 1, 2, \dots\), an agent receives sensory outcomes \(o_t\), updates its internal model state \(\sigma_t \in \mathcal{D}(\mathcal{H}_M)\), and chooses an action \(a_t\) drawn from a policy \(\pi(a_t \mid \sigma_t)\). Two complementary mathematical criteria govern how well the agent functions:</p>
+<ol>
+<li><strong>Predictive fidelity (model quality)</strong>: Given past observations \(o_{1:t}\), the agent’s model induces a predictive distribution \(q(o_{t+1} \mid \sigma_t, a_t)\). Against the true conditional environment distribution \(p(o_{t+1} \mid o_{1:t}, a_{1:t})\), the agent’s expected prediction error is measured by the Kullback–Leibler divergence \(D_{\mathrm{KL}}(p \| q)\). Lowering \(D_{\mathrm{KL}}\) means the internal state \(\sigma_t\) captures genuine causal structure in \(E\).</li>
+<li><strong>Goal achievement (control utility)</strong>: For a task specified by a utility or reward function \(R(s_t, a_t)\) (or homeostatic target subspace \(\mathcal{H}_{\text{goal}} \subset \mathcal{H}_{AE}\)), the agent maximizes expected cumulative return \(\mathbb{E}_\pi\bigl[\sum_t \gamma^t R_t\bigr]\) while paying the thermodynamic work cost \(W_t \ge k_B T \, \Delta S_t\) of sensing, updating, and erasing memory.</li>
+</ol>
+<p>Notice the intimate link between prediction and control: an agent with a poor predictive model cannot reliably steer \(E\) toward \(\mathcal{H}_{\text{goal}}\) across unfamiliar perturbations, whereas a pure lookup table that memorizes fixed stimulus-response pairs collapses as soon as the environment shifts.</p>
+<div class="exercise"><p><strong>Worked check 4.2.</strong> Consider a single-qubit phase-stabilization loop where drift rotates \(\ket{+}\) by an unknown angle \(\delta\theta\) each step. Why must the controller estimate \(\delta\theta\) (build a model) rather than apply a fixed corrective rotation?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>A fixed rotation only cancels one specific drift value. When \(\delta\theta\) varies over time, only an agent that updates an internal estimate \(\hat{\theta}_t\) from measurement outcomes can adaptively apply \(R_z(-\hat{\theta}_t)\) to keep fidelity high.</p></details></div>
+</section>
+
+<section class="book-section" id="section-4-3" aria-labelledby="section-4-3-heading">
+<h2 id="section-4-3-heading">4.3 A formal physical definition of intelligence</h2>
+<h3>4.3.1 Bounded adaptive compression and feedback control</h3>
+<p>We are now ready to state our first central definition—one that uses zero vague mental terms and applies equally to biological organisms, classical robots, and quantum processors:</p>
+<p><strong>Definition (Physical Intelligence).</strong> <em>An open physical system \(A\) coupled to an environment \(E\) exhibits <strong>intelligence</strong> with respect to a class of environments \(\mathcal{E}\) and an objective \(R\) if, subject to finite memory capacity \(\dim(\mathcal{H}_M)\) and free-energy budget \(\dot{W}\), its sensory-update and actuator channels implement an adaptive feedback loop that:</em></p>
+<ol>
+<li><em>Compresses environmental histories into an internal model \(\sigma_t\) with high predictive mutual information \(I(M_A : O_{\text{future}})\) relative to memory size;</em></li>
+<li><em>Updates \(\sigma_t\) in response to new observations \(o_t\) (learning/inference); and</em></li>
+<li><em>Selects actions \(a_t\) that achieve high expected objective performance \(\mathbb{E}[R]\) across \(\mathcal{E}\) per unit of thermodynamic free energy dissipated.</em></li>
+</ol>
+<p>Look at what this definition accomplishes. First, it is <strong>completely third-person and operational</strong>: any external physicist can, in principle, measure \(A\)’s sensory-motor channels, memory dimension, energy dissipation, and task performance. Second, it is <strong>graded, not binary</strong>: a bacterium chemotaxing up a sugar gradient, a reinforcement-learning agent, and a human scientist sit on a well-defined physical spectrum of model depth, generalization breadth, and thermodynamic efficiency. Third, it makes <strong>no appeal to consciousness</strong>—an agent can satisfy this definition with zero subjective experience, a distinction we will sharpen in Chapter 7.</p>
+<div class="exercise"><p><strong>Worked check 4.3.</strong> Under this definition, why is a thermostat less intelligent than an adaptive predictive HVAC controller, even though both regulate room temperature?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>A simple bimetallic thermostat stores only a 1-bit threshold error and cannot learn building thermal inertia, weather patterns, or occupancy schedules. The adaptive controller compresses multi-variable history into a predictive model to achieve tighter regulation with lower energy cost.</p></details></div>
+</section>
+
+<section class="book-section" id="further-reading"><h2>Sources and further reading</h2><ul><li><a href="https://arxiv.org/abs/cs/0004001">Marcus Hutter, A theory of universal artificial intelligence based on algorithmic probability</a>. Formalizes intelligence as predictive compression plus goal-directed action.</li><li><a href="https://arxiv.org/abs/1801.07727">Vedran Dunjko and Hans J. Briegel, Machine learning &amp; artificial intelligence in the quantum domain</a>. Surveys quantum agents interacting with quantum environments.</li></ul></section>

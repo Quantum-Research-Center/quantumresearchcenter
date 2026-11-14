@@ -1,0 +1,362 @@
+[
+  {
+    "stem": "01-observer-gap",
+    "title": "The Observer Gap in Physics",
+    "question": "Why does quantum mechanics invoke observers and measurements without ever defining what an observer is?",
+    "prerequisites": "Quantum Foundations and basic quantum formalism: kets, unitary operators, and Born probabilities.",
+    "example": "A spin-1/2 particle measured by an apparatus treated first as an external classical box, then as a second qubit.",
+    "method": "Contrast external-observer postulates with internal unitary descriptions, and list the physical constraints any theory of mind must obey.",
+    "pitfall": "Treating 'consciousness causes collapse' as an explanation replaces one undefined term with another while risking violations of unitarity or no-signalling.",
+    "sections": [
+      {
+        "id": "section-1-1",
+        "number": "1.1",
+        "title": "The missing observer in classical and quantum mechanics",
+        "subsections": [
+          "From passive spectators to interactive measurements"
+        ]
+      },
+      {
+        "id": "section-1-2",
+        "number": "1.2",
+        "title": "Why naive quantum mysticism fails",
+        "subsections": [
+          "Unitarity, no-signalling, and empirical consistency"
+        ]
+      },
+      {
+        "id": "section-1-3",
+        "number": "1.3",
+        "title": "Ground rules for a physical theory of mind and agency",
+        "subsections": [
+          "Separating operational records, intelligence, and consciousness"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "02-subsystems-decoherence",
+    "title": "Subsystems, Entanglement, and Decoherence",
+    "question": "How do stable, shareable classical records emerge from continuous unitary evolution?",
+    "prerequisites": "Chapter 1; density operators, partial trace, and tensor products.",
+    "example": "A system qubit coupled via CNOT interactions to an N-qubit environment.",
+    "method": "Trace out environmental degrees of freedom, identify pointer states, and quantify redundant information spreading.",
+    "pitfall": "Decoherence suppresses local interference and stabilizes pointer records, but does not by itself select a single outcome or explain first-person experience.",
+    "sections": [
+      {
+        "id": "section-2-1",
+        "number": "2.1",
+        "title": "Open quantum systems and the partial trace",
+        "subsections": [
+          "Why subsystems lose purity under entanglement"
+        ]
+      },
+      {
+        "id": "section-2-2",
+        "number": "2.2",
+        "title": "Pointer states and einselection",
+        "subsections": [
+          "Stability against environmental monitoring"
+        ]
+      },
+      {
+        "id": "section-2-3",
+        "number": "2.3",
+        "title": "Quantum Darwinism and objective records",
+        "subsections": [
+          "Redundant imprints across fragments of the environment"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "03-memory-entropy",
+    "title": "Memory, Entropy, and the Cost of Knowing",
+    "question": "Why does recording, maintaining, and updating knowledge require free energy and an arrow of time?",
+    "prerequisites": "Chapters 1–2; von Neumann entropy and elementary thermodynamics.",
+    "example": "Resetting a single-bit quantum memory register coupled to a thermal bath at temperature T.",
+    "method": "Track entropy flow between system, memory, and thermal reservoir during measurement and erasure.",
+    "pitfall": "Unitary measurement pre-correlations are reversible; thermodynamic irreversibility enters when records are stabilized or memory is reset.",
+    "sections": [
+      {
+        "id": "section-3-1",
+        "number": "3.1",
+        "title": "Physical memory as a low-entropy subspace",
+        "subsections": [
+          "What makes a state a reliable record"
+        ]
+      },
+      {
+        "id": "section-3-2",
+        "number": "3.2",
+        "title": "Landauer's principle and quantum erasure",
+        "subsections": [
+          "The thermodynamic price of resetting a qubit"
+        ]
+      },
+      {
+        "id": "section-3-3",
+        "number": "3.3",
+        "title": "Maxwell's demon and the arrow of observation",
+        "subsections": [
+          "Why acquiring and using information respects the second law"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "04-defining-intelligence",
+    "title": "A Physical Definition of Intelligence",
+    "question": "How can we define intelligence purely in terms of open physical systems, information, and control?",
+    "prerequisites": "Chapters 1–3; channels, conditional entropy, and feedback loops.",
+    "example": "A feedback-controlled quantum oscillator estimating and stabilizing its phase against drift.",
+    "method": "Formalize the agent–environment boundary, internal world-models, predictive accuracy, and action selection under energy and memory bounds.",
+    "pitfall": "Equating intelligence with raw computational speed ignores embodiment, goal-directed adaptation, and thermodynamic efficiency.",
+    "sections": [
+      {
+        "id": "section-4-1",
+        "number": "4.1",
+        "title": "The agent–environment cut",
+        "subsections": [
+          "Boundaries, sensors, actuators, and internal states"
+        ]
+      },
+      {
+        "id": "section-4-2",
+        "number": "4.2",
+        "title": "World-models, prediction, and control",
+        "subsections": [
+          "Minimizing surprise and maximizing goal achievement"
+        ]
+      },
+      {
+        "id": "section-4-3",
+        "number": "4.3",
+        "title": "A formal physical definition of intelligence",
+        "subsections": [
+          "Bounded adaptive compression and feedback control"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "05-quantum-limits-intelligence",
+    "title": "Quantum Limits on Learning, Inference, and Control",
+    "question": "What does quantum mechanics forbid or enhance when an intelligent agent learns from and controls a physical world?",
+    "prerequisites": "Chapter 4; POVMs, Holevo's bound, and quantum channels.",
+    "example": "Distinguishing two non-orthogonal states with minimum error and updating an agent's quantum memory.",
+    "method": "Compare classical Bayesian updating with quantum state instruments, and bound accessible information.",
+    "pitfall": "A quantum computer can speed up certain search or simulation subroutines, yet Holevo's bound still caps classical bits extracted per qubit.",
+    "sections": [
+      {
+        "id": "section-5-1",
+        "number": "5.1",
+        "title": "Information-disturbance trade-offs in learning",
+        "subsections": [
+          "Why gathering data perturbs non-commuting observables"
+        ]
+      },
+      {
+        "id": "section-5-2",
+        "number": "5.2",
+        "title": "Holevo's bound and quantum Bayesian updating",
+        "subsections": [
+          "Limits on extracting classical models from quantum states"
+        ]
+      },
+      {
+        "id": "section-5-3",
+        "number": "5.3",
+        "title": "Where quantum resources help intelligence",
+        "subsections": [
+          "Coherent sensing, quantum feedback, and complexity separations"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "06-quantum-observers",
+    "title": "The Quantum Observer and Self-Reference",
+    "question": "What happens when an intelligent agent is itself treated as a quantum system inside a larger laboratory?",
+    "prerequisites": "Chapters 2 and 5; unitary premeasurement and multi-party correlations.",
+    "example": "Wigner's friend and an extended two-friend interference scenario.",
+    "method": "Track joint amplitudes across nested observers and analyze quantum reference frames.",
+    "pitfall": "Assuming an agent's internal record remains invariant under a superobserver's coherent uncomputing leads to contradictions.",
+    "sections": [
+      {
+        "id": "section-6-1",
+        "number": "6.1",
+        "title": "Shifting the Heisenberg cut",
+        "subsections": [
+          "Consistency across subsystem decompositions"
+        ]
+      },
+      {
+        "id": "section-6-2",
+        "number": "6.2",
+        "title": "Wigner's friend and multi-agent paradoxes",
+        "subsections": [
+          "When one agent coherently manipulates another's memory"
+        ]
+      },
+      {
+        "id": "section-6-3",
+        "number": "6.3",
+        "title": "Quantum reference frames and self-observation",
+        "subsections": [
+          "Why no system can completely measure itself from the inside"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "07-intelligence-vs-consciousness",
+    "title": "Separating Intelligence from Consciousness",
+    "question": "Why does functional intelligence alone not automatically account for unified first-person experience?",
+    "prerequisites": "Chapters 4 and 6.",
+    "example": "A distributed classical lookup table versus an integrated self-monitoring system.",
+    "method": "Separate third-person behavioral competence from first-person unity, binding, and intrinsic state structure.",
+    "pitfall": "Conflating intelligent output with conscious awareness ignores both unconscious reflexes and the physical binding problem.",
+    "sections": [
+      {
+        "id": "section-7-1",
+        "number": "7.1",
+        "title": "Function, behavior, and the third-person view",
+        "subsections": [
+          "What external tests of intelligence can and cannot establish"
+        ]
+      },
+      {
+        "id": "section-7-2",
+        "number": "7.2",
+        "title": "The binding problem and phenomenal unity",
+        "subsections": [
+          "Why separate degrees of freedom must form one intrinsic state"
+        ]
+      },
+      {
+        "id": "section-7-3",
+        "number": "7.3",
+        "title": "First-person perspective inside a unitary universe",
+        "subsections": [
+          "Bridging objective density operators and intrinsic states"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "08-quantum-constraints-consciousness",
+    "title": "Quantum Constraints on Theories of Consciousness",
+    "question": "Which physical theories of consciousness survive the quantitative tests of decoherence, locality, and quantum information?",
+    "prerequisites": "Chapters 2, 3, and 7; entanglement entropy and open-system timescales.",
+    "example": "Comparing thermal decoherence rates in warm neural tissue against proposed quantum-coherence mechanisms.",
+    "method": "Compute decoherence timescales, check no-signalling compliance, and test Quantum Integrated Information under partitions.",
+    "pitfall": "Invoking macroscopic brain entanglement without an error-correction or isolation mechanism fails elementary decoherence estimates.",
+    "sections": [
+      {
+        "id": "section-8-1",
+        "number": "8.1",
+        "title": "Decoherence bounds in biological matter",
+        "subsections": [
+          "Timescales, thermal noise, and where quantum effects actually survive"
+        ]
+      },
+      {
+        "id": "section-8-2",
+        "number": "8.2",
+        "title": "Objective collapse proposals and empirical limits",
+        "subsections": [
+          "Orch-OR, localization rates, and experimental bounds"
+        ]
+      },
+      {
+        "id": "section-8-3",
+        "number": "8.3",
+        "title": "Quantum Integrated Information and global workspaces",
+        "subsections": [
+          "Non-factorizability across cuts versus classical integration"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "09-defining-consciousness",
+    "title": "A Quantum-Compatible Definition of Consciousness",
+    "question": "How do we define consciousness rigorously without breaking unitarity, decoherence, or relativistic locality?",
+    "prerequisites": "Chapters 4, 7, and 8.",
+    "example": "A coarse-grained autonomous subsystem maintaining an irreducible internal self-world representation.",
+    "method": "Combine dynamical unity across tensor-product cuts, persistent pointer memory, and reflexive self-modeling into one formal definition.",
+    "pitfall": "A definition that reduces consciousness to any nonzero entanglement would classify a Bell pair or a rock as conscious; irreducibility and self-modeling must both hold.",
+    "sections": [
+      {
+        "id": "section-9-1",
+        "number": "9.1",
+        "title": "Three necessary pillars: integration, autonomy, self-modeling",
+        "subsections": [
+          "Why each pillar eliminates trivial counterexamples"
+        ]
+      },
+      {
+        "id": "section-9-2",
+        "number": "9.2",
+        "title": "Formal definition of a conscious quantum subsystem",
+        "subsections": [
+          "Coarse-grained pointer states, intrinsic integration, and reflexivity"
+        ]
+      },
+      {
+        "id": "section-9-3",
+        "number": "9.3",
+        "title": "Compatibility check: unitarity, decoherence, and no-signalling",
+        "subsections": [
+          "Verifying every postulate of quantum theory remains intact"
+        ]
+      }
+    ],
+    "status": "draft"
+  },
+  {
+    "stem": "10-minds-machines-quantum-agents",
+    "title": "Brains, Classical AI, and Quantum Agents",
+    "question": "What do our quantum-compatible definitions imply for biological brains, classical artificial intelligence, and future quantum machines?",
+    "prerequisites": "Chapters 4–9.",
+    "example": "Evaluating a biological cortex, a feedforward neural network, and a fault-tolerant quantum agent against both definitions.",
+    "method": "Apply the formal criteria of intelligence and consciousness systematically across physical architectures.",
+    "pitfall": "Assuming consciousness requires exotic quantum gravity—or conversely that every stateless classical chatbot is conscious—misses the structural requirements.",
+    "sections": [
+      {
+        "id": "section-10-1",
+        "number": "10.1",
+        "title": "Biological brains as dissipative, decoherence-bounded agents",
+        "subsections": [
+          "How classical pointer architectures realize unified self-models"
+        ]
+      },
+      {
+        "id": "section-10-2",
+        "number": "10.2",
+        "title": "Classical AI versus conscious architectures",
+        "subsections": [
+          "Intelligence without intrinsic integration or persistent self-boundaries"
+        ]
+      },
+      {
+        "id": "section-10-3",
+        "number": "10.3",
+        "title": "Engineered quantum agents and open experiments",
+        "subsections": [
+          "What quantum-coherent minds could do—and how to test the framework"
+        ]
+      }
+    ],
+    "status": "draft"
+  }
+]

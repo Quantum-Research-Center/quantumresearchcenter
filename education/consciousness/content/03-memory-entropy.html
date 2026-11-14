@@ -1,0 +1,48 @@
+<p class="chapter-intro">Why does recording, maintaining, and updating knowledge require free energy and an arrow of time?</p>
+<section class="book-section" id="section-3-1" aria-labelledby="section-3-1-heading">
+<h2 id="section-3-1-heading">3.1 Physical memory as a low-entropy subspace</h2>
+<h3>3.1.1 What makes a state a reliable record</h3>
+<p>An intelligent system cannot merely react instantaneously like a bouncing billiard ball; it must store information about past events and update that information when new data arrive. Physically, a memory register \(M\) requires at least two distinguishable, metastable pointer states \(\rho_0, \rho_1\) separated by an energy barrier large compared to \(k_B T\) so thermal fluctuations do not scramble them over the timescale of interest.</p>
+<figure class="book-drawing">
+<svg viewBox="0 0 560 190" width="560" height="190" role="img" aria-label="Double-well potential curve separating two metastable memory states">
+  <line x1="56" y1="22" x2="56" y2="156" stroke="currentColor" stroke-width="1.3"/>
+  <line x1="56" y1="156" x2="516" y2="156" stroke="currentColor" stroke-width="1.3"/>
+  <path d="M 92 34 C 118 142, 162 152, 200 132 C 242 108, 256 68, 286 68 C 316 68, 330 108, 372 132 C 410 152, 454 142, 480 34" fill="none" stroke="currentColor" stroke-width="2.2"/>
+  <line x1="168" y1="138" x2="286" y2="138" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
+  <line x1="286" y1="68" x2="286" y2="138" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <text x="296" y="106" text-anchor="start" font-size="11" fill="currentColor" data-tex="\Delta E \gg k_B T">ΔE ≫ k_B T</text>
+  <circle cx="168" cy="138" r="5" fill="currentColor"/>
+  <text x="168" y="124" text-anchor="middle" font-size="12" fill="currentColor" data-tex="|0\rangle_M">|0⟩_M</text>
+  <text x="404" y="124" text-anchor="middle" font-size="12" fill="currentColor" data-tex="|1\rangle_M">|1⟩_M</text>
+  <text x="32" y="92" text-anchor="middle" font-size="12" fill="currentColor" transform="rotate(-90 32 92)" data-tex="V(x)">V(x)</text>
+  <text x="286" y="176" text-anchor="middle" font-size="12" fill="currentColor">Memory coordinate x</text>
+</svg>
+<figcaption>Bistable physical memory: two pointer wells separated by an energy barrier \(\Delta E \gg k_B T\) keep a stored bit stable against thermal noise.</figcaption>
+</figure>
+<p>Crucially, before recording an unknown bit, the memory must sit in a known <em>ready</em> state—say \(\ket{0}_M\)—with low von Neumann entropy \(S(\rho_M) = -\operatorname{Tr}(\rho_M \ln \rho_M) \approx 0\). If \(M\) began in the maximally mixed thermal state \(\rho_M = I/2\) (carrying \(S = \ln 2\) nats, or \(1\) bit of entropy), coupling it via a reversible CNOT to an unknown system bit would leave the memory completely uncorrelated with the system’s input! Knowledge acquisition therefore presupposes a low-entropy physical substrate.</p>
+<div class="exercise"><p><strong>Worked check 3.1.</strong> Apply a CNOT from a data qubit \(\rho_D = p\ketbra{0}{0} + (1-p)\ketbra{1}{1}\) onto a maximally mixed memory \(\rho_M = I/2\). What is the resulting reduced state of \(M\) and the mutual information \(I(D:M)\)?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Since CNOT flips \(I/2\) into \(I/2\) regardless of the control state, the output is \(\rho_D \otimes (I/2)\). The memory remains completely uncorrelated with the data, giving \(I(D:M) = 0\).</p></details></div>
+</section>
+
+<section class="book-section" id="section-3-2" aria-labelledby="section-3-2-heading">
+<h2 id="section-3-2-heading">3.2 Landauer’s principle and quantum erasure</h2>
+<h3>3.2.1 The thermodynamic price of resetting a qubit</h3>
+<p>Suppose a finite memory \(M\) has already recorded data and now needs to be cleared so the agent can learn something new. Resetting an arbitrary state \(\rho_M\) back to a fixed reference state \(\ketbra{0}{0}\) is a many-to-one logical operation: two distinct inputs (\(\ket{0}\) and \(\ket{1}\)) map to the same output (\(\ket{0}\)). Because microscopic unitary evolution is strictly one-to-one (bijective), a memory cannot be erased in isolation.</p>
+<p>Instead, erasure couples \(M\) to a thermal reservoir \(R\) at temperature \(T\) under a joint unitary \(U_{MR}\). By unitarity, the total entropy \(S(\rho_{MR})\) cannot decrease, and standard quantum thermodynamics gives <strong>Landauer’s bound</strong>:</p>
+\[\Delta Q_R \ge k_B T \, \Delta S_M = k_B T \bigl(S(\rho_M^{\text{initial}}) - S(\rho_M^{\text{final}})\bigr).\]
+<p>For a maximally mixed single-bit memory (\(S(\rho_M^{\text{initial}}) = \ln 2\)) reset to a pure state (\(S(\rho_M^{\text{final}}) = 0\)), the heat dissipated into the reservoir satisfies</p>
+\[W_{\text{erase}} \ge \Delta Q_R \ge k_B T \ln 2.\]
+<p>Notice how quantum mechanics and thermodynamics lock together here: unitary evolution preserves global information, so clearing a local memory necessarily pushes entropy out into the environment as heat. Thinking, forgetting, and updating beliefs are physical, dissipative processes.</p>
+<div class="exercise"><p><strong>Worked check 3.2.</strong> If an agent erases a 3-qubit register initially in the maximally mixed state \(I_8/8\) at temperature \(T\), what is the minimum heat dissipated?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>The initial entropy is \(\ln 8 = 3\ln 2\) (or 3 bits). Resetting to \(\ket{000}\) dissipates at least \(\Delta Q_R \ge 3 k_B T \ln 2\).</p></details></div>
+</section>
+
+<section class="book-section" id="section-3-3" aria-labelledby="section-3-3-heading">
+<h2 id="section-3-3-heading">3.3 Maxwell’s demon and the arrow of observation</h2>
+<h3>3.3.1 Why acquiring and using information respects the second law</h3>
+<p>In 1867, Maxwell imagined a microscopic intelligent being—a “demon”—that measures gas molecules and sorts fast from slow without doing mechanical work, apparently lowering total entropy. Quantum information thermodynamics resolves the paradox cleanly by treating the demon’s memory as a physical quantum register \(M\).</p>
+<p>During a feedback cycle, the demon acquires \(I(S:M)\) mutual information about the system \(S\), allowing it to extract work up to \(W_{\text{ext}} \le k_B T \, I(S:M)\). At that moment, the system’s entropy drops, but the demon’s memory is now correlated and disordered. To run a true cycle—returning \(M\) to its ready state \(\ket{0}_M\)—Landauer’s principle demands at least \(W_{\text{erase}} \ge k_B T \, I(S:M)\) of work to dump that entropy into the bath. Across a full cycle,</p>
+\[W_{\text{net}} = W_{\text{ext}} - W_{\text{erase}} \le 0.\]
+<p>This insight anchors the <strong>arrow of observation</strong>. An agent remembers the past rather than the future because forming a stable record and resetting memory to acquire the next record are coupled to irreversible entropy export into a low-entropy cosmic past. Every observing, learning, and conscious system is fundamentally a far-from-equilibrium open system powered by a free-energy gradient.</p>
+<div class="exercise"><p><strong>Worked check 3.3.</strong> Why can a demon extract positive work during a <em>single</em> one-shot step if it starts with a clean \(\ket{0}^{\otimes N}\) tape of unused memory?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>A clean \(\ket{0}^{\otimes N}\) tape is itself a low-entropy thermodynamic fuel (worth \(k_B T \ln 2\) of free energy per bit). The demon is consuming that pre-prepared negentropy, not violating the second law.</p></details></div>
+</section>
+
+<section class="book-section" id="further-reading"><h2>Sources and further reading</h2><ul><li><a href="https://arxiv.org/abs/1401.6621">Juan M. R. Parrondo, Jordan M. Horowitz, and Takahiro Sagawa, Thermodynamics of information</a>. Modern review connecting Landauer’s principle, Maxwell’s demon, and quantum feedback control.</li><li><a href="https://arxiv.org/abs/1012.3827">Lidia del Rio et al., The thermodynamic meaning of negative entropy</a>. Shows how quantum correlations modify erasure costs when an observer holds side information.</li></ul></section>

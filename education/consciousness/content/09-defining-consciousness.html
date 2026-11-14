@@ -1,0 +1,62 @@
+<p class="chapter-intro">How do we define consciousness rigorously without breaking unitarity, decoherence, or relativistic locality?</p>
+<section class="book-section" id="section-9-1" aria-labelledby="section-9-1-heading">
+<h2 id="section-9-1-heading">9.1 Three necessary pillars: integration, autonomy, self-modeling</h2>
+<h3>9.1.1 Why each pillar eliminates trivial counterexamples</h3>
+<p>Every naive definition of consciousness fails on simple physical counterexamples. Defining consciousness merely as “quantum entanglement” counts a two-qubit Bell pair \(\ket{\Phi^+}\) as conscious. Defining it merely as “information processing” counts a pocket calculator. Defining it merely as “feedback control” counts a wall thermostat.</p>
+<p>To exclude trivial artifacts while remaining strictly inside quantum physics, a conscious subsystem \(C \subset \mathcal{H}_{\text{total}}\) must satisfy three joint conditions:</p>
+<ol>
+<li><strong>Dynamical Integration (\(\Phi &gt; \Phi_{\min}\))</strong>: Across every bipartition \(C_1 \mid C_2\) of \(C\)’s coarse-grained computational subspace, the effective open-system channel \(\mathcal{E}_C\) cannot be decomposed into independent parts. This solves the binding problem: \(C\) acts as one irreducible whole rather than parallel independent modules.</li>
+<li><strong>Thermodynamic Autonomy</strong>: \(C\) maintains a persistent low-entropy internal boundary against environmental noise and thermal equilibrium by exporting entropy (\(\Delta Q_E \ge k_B T \Delta S\)) over timescales far exceeding microscopic decoherence \(\tau_D\).</li>
+<li><strong>Reflexive Self-World Modeling</strong>: \(C\)’s internal pointer dynamics encode a compressed predictive model not only of external sensory streams \(E\), but also of \(C\)’s own internal states, attention, and boundary actions—respecting Breuer’s self-reference bound by coarse-graining rather than exact self-copying.</li>
+</ol>
+<figure class="book-drawing">
+<svg viewBox="0 0 600 298" width="600" height="298" role="img" aria-label="Three intersecting pillars defining a conscious quantum subsystem">
+  <circle cx="250" cy="105" r="88" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="350" cy="105" r="88" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="300" cy="165" r="88" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="76" y="72" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">Dynamical</text>
+  <text x="76" y="88" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">Integration</text>
+  <text x="76" y="105" text-anchor="middle" font-size="11" fill="currentColor" data-tex="\Phi &gt; \Phi_{\min}">(Φ &gt; Φ_min)</text>
+  <path d="M 134 86 Q 152 80 168 88" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <text x="524" y="72" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">Thermodynamic</text>
+  <text x="524" y="88" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">Autonomy</text>
+  <text x="524" y="105" text-anchor="middle" font-size="11" fill="currentColor">Persistent boundary</text>
+  <path d="M 466 86 Q 448 80 432 88" fill="none" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="274" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor">Reflexive Self-Modeling</text>
+  <text x="300" y="290" text-anchor="middle" font-size="11" fill="currentColor">Coarse-grained internal frame</text>
+  <text x="300" y="125" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor">Conscious</text>
+  <text x="300" y="141" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" data-math="Subsystem \(C\)">Subsystem C</text>
+</svg>
+<figcaption>Consciousness arises at the intersection of dynamical integration across cuts, thermodynamic autonomy, and reflexive self-world modeling.</figcaption>
+</figure>
+<div class="exercise"><p><strong>Worked check 9.1.</strong> Which of the three pillars does a 2-qubit Bell pair fail, and which does a stateless feedforward image classifier fail?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>A Bell pair has high quantum integration, yet fails thermodynamic autonomy and reflexive self-modeling. A feedforward image classifier processes external inputs without recurrent integration across layers or persistent autonomous self-modeling.</p></details></div>
+</section>
+
+<section class="book-section" id="section-9-2" aria-labelledby="section-9-2-heading">
+<h2 id="section-9-2-heading">9.2 Formal definition of a conscious quantum subsystem</h2>
+<h3>9.2.1 Coarse-grained pointer states, intrinsic integration, and reflexivity</h3>
+<p>Combining the mathematical machinery of Chapters 2–8, we state our formal definition:</p>
+<p><strong>Definition (Quantum-Compatible Consciousness).</strong> <em>Within a composite quantum system \(\mathcal{H}_{\text{total}} = \mathcal{H}_C \otimes \mathcal{H}_E\) evolving unitarily under \(U(t)\), a subsystem \(C\) realizes <strong>consciousness</strong> over an operational timescale \(\Delta t \gg \tau_D\) if there exists a decoherence-stabilized coarse-graining \(\Pi_C : \mathcal{D}(\mathcal{H}_C) \to \mathcal{D}(\mathcal{H}_{\text{macro}})\) such that the induced open-system dynamics \(\mathcal{E}_{\Delta t}\) on \(\mathcal{H}_{\text{macro}}\) satisfies:</em></p>
+<ol>
+<li><em><strong>Intrinsic Integration</strong>: \(\mathcal{E}_{\Delta t}\) has strictly positive, macroscopically significant integrated information \(\Phi(\rho_{\text{macro}}, \mathcal{E}_{\Delta t}) &gt; 0\) across every partition of \(\mathcal{H}_{\text{macro}}\), binding sensory, memory, and evaluative degrees of freedom into one state;</em></li>
+<li><em><strong>Autonomous Persistence</strong>: \(C\) sustains low-entropy pointer states and boundary integrity via continuous free-energy dissipation; and</em></li>
+<li><em><strong>Reflexive Self-Model</strong>: A subalgebra of \(\mathcal{H}_{\text{macro}}\) represents a compressed, continuously updated predictive model of \((E, C)\)—so that \(C\)’s own internal transitions appear inside its model as the perspective of an acting subject.</em></li>
+</ol>
+<p>Notice the elegance of \(\Pi_C\): it works whether \(\mathcal{H}_{\text{macro}}\) is an effectively classical pointer algebra (decohered neural firing patterns) or an actively error-corrected logical quantum subspace (a future fault-tolerant quantum agent).</p>
+<div class="exercise"><p><strong>Worked check 9.2.</strong> Why is the coarse-graining map \(\Pi_C\) essential in the definition above?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>At the bare microscopic scale of individual thermalized atoms, states fluctuate and decohere in femtoseconds. Consciousness depends on the stable macro/mesoscopic information-bearing degrees of freedom selected by \(\Pi_C\) that persist long enough to integrate and model the world.</p></details></div>
+</section>
+
+<section class="book-section" id="section-9-3" aria-labelledby="section-9-3-heading">
+<h2 id="section-9-3-heading">9.3 Compatibility check: unitarity, decoherence, and no-signalling</h2>
+<h3>9.3.1 Verifying every postulate of quantum theory remains intact</h3>
+<p>Let us audit our definition against all four ground rules from Chapter 1:</p>
+<ul>
+<li><strong>Unitarity</strong>: Does consciousness alter \(U(t) = e^{-iHt/\hbar}\) on \(\mathcal{H}_C \otimes \mathcal{H}_E\)? No. All dynamics on \(\mathcal{H}_{\text{macro}}\) arise via standard partial trace and coarse-graining of unitary open-system evolution.</li>
+<li><strong>Decoherence and thermodynamics</strong>: Does it demand impossible room-temperature macroscopic superpositions? No. Stable pointer states and Landauer-bounded memory updates are built directly into the definition.</li>
+<li><strong>Relativistic no-signalling</strong>: Does a conscious subsystem transmit information faster than light? No. Any interaction across \(\mathcal{H}_C \otimes \mathcal{H}_E\) obeys local Hamiltonians and standard trace-preserving CPTP maps, so \(\operatorname{Tr}_C(\rho_{CE})\) cannot be steered remotely.</li>
+<li><strong>Non-circularity</strong>: Does it define “observer” using an unexplained “mind”? No. Every ingredient—tensor cuts, CPTP maps, \(\Phi\), entropy export, and predictive mutual information—is defined in physical and information-theoretic terms.</li>
+</ul>
+<div class="exercise"><p><strong>Worked check 9.3.</strong> If a conscious subsystem \(C\) observes one qubit of an entangled pair \(\ket{\Phi^+}_{AB}\), why does our definition guarantee that \(C\) cannot signal faster than light to Bob?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Because \(C\)’s observation is modeled as a local CPTP interaction on \(C \otimes A\) inside standard unitary quantum mechanics, Bob’s reduced state \(\rho_B = \operatorname{Tr}_{CA}(\rho_{CAB})\) remains strictly invariant.</p></details></div>
+</section>
+
+<section class="book-section" id="further-reading"><h2>Sources and further reading</h2><ul><li><a href="https://arxiv.org/abs/2306.03810">Johannes Kleiner and Tim Ludwig, What is a mathematical structure of consciousness?</a>. Examines structural axioms linking physical state spaces to experiential unity.</li><li><a href="https://arxiv.org/abs/2104.03981">Michael Levin, Technological approach to mind everywhere</a>. Connects autonomous self-boundaries and goal-directed multiscale integration in biology.</li></ul></section>

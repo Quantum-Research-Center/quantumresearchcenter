@@ -1,0 +1,57 @@
+<p class="chapter-intro">What does quantum mechanics forbid or enhance when an intelligent agent learns from and controls a physical world?</p>
+<section class="book-section" id="section-5-1" aria-labelledby="section-5-1-heading">
+<h2 id="section-5-1-heading">5.1 Information-disturbance trade-offs in learning</h2>
+<h3>5.1.1 Why gathering data perturbs non-commuting observables</h3>
+<p>In classical physics, an intelligent agent can in principle learn everything about a system’s state with negligible disturbance, then act on it. In quantum mechanics, sensors are physical instruments \(\{\mathcal{I}_k\}\) with effects \(E_k = \mathcal{I}_k^\dagger(I)\). Whenever an agent distinguishes non-orthogonal states \(\ket{\psi_0}\) and \(\ket{\psi_1}\) with \(\braket{\psi_0|\psi_1} \ne 0\), two strict constraints appear:</p>
+<ol>
+<li><strong>Imperfect single-shot discrimination</strong>: By the Helstrom bound, no measurement can guess between two equiprobable states \(\rho_0, \rho_1\) with success probability exceeding
+\[P_{\text{succ}} \le \frac{1}{2}\left(1 + \frac{1}{2}\|\rho_0 - \rho_1\|_1\right).\]</li>
+<li><strong>Inevitable state disturbance</strong>: By the no-information-without-disturbance theorem, any instrument that yields different outcome probabilities on two non-orthogonal states must alter at least one of them. Learning about \(Z\) necessarily scrambles \(X\).</li>
+</ol>
+<p>For an intelligent agent, this creates an exploration–preservation trade-off absent in classical control theory: extracting too much information in one step destroys quantum coherence that might be needed for future actions.</p>
+<figure class="book-drawing">
+<svg viewBox="0 0 560 195" width="560" height="195" role="img" aria-label="Information-disturbance trade-off curve showing state fidelity loss as information gain increases">
+  <line x1="70" y1="22" x2="70" y2="156" stroke="currentColor" stroke-width="1.3"/>
+  <line x1="70" y1="156" x2="510" y2="156" stroke="currentColor" stroke-width="1.3"/>
+  <path d="M 70 36 C 240 36, 405 68, 492 150" fill="none" stroke="currentColor" stroke-width="2.2"/>
+  <path d="M 70 36 L 492 36" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.5"/>
+  <text x="290" y="29" text-anchor="middle" font-size="11" fill="currentColor">Classical ideal (zero disturbance)</text>
+  <text x="60" y="40" text-anchor="end" font-size="11" fill="currentColor">1</text>
+  <text x="60" y="159" text-anchor="end" font-size="11" fill="currentColor">0.5</text>
+  <text x="28" y="92" text-anchor="middle" font-size="12" fill="currentColor" transform="rotate(-90 28 92)">Post-measurement fidelity F</text>
+  <text x="290" y="178" text-anchor="middle" font-size="12" fill="currentColor">Information gain G about non-commuting observable</text>
+  <circle cx="70" cy="36" r="4" fill="currentColor"/>
+  <circle cx="492" cy="150" r="4" fill="currentColor"/>
+  <text x="480" y="138" text-anchor="end" font-size="11" fill="currentColor">Projective measurement</text>
+</svg>
+<figcaption>The quantum information–disturbance boundary: increasing information gain \(G\) on a non-commuting observable necessarily bends the maximum achievable state fidelity \(F\) downward.</figcaption>
+</figure>
+<div class="exercise"><p><strong>Worked check 5.1.</strong> An agent measures \(Z\) on a qubit prepared in \(\ket{+}\) to learn its \(Z\) bit. How much does that measurement disturb a subsequent \(X\) measurement?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Before the \(Z\) measurement, measuring \(X\) yields \(+\) with probability 1. After the \(Z\) measurement, the post-measurement state is \(\ket{0}\) or \(\ket{1}\), so a subsequent \(X\) measurement gives \(+\) or \(-\) with equal probability \(1/2\)—complete loss of \(X\) predictability.</p></details></div>
+</section>
+
+<section class="book-section" id="section-5-2" aria-labelledby="section-5-2-heading">
+<h2 id="section-5-2-heading">5.2 Holevo’s bound and quantum Bayesian updating</h2>
+<h3>5.2.1 Limits on extracting classical models from quantum states</h3>
+<p>Suppose an agent tries to store a huge world-model inside a small quantum register of \(n\) qubits. Because \(n\) qubits inhabit a \(2^n\)-dimensional Hilbert space, one might hope to pack exponentially many independent parameters into the amplitudes and read them all out later. <strong>Holevo’s theorem</strong> blocks that shortcut.</p>
+<p>If classical random variable \(X\) is encoded into ensemble \(\{p(x), \rho_x\}\) on an \(n\)-qubit register with average state \(\bar{\rho} = \sum_x p(x)\rho_x\), the classical mutual information \(I(X:Y)\) obtained from any measurement outcome \(Y\) obeys</p>
+\[I(X:Y) \le \chi\bigl(\{p(x),\rho_x\}\bigr) \equiv S(\bar{\rho}) - \sum_x p(x) S(\rho_x) \le n \text{ bits}.\]
+<p>Thus, an \(n\)-qubit register can transmit at most \(n\) bits of classical model parameters upon readout. Where quantum updating differs genuinely from classical Bayesian inference is in <em>belief revision</em>: when an agent updates a density operator \(\rho\) after observing outcome \(k\) of instrument \(\mathcal{I}_k\),</p>
+\[\rho \longmapsto \rho'_k = \frac{\mathcal{I}_k(\rho)}{\operatorname{Tr}(\mathcal{I}_k(\rho))},\]
+<p>non-commuting observables cannot generally be assigned a single joint classical probability distribution, forcing quantum agents to update operator-valued states rather than scalar probability tables.</p>
+<div class="exercise"><p><strong>Worked check 5.2.</strong> Can an agent encode 4 classical bits into 2 qubits (without entanglement-assisted superdense coding) and reliably read all 4 bits out?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>No. For a 2-qubit register, \(S(\bar{\rho}) \le \log_2 4 = 2\) bits, so Holevo’s bound caps the accessible mutual information at 2 bits.</p></details></div>
+</section>
+
+<section class="book-section" id="section-5-3" aria-labelledby="section-5-3-heading">
+<h2 id="section-5-3-heading">5.3 Where quantum resources help intelligence</h2>
+<h3>5.3.1 Coherent sensing, quantum feedback, and complexity separations</h3>
+<p>If Holevo’s bound caps classical readout and measurement disturbs states, can quantum mechanics ever make an intelligent agent <em>more</em> capable? Yes, in three rigorous ways:</p>
+<ul>
+<li><strong>Heisenberg-limited sensing</strong>: By entangling \(N\) probe qubits (for example into a GHZ state \((\ket{0}^{\otimes N} + \ket{1}^{\otimes N})/\sqrt{2}\)), an agent estimates an external phase \(\phi\) with uncertainty \(\Delta\phi \propto 1/N\), beating the classical shot-noise limit \(1/\sqrt{N}\).</li>
+<li><strong>Coherent feedback without intermediate collapse</strong>: Instead of measuring a sensor into a classical wire and dissipating Landauer heat at every step, a quantum controller can couple sensor and actuator coherently via unitary gates, postponing irreversible erasure until final readout.</li>
+<li><strong>Algorithmic speedups in planning and inference</strong>: On structured search, amplitude amplification yields a quadratic speedup \(O(\sqrt{N})\), and Hamiltonian simulation lets a quantum agent predict quantum environments exponentially faster than known classical algorithms.</li>
+</ul>
+<p>Quantum mechanics neither grants infinite computational power nor bypasses thermodynamics, yet it expands what an agent can sense, simulate, and control within fixed physical resources.</p>
+<div class="exercise"><p><strong>Worked check 5.3.</strong> Why does coherent quantum feedback reduce Landauer heat dissipation compared to repeated measure-and-reset classical feedback?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Measure-and-reset feedback creates classical records at each step and must erase the memory register before the next cycle, paying \(\ge k_B T\ln 2\) per bit erased. Coherent unitary feedback transfers information reversibly without generating classical entropy until final reset.</p></details></div>
+</section>
+
+<section class="book-section" id="further-reading"><h2>Sources and further reading</h2><ul><li><a href="https://arxiv.org/abs/quant-ph/0109146">Alexander S. Holevo, Statistical Structure of Quantum Theory</a>. Foundational reference for accessible information and quantum estimation limits.</li><li><a href="https://arxiv.org/abs/1405.7361">Giuseppe Davide Paparo et al., Quantum speedup for active learning agents</a>. Demonstrates quadratic speedups for projective-simulation agents using amplitude amplification.</li></ul></section>

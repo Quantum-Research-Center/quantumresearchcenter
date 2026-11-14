@@ -1,0 +1,52 @@
+{
+  "01-observer-gap": [
+    "Quantum mechanics refers to measurements and observers operationally without specifying what physical systems count as observers.",
+    "Any physically viable account of mind and agency must preserve unitary dynamics of closed systems, relativistic no-signalling, and Born statistics.",
+    "We must distinguish three separate concepts: physical records, functional intelligence, and intrinsic consciousness."
+  ],
+  "02-subsystems-decoherence": [
+    "Entanglement with an environment turns pure local superpositions into mixed reduced density operators via the partial trace.",
+    "Environment-induced superselection (einselection) singles out robust pointer states that survive continuous monitoring.",
+    "Quantum Darwinism explains how redundant copies of pointer information spread into environmental fragments, creating objective classical records."
+  ],
+  "03-memory-entropy": [
+    "A reliable physical memory requires distinguishable, metastable low-entropy states protected from rapid thermalization.",
+    "Landauer's principle bounds the thermodynamic work required to erase one bit of information by at least \\(k_B T \\ln 2\\).",
+    "Maxwell's demon obeys the second law because resetting the demon's finite memory exports entropy into a thermal reservoir, anchoring the arrow of observation."
+  ],
+  "04-defining-intelligence": [
+    "An intelligent agent is defined by a functional boundary separating internal states from an environment through sensors and actuators.",
+    "Intelligence arises when an open physical system builds compressed internal models, minimizes prediction error, and selects actions that achieve goals under resource limits.",
+    "Efficiency matters as much as capability: physical intelligence trades off predictive accuracy, memory capacity, and thermodynamic cost."
+  ],
+  "05-quantum-limits-intelligence": [
+    "Non-commuting observables impose an unavoidable information-disturbance trade-off on any physical learning agent.",
+    "Holevo's bound restricts the classical information extractable from a quantum state to at most the accessible entropy, even when the internal state space is exponentially large.",
+    "Quantum resources can enhance intelligence via coherent sensing, quantum feedback control, and algorithmic speedups on structured inference tasks."
+  ],
+  "06-quantum-observers": [
+    "Shifting the Heisenberg cut moves the boundary between observed system and measuring apparatus without altering predictions for later records.",
+    "Wigner's-friend and extended multi-agent scenarios show that an agent's internal record is relative to the unitary evolution and coherence accessible to a superobserver.",
+    "Self-reference theorems and quantum reference frames imply that no physical observer can perform a complete, non-disturbing measurement of its own total quantum state."
+  ],
+  "07-intelligence-vs-consciousness": [
+    "Functional intelligence is a third-person property of input-output control and model accuracy, whereas consciousness concerns unified first-person experience.",
+    "The physical binding problem asks how distributed degrees of freedom combine into a single unified state rather than independent parallel parts.",
+    "A system can exhibit high behavioral intelligence without consciousness, and conversely, simple conscious experience need not imply superhuman problem-solving."
+  ],
+  "08-quantum-constraints-consciousness": [
+    "Thermal decoherence in warm biological tissue suppresses macroscopic spatial superpositions on femtosecond-to-picosecond timescales unless actively protected.",
+    "Objective-collapse proposals (such as Orch-OR) modify standard quantum dynamics and face tight experimental bounds from spontaneous radiation and interferometry.",
+    "Quantum Integrated Information generalizes classical integration to non-factorizable density operators across tensor-product cuts."
+  ],
+  "09-defining-consciousness": [
+    "A quantum-compatible definition of consciousness rests on three pillars: dynamical integration across cuts, autonomous boundary maintenance, and reflexive self-modeling.",
+    "Consciousness is realized by an open quantum subsystem whose coarse-grained pointer dynamics form an irreducible, self-referential model of its own state within its environment.",
+    "Because the definition operates inside standard open-system quantum mechanics, it introduces no collapse by mind, no faster-than-light signalling, and no violation of unitarity."
+  ],
+  "10-minds-machines-quantum-agents": [
+    "Biological brains function primarily as dissipative, decoherence-bounded pointer architectures that achieve deep self-world integration without macroscopic brain-wide entanglement.",
+    "Stateless classical AI systems can display high functional intelligence while lacking persistent autonomous boundaries and intrinsic dynamical integration.",
+    "Future fault-tolerant quantum agents could sustain genuinely coherent internal world-models, offering clear experimental tests of quantum-vs-classical cognitive architectures."
+  ]
+}

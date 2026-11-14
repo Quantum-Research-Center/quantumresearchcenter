@@ -50,6 +50,16 @@
     "level": "advanced"
   },
   {
+    "title": "Quantum Mechanics, Consciousness, and Intelligence",
+    "path": "education/consciousness/index.html",
+    "format": "Self-paced course · Draft textbook",
+    "description": "Define intelligence and consciousness inside standard quantum mechanics through decoherence, thermodynamics of memory, agency, quantum reference frames, and integrated self-modeling.",
+    "details": "10 draft chapters · 30 exercises with hints and reasoned solutions · Worked checks",
+    "prerequisite": "Quantum Foundations and Interpretations of Quantum Mechanics, or equivalent knowledge of density operators, partial traces, decoherence, and measurements.",
+    "summary": "Construct formal physical definitions of intelligence and consciousness compatible with quantum theory.",
+    "level": "advanced"
+  },
+  {
     "title": "Quantum Experiments",
     "path": "education/experiments/index.html",
     "format": "Self-paced course · Interactive textbook",

@@ -1,0 +1,53 @@
+<p class="chapter-intro">What happens when an intelligent agent is itself treated as a quantum system inside a larger laboratory?</p>
+<section class="book-section" id="section-6-1" aria-labelledby="section-6-1-heading">
+<h2 id="section-6-1-heading">6.1 Shifting the Heisenberg cut</h2>
+<h3>6.1.1 Consistency across subsystem decompositions</h3>
+<p>In Chapter 4 we drew a functional boundary between agent \(A\) and environment \(E\). Yet quantum mechanics allows us to place the formal division—the <strong>Heisenberg cut</strong>—at different physical depths. Suppose an agent \(F\) measures a qubit \(S\) prepared in \(\alpha\ket{0} + \beta\ket{1}\) and stores the result in her memory \(F\). We can compute predictions for a later confirmation measurement in two ways:</p>
+<ol>
+<li><strong>Cut 1 (between \(S\) and \(F\))</strong>: Treat \(F\) as a classical measuring device applying the Born rule to \(S\), giving outcomes \(0\) with probability \(|\alpha|^2\) and \(1\) with probability \(|\beta|^2\).</li>
+<li><strong>Cut 2 (outside \(S+F\))</strong>: Model \(F\) quantum-mechanically, evolving \((\alpha\ket{0}+\beta\ket{1})\ket{F_r}\) unitarily into \(\alpha\ket{0,F_0} + \beta\ket{1,F_1}\), and then apply the Born rule to \(F\)’s memory register.</li>
+</ol>
+<p>For any observable diagonal in \(F\)’s record basis \(\{\ket{F_0}, \ket{F_1}\}\), both cuts predict identical probabilities \(|\alpha|^2\) and \(|\beta|^2\). This invariance—von Neumann’s movable boundary—works seamlessly so long as nobody maintains quantum coherence across \(F\)’s macroscopic memory.</p>
+<figure class="book-drawing">
+<svg viewBox="0 0 620 232" width="620" height="232" role="img" aria-label="Nested curved Heisenberg cuts: Cut 1 encloses System S between S and Friend F, while Cut 2 encloses S and F outside Wigner W">
+  <ellipse cx="202" cy="120" rx="182" ry="94" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <text x="202" y="16" text-anchor="middle" font-size="11" fill="currentColor" data-math="Cut 2 (outside \(S + F\))">Cut 2 (outside S + F)</text>
+  <ellipse cx="115" cy="120" rx="56" ry="48" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <text x="115" y="185" text-anchor="middle" font-size="11" fill="currentColor" data-math="Cut 1 (between \(S\) and \(F\))">Cut 1 (between S and F)</text>
+  <circle cx="115" cy="120" r="34" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="115" y="124" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" data-math="System \(S\)">System S</text>
+  <rect x="220" y="96" width="116" height="48" rx="12" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="278" y="124" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" data-math="Friend \(F\)">Friend F</text>
+  <rect x="440" y="96" width="124" height="48" rx="12" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <text x="502" y="124" text-anchor="middle" font-size="12" font-weight="600" fill="currentColor" data-math="Wigner \(W\)">Wigner W</text>
+  <path d="M 149 120 Q 184 102 220 120" fill="none" stroke="currentColor" stroke-width="1.4"/>
+  <path d="M 336 120 Q 388 102 440 120" fill="none" stroke="currentColor" stroke-width="1.4"/>
+</svg>
+<figcaption>Shifting the Heisenberg cut outward moves \(F\) inside the unitary description without altering predictions for decohered records—until \(W\) performs coherent interference across Cut 2.</figcaption>
+</figure>
+<div class="exercise"><p><strong>Worked check 6.1.</strong> Why does shifting the Heisenberg cut outward fail to change predictions for ordinary macroscopic records?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Once decoherence correlates \(F\)’s record basis with an inaccessible environment \(E\), any interference terms between \(\ket{0,F_0}\) and \(\ket{1,F_1}\) are locally suppressed, making Cut 1 and Cut 2 empirically indistinguishable for all local measurements.</p></details></div>
+</section>
+
+<section class="book-section" id="section-6-2" aria-labelledby="section-6-2-heading">
+<h2 id="section-6-2-heading">6.2 Wigner’s friend and multi-agent paradoxes</h2>
+<h3>6.2.1 When one agent coherently manipulates another’s memory</h3>
+<p>The consistency between Cut 1 and Cut 2 breaks dramatically if a superobserver \(W\) (Wigner) isolates the entire laboratory containing \(S\) and the intelligent agent \(F\) (Wigner’s friend) from any external environment. Inside the sealed box, \(F\) measures \(S = \ket{+}\), generating the joint entangled state</p>
+\[\ket{\Psi_{SF}} = \frac{1}{\sqrt{2}}\bigl(\ket{0,F_0} + \ket{1,F_1}\bigr).\]
+<p>From \(F\)’s perspective, she observed a definite outcome (\(0\) or \(1\)) and updated her belief. From \(W\)’s outside perspective, the sealed box is in a pure coherent superposition: if \(W\) measures the entire box in the rotated basis \(\ket{\pm_L} = (\ket{0,F_0} \pm \ket{1,F_1})/\sqrt{2}\), \(W\) finds \(\ket{+_L}\) with probability \(1\) and \(\ket{-_L}\) with probability \(0\).</p>
+<p>Modern extensions (Brukner, Frauchiger–Renner, and Bong et al.’s Local Friendliness theorem) turn this into a sharp multi-agent constraint: <strong>no-collapse unitary quantum mechanics, universal single-world absoluteness of observed events, and locality/no-superdeterminism cannot all hold simultaneously</strong> if macroscopic agents can be placed in coherent superpositions. Whenever an agent’s memory is coherently reversed or interfered by \(W\), \(F\)’s past record is literally uncomputed—teaching us that an agent’s definite history is physical and fragile, bound to decoherence and thermodynamic irreversibility.</p>
+<div class="exercise"><p><strong>Worked check 6.2.</strong> In Wigner’s friend, why can \(F\) not remember whether she saw \(0\) or \(1\) after \(W\) measures the box in the \(\{\ket{+_L}, \ket{-_L}\}\) basis?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>Measuring in the \(\{\ket{+_L}, \ket{-_L}\}\) basis projects onto a superposition of \(\ket{F_0}\) and \(\ket{F_1}\), erasing the orthogonal distinction between the friend’s two memory states. Any surviving classical record outside the box would entangle with the box and destroy Wigner’s interference.</p></details></div>
+</section>
+
+<section class="book-section" id="section-6-3" aria-labelledby="section-6-3-heading">
+<h2 id="section-6-3-heading">6.3 Quantum reference frames and self-observation</h2>
+<h3>6.3.1 Why no system can completely measure itself from the inside</h3>
+<p>Can an intelligent agent step outside itself to observe its own complete quantum state? Two fundamental results say no:</p>
+<ol>
+<li><strong>Breuer’s self-reference theorem</strong>: Let \(O\) be an observer embedded inside a universe \(U\) (possibly \(O = U\)). Because the observer’s internal memory states form a proper coarse-grained quotient of the total states of \(U\), there always exist distinct global states of \(O + E\) that map to the exact same internal state of \(O\). An embedded agent cannot distinguish all of its own microscopic states from within.</li>
+<li><strong>Quantum reference frames</strong>: Spatial position, orientation, and time are always defined relationally—one subsystem relative to another. An agent’s internal clock or frame cannot measure its own conjugate momentum or global phase without external anchors.</li>
+</ol>
+<p>This limitation is not a bug; it is a crucial clue for consciousness. Any physical conscious agent must represent itself through a <strong>coarse-grained, compressed self-model</strong> inside \(\mathcal{H}_A\), never as a mirror-image copy of its full microscopic Hilbert space.</p>
+<div class="exercise"><p><strong>Worked check 6.3.</strong> Suppose an observer \(O\) has a 2-dimensional memory (\(\ket{0}_M, \ket{1}_M\)) inside a 4-dimensional world \(O \otimes E\). Why can \(O\) never faithfully record all orthogonal basis states of the world?</p><details class="problem-solution"><summary>Reasoned solution</summary><p>By the pigeonhole principle (and unitarity/Hilbert-space dimension), a 2-state memory can distinguish at most 2 mutually orthogonal alternatives, whereas the total system has 4. At least two distinct world states must collapse onto the same internal record.</p></details></div>
+</section>
+
+<section class="book-section" id="further-reading"><h2>Sources and further reading</h2><ul><li><a href="https://arxiv.org/abs/1907.05407">Kok-Wei Bong et al., A strong no-go theorem on the Wigner’s friend paradox</a>. Derives the Local Friendliness inequality and tests it with entangled photons.</li><li><a href="https://arxiv.org/abs/quant-ph/9505024">Thomas Breuer, The impossibility of accurate state self-measurements</a>. Proves why no embedded observer can completely measure itself.</li></ul></section>
