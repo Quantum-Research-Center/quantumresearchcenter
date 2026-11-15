@@ -13,21 +13,21 @@
     </marker>
   </defs>
   <style>
-    text { font: 14px Georgia, serif; fill: #30343b; }
-    .heading { font: 700 14px system-ui, sans-serif; fill: #1a3b47; }
-    .subheading { font: 600 12.5px system-ui, sans-serif; fill: #246593; text-transform: uppercase; letter-spacing: 0.04em; }
-    .small { font: 11.5px system-ui, sans-serif; fill: #626c77; }
-    .note { font: 11px system-ui, sans-serif; fill: #525f6c; }
-    .wire { stroke: #246593; stroke-width: 2; fill: none; }
-    .gate { fill: none; stroke: #246593; stroke-width: 1.8; rx: 4; }
-    .gate-phase { fill: none; stroke: #a64d26; stroke-width: 1.8; rx: 4; }
-    .gate-meas { fill: none; stroke: #4f5761; stroke-width: 1.8; rx: 4; }
-    .axis { stroke: #a7bccd; stroke-width: 1.4; fill: none; }
-    .grid-line { stroke: #eef2f5; stroke-width: 1; stroke-dasharray: 2 2; }
-    .curve-p0 { fill: none; stroke: #246593; stroke-width: 2.5; }
-    .curve-p1 { fill: none; stroke: #a64d26; stroke-width: 2.5; stroke-dasharray: 6 3; }
-    .phasor-base { fill: none; stroke: #d3dee7; stroke-width: 1.2; stroke-dasharray: 3 3; }
-    .divider { stroke: #d8e5e8; stroke-width: 1.2; stroke-dasharray: 4 4; }
+    text { font: 14px Georgia, serif; fill: var(--ink, #30343b); }
+    .heading { font: 700 14px system-ui, sans-serif; fill: var(--heading, #1a3b47); }
+    .subheading { font: 600 12.5px system-ui, sans-serif; fill: var(--blue, #246593); text-transform: uppercase; letter-spacing: 0.04em; }
+    .small { font: 11.5px system-ui, sans-serif; fill: var(--muted, #626c77); }
+    .note { font: 11px system-ui, sans-serif; fill: var(--muted, #525f6c); }
+    .wire { stroke: var(--blue, #246593); stroke-width: 2; fill: none; }
+    .gate { fill: none; stroke: var(--blue, #246593); stroke-width: 1.8; rx: 4; }
+    .gate-phase { fill: none; stroke: var(--warm, #a64d26); stroke-width: 1.8; rx: 4; }
+    .gate-meas { fill: none; stroke: var(--muted, #4f5761); stroke-width: 1.8; rx: 4; }
+    .axis { stroke: var(--line-strong, #a7bccd); stroke-width: 1.4; fill: none; }
+    .grid-line { stroke: var(--line, #eef2f5); stroke-width: 1; stroke-dasharray: 2 2; }
+    .curve-p0 { fill: none; stroke: var(--blue, #246593); stroke-width: 2.5; }
+    .curve-p1 { fill: none; stroke: var(--warm, #a64d26); stroke-width: 2.5; stroke-dasharray: 6 3; }
+    .phasor-base { fill: none; stroke: var(--line-strong, #d3dee7); stroke-width: 1.2; stroke-dasharray: 3 3; }
+    .divider { stroke: var(--line, #d8e5e8); stroke-width: 1.2; stroke-dasharray: 4 4; }
   </style>
 
   <!-- Title -->

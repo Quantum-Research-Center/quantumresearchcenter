@@ -6,8 +6,8 @@ import {resolve, dirname} from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {tmpdir} from 'node:os';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
-const courses=process.argv.slice(2).length?process.argv.slice(2):['algorithms','programming','information','hardware'];
-if(courses.some(c=>!['algorithms','programming','information','hardware','cryptography','qml'].includes(c)))throw Error('Unknown course');
+const courses=process.argv.slice(2).length?process.argv.slice(2):['computing','algorithms','programming','information','hardware'];
+if(courses.some(c=>!['computing','algorithms','programming','information','hardware','cryptography','qml'].includes(c)))throw Error('Unknown course');
 const work=await mkdtemp(resolve(tmpdir(),'quantum-course-render-'));
 const chrome=spawn('google-chrome',['--headless','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--disable-background-networking','--disable-component-update','--no-first-run','--remote-debugging-port=0',`--user-data-dir=${work}/profile`],{stdio:['ignore','ignore','pipe']});
 let socket;
@@ -30,8 +30,8 @@ try {
  async function open(file){
   await tab('Page.navigate',{url:pathToFileURL(resolve(root,file)).href});
   await evaluate(`new Promise((resolve,reject)=>{let n=0;const timer=setInterval(()=>{if(document.documentElement.dataset.mathReady==='true'){clearInterval(timer);resolve(true);}else if(++n>200){clearInterval(timer);reject(new Error('MathJax did not finish'));}},50);})`);
-  const result=await evaluate(`({errors:[...document.querySelectorAll('[data-mjx-error],mjx-merror,.mjx-merror')].map(e=>e.getAttribute('data-mjx-error')||e.textContent),math:document.querySelectorAll('mjx-container').length,overflow:document.documentElement.scrollWidth>innerWidth+2,images:[...document.querySelectorAll('main img')].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src)})`);
-  if(result.errors.length||result.images.length||result.overflow)throw Error(file+' '+JSON.stringify(result));
+  const result=await evaluate(`({errors:[...document.querySelectorAll('[data-mjx-error],mjx-merror,.mjx-merror')].map(e=>e.getAttribute('data-mjx-error')||e.textContent),math:document.querySelectorAll('mjx-container').length,overflow:document.documentElement.scrollWidth>innerWidth+2,images:[...document.querySelectorAll('main img')].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src),svgOverflow:[...document.querySelectorAll('main svg.book-figure')].flatMap(svg=>{const r=svg.getBoundingClientRect();if(r.width===0)return [];return [...svg.querySelectorAll('text,g.diagram-math')].filter(el=>{const b=el.getBoundingClientRect();return b.width>0&&(b.left<r.left-4||b.right>r.right+4||b.top<r.top-4||b.bottom>r.bottom+4);}).map(el=>el.textContent.trim().slice(0,40));})})`);
+  if(result.errors.length||result.images.length||result.overflow||result.svgOverflow.length)throw Error(file+' '+JSON.stringify(result));
   return result;
  }
  for(const course of courses){

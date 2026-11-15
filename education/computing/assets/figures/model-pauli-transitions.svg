@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 370" width="100%" height="auto" class="model-diagram" role="img" aria-label="Pauli transitions and operator basis">
   <defs>
     <style>
-      .bg-panel { fill: none; stroke: #cbd5e1; stroke-width: 1.2; rx: 8; }
-      .bg-card { fill: none; stroke: #e2e8f0; stroke-width: 1.2; rx: 6; }
-      .title-text { font-family: system-ui, sans-serif; font-size: 13px; font-weight: 700; fill: #1a3b47; text-anchor: middle; }
-      .sub-title { font-family: system-ui, sans-serif; font-size: 11px; font-weight: 600; fill: #475569; text-anchor: middle; }
-      .body-text { font-family: system-ui, sans-serif; font-size: 11px; fill: #475569; }
-      .math-lbl { font-family: Georgia, serif; font-size: 13px; fill: #30343b; text-anchor: middle; }
-      .trans-arrow { stroke: #246593; stroke-width: 1.8; fill: none; }
-      .trans-arrow-y { stroke: #d97706; stroke-width: 1.8; fill: none; }
-      .trans-arrow-z { stroke: #0891b2; stroke-width: 1.8; fill: none; }
-      .loop-arc { stroke: #0891b2; stroke-width: 1.8; fill: none; }
-      .state-node { fill: none; stroke: #246593; stroke-width: 2; }
-      .state-node-1 { fill: none; stroke: #d97706; stroke-width: 2; }
-      .badge-box { fill: none; stroke: #cbd5e1; stroke-width: 1; rx: 4; }
+      .bg-panel { fill: none; stroke: var(--line-strong, #cbd5e1); stroke-width: 1.2; rx: 8; }
+      .bg-card { fill: none; stroke: var(--line, #e2e8f0); stroke-width: 1.2; rx: 6; }
+      .title-text { font-family: system-ui, sans-serif; font-size: 13px; font-weight: 700; fill: var(--heading, #1a3b47); text-anchor: middle; }
+      .sub-title { font-family: system-ui, sans-serif; font-size: 11px; font-weight: 600; fill: var(--muted, #475569); text-anchor: middle; }
+      .body-text { font-family: system-ui, sans-serif; font-size: 11px; fill: var(--muted, #475569); }
+      .math-lbl { font-family: Georgia, serif; font-size: 13px; fill: var(--ink, #30343b); text-anchor: middle; }
+      .trans-arrow { stroke: var(--blue, #246593); stroke-width: 1.8; fill: none; }
+      .trans-arrow-y { stroke: var(--warm, #d97706); stroke-width: 1.8; fill: none; }
+      .trans-arrow-z { stroke: var(--accent, #0891b2); stroke-width: 1.8; fill: none; }
+      .loop-arc { stroke: var(--accent, #0891b2); stroke-width: 1.8; fill: none; }
+      .state-node { fill: none; stroke: var(--blue, #246593); stroke-width: 2; }
+      .state-node-1 { fill: none; stroke: var(--warm, #d97706); stroke-width: 2; }
+      .badge-box { fill: none; stroke: var(--line-strong, #cbd5e1); stroke-width: 1; rx: 4; }
     </style>
     <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#246593" />

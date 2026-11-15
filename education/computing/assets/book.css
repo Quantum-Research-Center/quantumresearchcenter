@@ -18,6 +18,7 @@ body.ebook{margin:0;background:var(--paper,#fff);color:var(--ink);font-family:va
 #book-navigation a:not(.book-home){display:block;text-decoration:none;padding:7px 10px;border-radius:4px;color:var(--ink-soft);line-height:1.5}
 #book-navigation a:hover{background:var(--hover);color:var(--accent)}
 #book-navigation a[aria-current]{color:#174e58;background:var(--hover);box-shadow:inset 3px 0 #387680}
+#book-navigation a[data-visited]:not([aria-current])::after{content:" ✓";font-size:10px;color:var(--accent);opacity:.65}
 .nav-introduction{margin-bottom:18px}.nav-chapter{margin:8px 0}.nav-chapter summary{padding:7px 6px;cursor:pointer;font-weight:600;color:#38454b}.nav-chapter summary>span{font-size:11px;color:var(--muted,#646a71);margin-right:5px}
 .nav-chapter>a{margin-left:8px;font-size:12px}.nav-chapter a>span{font-size:10px;color:var(--muted,#646a71);margin-right:4px}.nav-group{font:600 10px var(--sans);letter-spacing:.045em;text-transform:uppercase;color:var(--muted,#646a71);margin:18px 14px 6px}.nav-credit{font:11px var(--sans);color:var(--muted);padding:24px 12px 0;border-top:1px solid var(--line);margin-top:28px}
 .ebook #main{margin-left:var(--course-sidebar);padding:105px max(34px,calc((100vw - var(--course-sidebar) - 760px)/2)) 45px;outline:none}

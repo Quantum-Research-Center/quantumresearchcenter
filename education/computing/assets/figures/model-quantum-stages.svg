@@ -10,22 +10,22 @@
     </marker>
   </defs>
   <style>
-    text { font: 14px Georgia, serif; fill: #30343b; }
-    .stage-hdr { font: 700 13px system-ui, sans-serif; fill: #246593; text-transform: uppercase; letter-spacing: 0.05em; }
-    .stage-sub { font: 12px system-ui, sans-serif; fill: #626c77; }
-    .card-prep { fill: none; stroke: #b5d7de; stroke-width: 1.5; rx: 8; }
-    .card-evol { fill: none; stroke: #246593; stroke-width: 1.8; rx: 10; }
-    .card-meas { fill: none; stroke: #d0c0a8; stroke-width: 1.5; rx: 8; }
-    .node-box { fill: none; stroke: #7da5bf; stroke-width: 1.3; rx: 6; }
-    .node-meas { fill: none; stroke: #b3592e; stroke-width: 1.3; rx: 6; }
-    .wire { stroke: #246593; stroke-width: 2; fill: none; }
-    .badge { fill: none; stroke: #246593; stroke-width: 1; rx: 6; }
-    .flow-arr { stroke: #246593; stroke-width: 2.2; fill: none; marker-end: url(#arr-stage); }
-    .note { font: 11.5px system-ui, sans-serif; fill: #525f6c; }
+    text { font: 14px Georgia, serif; fill: var(--ink, #30343b); }
+    .stage-hdr { font: 700 13px system-ui, sans-serif; fill: var(--blue, #246593); text-transform: uppercase; letter-spacing: 0.05em; }
+    .stage-sub { font: 12px system-ui, sans-serif; fill: var(--muted, #626c77); }
+    .card-prep { fill: none; stroke: var(--line-strong, #b5d7de); stroke-width: 1.5; rx: 8; }
+    .card-evol { fill: none; stroke: var(--blue, #246593); stroke-width: 1.8; rx: 10; }
+    .card-meas { fill: none; stroke: var(--warm, #d0c0a8); stroke-width: 1.5; rx: 8; }
+    .node-box { fill: none; stroke: var(--line-strong, #7da5bf); stroke-width: 1.3; rx: 6; }
+    .node-meas { fill: none; stroke: var(--warm, #b3592e); stroke-width: 1.3; rx: 6; }
+    .wire { stroke: var(--blue, #246593); stroke-width: 2; fill: none; }
+    .badge { fill: none; stroke: var(--blue, #246593); stroke-width: 1; rx: 6; }
+    .flow-arr { stroke: var(--blue, #246593); stroke-width: 2.2; fill: none; marker-end: url(#arr-stage); }
+    .note { font: 11.5px system-ui, sans-serif; fill: var(--muted, #525f6c); }
   </style>
 
   <!-- Title bar -->
-  <text x="460" y="26" text-anchor="middle" style="font-weight:700;font-size:16px;fill:#1a3b47">Architecture of the Quantum Model of Computation</text>
+  <text x="460" y="26" text-anchor="middle" style="font-weight:700;font-size:16px;fill:var(--heading, #1a3b47)">Architecture of the Quantum Model of Computation</text>
 
   <!-- ==================== STAGE 1: PREPARATION ==================== -->
   <rect x="25" y="46" width="255" height="305" class="card-prep"/>
