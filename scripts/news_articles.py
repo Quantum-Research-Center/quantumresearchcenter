@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 from homepage import opening as homepage_opening
 from conferences import render_conferences
 from companies import render_companies
-from paper_news import load_papers, long_date, paper_path, plain
+from paper_news import load_papers, long_date, paper_path
 from site_navigation import site_navigation
 from tools import render_tools
 from ai_problem_claims import render_claims_home, render_claims_page
@@ -191,7 +191,7 @@ def stream_nav(source, active=''):
 
 
 def paper_preview(papers, source):
-    items = ''.join(f'<li><p class="story-label">Research paper · Selected {long_date(p["approved_on"])}</p><h3><a href="{relative(paper_path(p), source)}">{esc(p["title"])}</a></h3><p>{esc(plain(p["problem"]))}</p></li>' for p in papers[:3])
+    items = ''.join(f'<li><p class="story-label">Research paper · Selected {long_date(p["approved_on"])}</p><h3><a href="{relative(paper_path(p), source)}">{esc(p["title"])}</a></h3><p>{esc(p["problem"])}</p></li>' for p in papers[:3])
     return '<section class="paper-digest" aria-labelledby="papers-heading"><div class="section-top"><div><p class="eyebrow">Papers</p><h2 id="papers-heading">Recently selected papers</h2></div><a href="'+relative('news/papers/index.html', source)+'">All selected papers ↗</a></div><p class="section-intro">Technical summaries, methods, and limitations for researchers and advanced readers.</p><ol>'+items+'</ol>'+('' if items else '<p>No research papers have been selected yet.</p>')+'</section>'
 
 

@@ -196,5 +196,8 @@
     "openai-exponential-time-hypothesis",
     "beyond-the-qubit-count"
   ],
-  "related_papers": ["2611.09773"]
+  "related_papers": [
+    "2611.09773",
+    "2611.12795"
+  ]
 }
