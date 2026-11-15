@@ -49,7 +49,7 @@
         "read": "U sub f",
         "meaning": "The reversible oracle for \\(f\\): it keeps \\(x\\) and XORs \\(f(x)\\) into a target, \\(U_f\\ket{x,y}=\\ket{x,y\\oplus f(x)}\\).",
         "intro": "topic-2-3-3",
-        "section": "topic-7-1-3",
+        "section": "topic-7-1-1",
         "pattern": "U_f"
       }
     ]
@@ -251,7 +251,7 @@
         "tex": "(-1)^{f(x)}",
         "read": "minus one to the f of x",
         "meaning": "The sign a phase oracle attaches to input \\(x\\): \\(+1\\) when \\(f(x)=0\\), \\(-1\\) when \\(f(x)=1\\).",
-        "section": "topic-7-3-2",
+        "section": "topic-7-1-2",
         "pattern": "\\(-1\\)\\^\\{?f"
       },
       {

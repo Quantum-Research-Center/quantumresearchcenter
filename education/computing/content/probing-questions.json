@@ -275,19 +275,24 @@
     "challenge": "After Bob\u2019s correction, write the three-qubit state for a particular measurement result \\((m,n)\\). Do Alice\u2019s qubits retain a second copy? Explain the scope of your conclusion."
   },
   "topic-7-1-1": {
-    "foundation": "What is a global property of a Boolean function, and how does extracting it differ from learning individual entries of the truth table?",
-    "application": "For two input qubits initialized in \\(\\ket{00}\\) and a target qubit in \\(\\ket{0}\\), verify that applying \\(H\\otimes H\\otimes I\\) prepares the state \\(\\frac{1}{2}\\sum_{x\\in\\{0,1\\}^2}\\ket{x}\\ket{0}\\). What is the amplitude of each basis component?",
-    "challenge": "Using \\((H\\otimes H)\\ket{x} = \\frac{1}{2}\\sum_{z\\in\\{0,1\\}^2}(-1)^{x\\cdot z}\\ket{z}\\), show that every computational basis state \\(\\ket{x}\\) contributes a transition amplitude of \\(+1/2\\) toward the readout \\(\\ket{z}=\\ket{00}\\). Deduce why each branch in \\(\\ket{\\psi_2}\\) contributes an amplitude of \\((1/2)\\times(1/2)=1/4\\) toward \\(\\ket{00}\\)."
+    "foundation": "Write the action of \\(U_f\\) on the four basis states for \\(f=(1,0)\\), that is, \\(f(0)=1\\) and \\(f(1)=0\\).",
+    "application": "Write the matrix of \\(U_f\\) for \\(f=(0,1)\\) in the order \\(00,01,10,11\\), and check that it is unitary.",
+    "challenge": "Show that the map \\(\\ket{x,y}\\mapsto\\ket{x,f(x)}\\), which overwrites the target, is not unitary for any \\(f\\), and that \\(\\ket x\\mapsto\\ket{f(x)}\\) is not unitary when \\(f\\) is constant."
   },
   "topic-7-1-2": {
-    "foundation": "For a constant function \\(f(x)=c\\) on two bits, write down the state \\(\\ket{\\psi_2}\\) and explain why the target qubit factors out of the superposition.",
-    "application": "Calculate the total amplitude of the joint configuration \\(\\ket{00}\\ket{c}\\) in \\(\\ket{\\psi_3}\\) by summing the amplitudes contributed from all four input branches.",
-    "challenge": "Explain why the probability of observing input readout \\(00\\) is \\(1\\), and why this constructive interference occurs regardless of whether \\(c=0\\) or \\(c=1\\)."
+    "foundation": "Compute \\(X(\\ket0+i\\ket1)/\\sqrt2\\). Is \\((\\ket0+i\\ket1)/\\sqrt2\\) an eigenvector of \\(X\\)?",
+    "application": "Find every state that \\(X\\) leaves unchanged apart from a factor, by solving \\(X(a,b)^T=\\lambda(a,b)^T\\).",
+    "challenge": "The target is prepared in \\(\\cos\\theta\\ket0+\\sin\\theta\\ket1\\), with real \\(\\theta\\), and the oracle flips it. Show that its overlap with the original target is \\(\\sin2\\theta\\), and that the target keeps no record of the flip only when it is \\(\\ket+\\) or \\(\\ket-\\)."
   },
   "topic-7-1-3": {
-    "foundation": "For the two-bit AND function \\(f(x_1,x_2)=x_1\\land x_2\\), express the state \\(\\ket{\\psi_2}\\) after oracle evaluation, grouping terms according to the target qubit value.",
-    "application": "After applying \\(H\\otimes H\\) to the inputs of the AND state, what is the amplitude in \\(\\ket{00}\\ket{0}\\) and what is the amplitude in \\(\\ket{00}\\ket{1}\\)? Compute the total probability of observing input readout \\(00\\).",
-    "challenge": "Why do the amplitudes in \\(\\ket{00}\\ket{0}\\) and \\(\\ket{00}\\ket{1}\\) add as probabilities (\\(|3/4|^2+|1/4|^2=5/8\\)) rather than interfering coherently? Explain how the target qubit acts as a which-path record and what must change for interference to occur."
+    "foundation": "For \\(f=(1,0)\\), compute \\(U_f\\ket+\\ket-\\).",
+    "application": "Prepare the input in \\(\\ket+\\), but mistakenly prepare the target in \\(\\ket+\\) too. Find the output of \\(U_f\\) for each of the four functions. Does leaving the target unentangled suffice to obtain useful phase kickback?",
+    "challenge": "With \\(n\\) input qubits and the target in \\(\\ket-\\), show that \\(U_f\\bigl(2^{-n/2}\\sum_x\\ket x\\bigr)\\ket-=\\bigl(2^{-n/2}\\sum_x(-1)^{f(x)}\\ket x\\bigr)\\ket-\\), and that the target ends in \\(\\ket-\\) for every \\(f\\)."
+  },
+  "topic-7-1-4": {
+    "foundation": "For \\(f(x)=x\\), computed into a clean answer bit by CNOT, compute \\(\\mathrm{CNOT}\\,(I\\otimes Z)\\,\\mathrm{CNOT}\\) on \\(\\ket{0,0}\\) and \\(\\ket{1,0}\\).",
+    "application": "Compute \\(\\mathrm{CNOT}\\,(I\\otimes Z)\\,\\mathrm{CNOT}\\) on all four basis states, and identify the operation. Why does compute, phase, uncompute need the workspace to start at \\(0\\)?",
+    "challenge": "Omit the uncomputation: compute \\(f(x)=x\\) into the answer bit with CNOT and apply \\(Z\\) to the answer bit, but do not run CNOT again. Starting from \\(\\ket+\\ket0\\), apply \\(H\\) to the input at the end. Show that the outcome is random, whereas with uncomputation it is certain."
   },
   "topic-7-2-1": {
     "foundation": "List the four functions \\(f:\\{0,1\\}\\to\\{0,1\\}\\) as pairs \\((f(0),f(1))\\), and classify each as constant or balanced.",
@@ -300,39 +305,24 @@
     "challenge": "Show that no one-query classical algorithm for \\(f:\\{0,1\\}\\to\\{0,1\\}\\), even one that chooses its query at random, is correct with probability greater than \\(1/2\\) on every function."
   },
   "topic-7-2-3": {
-    "foundation": "Write the action of \\(U_f\\) on the four basis states for \\(f=(1,0)\\), that is, \\(f(0)=1\\) and \\(f(1)=0\\).",
-    "application": "Write the matrix of \\(U_f\\) for \\(f=(0,1)\\) in the order \\(00,01,10,11\\), and check that it is unitary.",
-    "challenge": "Show that the map \\(\\ket{x,y}\\mapsto\\ket{x,f(x)}\\), which overwrites the target, is not unitary for any \\(f\\), and that \\(\\ket x\\mapsto\\ket{f(x)}\\) is not unitary when \\(f\\) is constant."
+    "foundation": "For the two-bit AND function \\(f(x_1,x_2)=x_1\\land x_2\\), express the state \\(\\ket{\\psi_2}\\) after oracle evaluation on \\(\\ket{0}\\), grouping terms according to the target qubit value.",
+    "application": "After applying \\(H\\otimes H\\) to the inputs of the AND state, what is the amplitude in \\(\\ket{00}\\ket{0}\\) and what is the amplitude in \\(\\ket{00}\\ket{1}\\)? Compute the total probability of observing input readout \\(00\\).",
+    "challenge": "Why do the amplitudes in \\(\\ket{00}\\ket{0}\\) and \\(\\ket{00}\\ket{1}\\) add as probabilities (\\(|3/4|^2+|1/4|^2=5/8\\)) rather than interfering coherently? Explain how the target qubit acts as a which-path record and how phase kickback resolves this."
   },
   "topic-7-3-1": {
-    "foundation": "Compute \\(X(\\ket0+i\\ket1)/\\sqrt2\\). Is \\((\\ket0+i\\ket1)/\\sqrt2\\) an eigenvector of \\(X\\)?",
-    "application": "Find every state that \\(X\\) leaves unchanged apart from a factor, by solving \\(X(a,b)^T=\\lambda(a,b)^T\\).",
-    "challenge": "The target is prepared in \\(\\cos\\theta\\ket0+\\sin\\theta\\ket1\\), with real \\(\\theta\\), and the oracle flips it. Show that its overlap with the original target is \\(\\sin2\\theta\\), and that the target keeps no record of the flip only when it is \\(\\ket+\\) or \\(\\ket-\\)."
+    "foundation": "Name the stages of Deutsch\u2019s algorithm before the final Hadamard, and write the state after \\(U_f\\).",
+    "application": "Replace the target \\(\\ket-\\) by \\(\\ket+\\), and run the algorithm for \\(f=(0,1)\\). What does the measurement give?",
+    "challenge": "Leave out the first \\(H\\) on the input, so that the input stays \\(\\ket0\\). Show that the algorithm then gives each outcome with probability \\(1/2\\) for every function."
   },
   "topic-7-3-2": {
-    "foundation": "For \\(f=(1,0)\\), compute \\(U_f\\ket+\\ket-\\).",
-    "application": "Prepare the input in \\(\\ket+\\), but mistakenly prepare the target in \\(\\ket+\\) too. Find the output of \\(U_f\\) for each of the four functions. Does leaving the target unentangled suffice to obtain useful phase kickback?",
-    "challenge": "With \\(n\\) input qubits and the target in \\(\\ket-\\), show that \\(U_f\\bigl(2^{-n/2}\\sum_x\\ket x\\bigr)\\ket-=\\bigl(2^{-n/2}\\sum_x(-1)^{f(x)}\\ket x\\bigr)\\ket-\\), and that the target ends in \\(\\ket-\\) for every \\(f\\)."
-  },
-  "topic-7-3-3": {
-    "foundation": "For \\(f(x)=x\\), computed into a clean answer bit by CNOT, compute \\(\\mathrm{CNOT}\\,(I\\otimes Z)\\,\\mathrm{CNOT}\\) on \\(\\ket{0,0}\\) and \\(\\ket{1,0}\\).",
-    "application": "Compute \\(\\mathrm{CNOT}\\,(I\\otimes Z)\\,\\mathrm{CNOT}\\) on all four basis states, and identify the operation. Why does compute, phase, uncompute need the workspace to start at \\(0\\)?",
-    "challenge": "Omit the uncomputation: compute \\(f(x)=x\\) into the answer bit with CNOT and apply \\(Z\\) to the answer bit, but do not run CNOT again. Starting from \\(\\ket+\\ket0\\), apply \\(H\\) to the input at the end. Show that the outcome is random, whereas with uncomputation it is certain."
-  },
-  "topic-7-4-1": {
     "foundation": "Compute \\(H\\bigl((-\\ket0+\\ket1)/\\sqrt2\\bigr)\\).",
     "application": "For each of the four functions, compute the final input amplitudes \\((s_0+s_1)/2\\) and \\((s_0-s_1)/2\\).",
     "challenge": "Show that if the final \\(H\\) is omitted, or replaced by \\(X\\), the measurement gives \\(0\\) and \\(1\\) with probability \\(1/2\\) each, for every function."
   },
-  "topic-7-4-2": {
-    "foundation": "Count the queries and the other operations in Deutsch\u2019s algorithm, starting from \\(\\ket{00}\\).",
+  "topic-7-3-3": {
+    "foundation": "Count the queries and the other operations in Deutsch\u2019s algorithm, starting from \\(\\ket{01}\\).",
     "application": "Run Deutsch\u2019s algorithm for \\(f=(1,0)\\), giving the state after each step.",
     "challenge": "With \\(n\\) input qubits, after the query and \\(H\\) applied to each input qubit, show that the amplitude of the input configuration \\(0^n\\) is \\(2^{-n}\\sum_x(-1)^{f(x)}\\). Deduce that one query distinguishes constant from balanced functions with certainty."
-  },
-  "topic-7-4-3": {
-    "foundation": "Name the four stages of Deutsch\u2019s algorithm and the operations used in each.",
-    "application": "Replace the target \\(\\ket-\\) by \\(\\ket+\\), and run the algorithm for \\(f=(0,1)\\). What does the measurement give?",
-    "challenge": "Leave out the first \\(H\\) on the input, so that the input stays \\(\\ket0\\). Show that the algorithm then gives each outcome with probability \\(1/2\\) for every function."
   },
   "topic-9-1-1": {
     "foundation": "A predicate on three-bit labels marks the labels whose bits add to \\(2\\). How many labels are marked, and what is the probability that a uniformly random label is marked?",

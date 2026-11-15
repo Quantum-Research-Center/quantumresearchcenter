@@ -596,7 +596,7 @@
           "\\(X\\ket-=-\\ket-\\)."
         ],
         "answer": "The target flips, which multiplies \\(\\ket-\\) by \\(-1\\): \\(U_f\\ket1\\ket-=-\\ket1\\ket-\\). The function value appears as a sign, and the target is unchanged.",
-        "review": "topic-7-3-2"
+        "review": "topic-7-1-2"
       },
       {
         "kind": "Quick check",
@@ -606,7 +606,7 @@
           "Do the two input branches end with the same target label?"
         ],
         "answer": "The query gives \\(\\frac{1}{\\sqrt2}(\\ket0\\ket1+\\ket1\\ket0)\\): the target now records the input branch, exactly as with a blank target. After \\(H\\) on the input, the state is \\(\\frac12(\\ket0\\ket1+\\ket1\\ket1+\\ket0\\ket0-\\ket1\\ket0)\\), and the input reads \\(1\\) with probability \\(\\frac14+\\frac14=\\frac12\\). The target \\(\\ket1\\) is a basis state, not an eigenstate of the flip, so the function value is written into the target instead of being kicked back as a sign. Only \\(\\ket-\\) works.",
-        "review": "topic-7-1-3"
+        "review": "topic-7-2-3"
       },
       {
         "kind": "Quick check",
@@ -626,7 +626,7 @@
           "Factor the input state before applying \\(H\\otimes H\\)."
         ],
         "answer": "After the query, the input is \\(\\tfrac12(\\ket{00}+\\ket{01}-\\ket{10}-\\ket{11})=\\ket-\\ket+\\). Applying \\(H\\otimes H\\) gives \\(\\ket1\\ket0\\), so the outcome is \\(10\\), never \\(00\\). The function is identified as balanced with one query.",
-        "review": "topic-7-4-2"
+        "review": "topic-7-3-3"
       },
       {
         "kind": "Worked problem",
@@ -636,7 +636,7 @@
           "\\(HZH=X\\) and \\(HIH=I\\)."
         ],
         "answer": "For \\(f=(0,0)\\), \\(O_f=I\\); for \\((1,1)\\), \\(-I\\); for \\((0,1)\\), \\(Z\\); for \\((1,0)\\), \\(-Z\\). Conjugating by \\(H\\): \\(HIH=I\\), \\(H(-I)H=-I\\), \\(HZH=X\\), and \\(H(-Z)H=-X\\). So on the input qubit, Deutsch\u2019s algorithm applies \\(\\pm I\\) for a constant function and \\(\\pm X\\) for a balanced one, to the input \\(\\ket0\\). The result is \\(\\pm\\ket0\\) or \\(\\pm\\ket1\\), and the measurement reads the class with certainty. The signs are global phases, which is why the algorithm cannot reveal which constant or which balanced function was used.",
-        "review": "topic-7-4-1"
+        "review": "topic-7-3-2"
       },
       {
         "kind": "Worked problem",
@@ -646,7 +646,7 @@
           "Controlled-\\(Z\\) multiplies \\(\\ket{11}\\) by \\(-1\\) and leaves the other basis states alone."
         ],
         "answer": "On \\(\\ket{x_1x_2}\\ket0\\), the first Toffoli gate gives \\(\\ket{x_1x_2}\\ket{x_1x_2}\\). Then \\(Z\\) multiplies by \\((-1)^{x_1x_2}\\). The second Toffoli gate adds \\(x_1x_2\\) to the answer bit again, returning it to \\(0\\). The result is \\((-1)^{x_1x_2}\\ket{x_1x_2}\\ket0\\): a sign \\(-1\\) only on \\(\\ket{11}\\), which is controlled-\\(Z\\), with the answer bit cleanly factored out. By linearity this holds for every superposition of inputs. The phase oracle of AND costs two Toffoli gates and one \\(Z\\), with one temporary bit, and the clean workspace is what allows the inputs\u2019 signs to interfere later.",
-        "review": "topic-7-3-3"
+        "review": "topic-7-1-4"
       },
       {
         "kind": "Worked problem",
@@ -656,7 +656,7 @@
           "Group the terms by the value of \\(w\\)."
         ],
         "answer": "Group by \\(w\\). For \\(w=0\\) the input part is \\(\\frac12(\\ket{00}-\\ket{01})=\\frac{1}{\\sqrt2}\\ket0\\ket-\\); for \\(w=1\\) it is \\(\\frac12(-\\ket{10}+\\ket{11})=-\\frac{1}{\\sqrt2}\\ket1\\ket-\\). After \\(H\\otimes H\\) these become \\(\\frac{1}{\\sqrt2}\\ket+\\ket1\\ket0\\) and \\(-\\frac{1}{\\sqrt2}\\ket-\\ket1\\ket1\\). The second input reads \\(1\\) with certainty, but the first input is \\(\\ket+\\) on one record and \\(\\ket-\\) on the other, so it reads \\(0\\) or \\(1\\) with probability \\(\\frac12\\). The outcomes are \\(01\\) and \\(11\\), each with probability \\(\\frac12\\). The clean version gives \\(11\\) with certainty. The garbage records \\(x_1\\), so it destroys exactly the interference that would reveal the \\(x_1\\) part of the answer, while the \\(x_2\\) part survives.",
-        "review": "topic-7-3-3"
+        "review": "topic-7-1-4"
       },
       {
         "kind": "Misconception",
@@ -666,7 +666,7 @@
           "Which part of the state depends on \\(f(0)\\) alone?"
         ],
         "answer": "After the final Hadamard, the input is \\(\\frac{s_0+s_1}{2}\\ket0+\\frac{s_0-s_1}{2}\\ket1\\) with \\(s_x=(-1)^{f(x)}\\). Factoring out \\(s_0\\), this is \\((-1)^{f(0)}\\ket d\\), so the output is \\((-1)^{f(0)}\\ket d\\ket-\\). The value \\(f(0)\\) appears only in a global phase, which no measurement detects, and the target \\(\\ket-\\) is the same for every function. So the output carries exactly one bit, \\(d\\). The query did act on both inputs, but the interference that made \\(d\\) certain also discarded every other distinction. One query of this kind reveals at most one bit about \\(f\\), not both values.",
-        "review": "topic-7-4-1"
+        "review": "topic-7-3-2"
       },
       {
         "kind": "Extension",
@@ -676,7 +676,7 @@
           "The final amplitudes are \\((s_0\\pm s_1)/2\\)."
         ],
         "answer": "For \\(1-f\\), each sign \\((-1)^{f(x)}\\) is multiplied by \\(-1\\), a global phase that changes no probability. The outcome is \\(1\\) exactly when \\(s_0\\neq s_1\\), that is, when \\(f(0)\\oplus f(1)=1\\). The algorithm extracts this one bit and nothing more about \\(f\\).",
-        "review": "topic-7-4-1"
+        "review": "topic-7-3-2"
       },
       {
         "kind": "Extension",
@@ -686,7 +686,7 @@
           "\\((-1)^{s_1x_1}(-1)^{s_2x_2}\\) is a product of one-qubit sign patterns."
         ],
         "answer": "After the query the input state is \\(\\frac12\\sum_x(-1)^{s_1x_1}(-1)^{s_2x_2}\\ket{x_1x_2}=\\frac{\\ket0+(-1)^{s_1}\\ket1}{\\sqrt2}\\otimes\\frac{\\ket0+(-1)^{s_2}\\ket1}{\\sqrt2}\\). Each factor is \\(\\ket+\\) if \\(s_i=0\\) and \\(\\ket-\\) if \\(s_i=1\\), and \\(H\\) maps them to \\(\\ket0\\) and \\(\\ket1\\). So the output is \\(\\ket{s_1s_2}\\) with certainty: \\(10\\) gives \\(\\ket{10}\\) and \\(11\\) gives \\(\\ket{11}\\). Classically each query returns one bit, \\(s\\cdot x\\), and there are four possible strings, so two queries are necessary (and \\(x=10,01\\) suffice). With \\(n\\) bits the gap is one query against \\(n\\). This is the Bernstein\u2013Vazirani problem, developed in Quantum Algorithms.",
-        "review": "topic-7-4-2"
+        "review": "topic-7-3-3"
       }
     ]
   },

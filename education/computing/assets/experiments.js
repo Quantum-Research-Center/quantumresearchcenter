@@ -5,18 +5,7 @@
  const percent=p=>(100*p).toFixed(2)+'%';
  // Set text containing TeX, then typeset it once MathJax has started.
  const math=(el,text)=>{if(/<[a-z][\s\S]*>/i.test(text)){el.innerHTML=text}else{el.textContent=text}const mj=window.MathJax;if(mj?.startup?.promise&&mj.typesetPromise)mj.startup.promise=mj.startup.promise.then(()=>{mj.typesetClear([el]);return mj.typesetPromise([el])}).catch(()=>{})};
- function chart(lab,labels){const box=lab.querySelector('[data-bars]');labels.forEach(label=>{const row=document.createElement('div');row.className='lab-bar-row';const name=document.createElement('span');math(name,`\\(\\ket{${label}}\\)`);const track=document.createElement('div');track.className='lab-track';const fill=document.createElement('div');fill.className='lab-fill';track.append(fill);const out=document.createElement('output');row.append(name,track,out);box.append(row)});return values=>{[...box.children].forEach((row,i)=>{const a=clean(values[i]);row.querySelector('.lab-fill').style.width=percent(a*a);row.querySelector('.lab-fill').classList.toggle('negative',a<0);row.querySelector('output').textContent=percent(a*a);row.setAttribute('aria-label',`${labels[i]}: amplitude ${fmt(a)}, probability ${percent(a*a)}`)})}}
- document.querySelectorAll('[data-lab="gates"]').forEach(lab=>{let v=[1,0],history=[];const bars=chart(lab,['0','1']);function draw(){bars(v);math(lab.querySelector('[data-state]'),`State: \\(${fmt(v[0])}\\ket0 ${v[1]<0?'-':'+'} ${fmt(Math.abs(v[1]))}\\ket1\\)`);lab.querySelector('[data-status]').textContent=history.length?'Operations, in order: '+history.join(' → '):'Choose a gate to change the state.';lab.dataset.amplitudes=JSON.stringify(v)}lab.querySelectorAll('[data-gate]').forEach(b=>b.onclick=()=>{const [a,c]=v,g=b.dataset.gate;v=g==='H'?[(a+c)/Math.SQRT2,(a-c)/Math.SQRT2]:g==='X'?[c,a]:[a,-c];history.push(g);draw()});lab.querySelector('[data-reset]').onclick=()=>{v=[1,0];history=[];draw()};draw()});
- document.querySelectorAll('[data-lab="bell"]').forEach(lab=>{let step=0;const bars=chart(lab,['00','01','10','11']),next=lab.querySelector('[data-next]');function draw(){const v=step===0?[1,0,0,0]:step===1?[1/Math.SQRT2,0,1/Math.SQRT2,0]:[1/Math.SQRT2,0,0,1/Math.SQRT2];bars(v);math(lab.querySelector('[data-state]'),['State: \\(\\ket{00}\\)','State: \\((\\ket{00}+\\ket{10})/\\sqrt2\\)','State: \\((\\ket{00}+\\ket{11})/\\sqrt2\\)'][step]);math(lab.querySelector('[data-status]'),['Both qubits start in \\(\\ket{00}\\).','The first qubit is in a superposition; the second is still \\(\\ket0\\). This state is a product.','CNOT changes the \\(\\ket{10}\\) component into \\(\\ket{11}\\). This pure state is entangled; a \\(Z\\)-basis measurement gives \\(00\\) or \\(11\\) with equal probability.'][step]);next.textContent=['Apply H to the first qubit','Apply CNOT','Bell state prepared'][step];next.disabled=step===2;lab.dataset.amplitudes=JSON.stringify(v)}next.onclick=()=>{step=Math.min(2,step+1);draw()};lab.querySelector('[data-reset]').onclick=()=>{step=0;draw()};draw()});
- document.querySelectorAll('[data-lab="grover"]').forEach(lab=>{let k=0,timer=null;const n=lab.querySelector('[data-size]'),slider=lab.querySelector('[data-slider]'),play=lab.querySelector('[data-play]');function pause(){clearInterval(timer);timer=null;play.textContent='Play';play.setAttribute('aria-pressed','false')}function draw(){const theta=Math.asin(1/Math.sqrt(Number(n.value))),angle=(2*k+1)*theta,p=Math.sin(angle)**2;slider.value=k;lab.querySelector('[data-iteration]').value=k;math(lab.querySelector('[data-repetitions]'),`\\((D\\,O_f)^{${k}}\\)`);math(lab.querySelector('[data-state]'),`Probability of finding the marked item: \\(P = \\sin^2((2k+1)\\theta) = ${percent(p)}\\).`);math(lab.querySelector('[data-status]'),`Iteration \\(k = ${k}\\). The marked amplitude is \\(\\sin((2k+1)\\theta) = ${fmt(Math.sin(angle))}\\); its squared magnitude gives the success probability.`);lab.dataset.probability=p;lab.querySelector('[data-next]').disabled=k===30;if(k===30)pause()}lab.querySelector('[data-next]').onclick=()=>{pause();k=Math.min(30,k+1);draw()};play.onclick=()=>{if(timer){pause();return}if(k===30)k=0;play.textContent='Pause';play.setAttribute('aria-pressed','true');timer=setInterval(()=>{k=Math.min(30,k+1);draw()},matchMedia('(prefers-reduced-motion: reduce)').matches?1800:900)};slider.oninput=()=>{pause();k=Number(slider.value);draw()};n.onchange=lab.querySelector('[data-reset]').onclick=()=>{pause();k=0;draw()};lab.closest('.book-section')?.addEventListener('slideleave',pause);document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});draw()});
- document.querySelectorAll('[data-lab="phase"]').forEach(lab=>{let stage=0;const select=lab.querySelector('[data-function]'),next=lab.querySelector('[data-next]');function draw(){const f=select.value.split(',').map(Number),signs=stage===0?[1,1]:f.map(v=>v?-1:1),out=[(signs[0]+signs[1])/2,(signs[0]-signs[1])/2];signs.forEach((s,i)=>{lab.querySelector(`[data-path="${i}"]`).classList.toggle('negative',s<0);lab.querySelector(`[data-sign="${i}"]`).textContent=(s<0?'−':'+')+'1/√2'});math(lab.querySelector('[data-state]'),stage<2?(stage===0?'Before oracle: both amplitudes are \\(+1/\\sqrt2\\).':`After oracle: \\(${signs[0]<0?'-':'+'}\\ket0/\\sqrt2 ${signs[1]<0?'-':'+'}\\ket1/\\sqrt2\\).`):`After \\(H\\): probability of 0 is ${percent(out[0]**2)}; probability of 1 is ${percent(out[1]**2)}.`);math(lab.querySelector('[data-status]'),['Choose a function \\(f\\), then apply its oracle \\(U_f\\).','The branches show the phase after the oracle: \\((-1)^{f(x)}\\ket{x}\\). Apply \\(H\\) to combine them.','Equal signs interfere into \\(\\ket0\\); opposite signs interfere into \\(\\ket1\\). The paths above show the oracle stage.'][stage]);next.textContent=['Apply oracle','Apply final H','Experiment complete'][stage];next.disabled=stage===2;lab.dataset.result=stage===2?String(out[1]**2):''}next.onclick=()=>{stage=Math.min(2,stage+1);draw()};select.onchange=lab.querySelector('[data-reset]').onclick=()=>{stage=0;draw()};draw()});
- /* Animated figures. Each replaces a static drawing that stays in the page, hidden,
-    for readers without scripting. Every frame is redrawn from the figure's state. */
  const NS='http://www.w3.org/2000/svg',DEG=Math.PI/180;
- const gcd=(a,b)=>b?gcd(b,a%b):a;
- const still=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
- function node(parent,tag,attrs={},text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;parent.append(e);return e}
- function label(parent,x,y,text,attrs={}){return node(parent,'text',{x,y,'text-anchor':'middle',...attrs},text)}
  const mathCache=new Map();
  function typesetSvg(svg){
   const mj=window.MathJax;
@@ -49,6 +38,115 @@
    }
   });
  }
+ function svgMath(wrap,tex,attrs,fallback){
+  if(!wrap)return;
+  wrap.innerHTML='';
+  const t=document.createElementNS(NS,'text');
+  for(const k in attrs)t.setAttribute(k,attrs[k]);
+  t.setAttribute('data-tex',tex);
+  t.textContent=fallback||tex;
+  wrap.append(t);
+  const svg=wrap.closest('svg');
+  if(svg)typesetSvg(svg);
+ }
+ function chart(lab,labels){const box=lab.querySelector('[data-bars]');labels.forEach(label=>{const row=document.createElement('div');row.className='lab-bar-row';const name=document.createElement('span');math(name,`\\(\\ket{${label}}\\)`);const track=document.createElement('div');track.className='lab-track';const fill=document.createElement('div');fill.className='lab-fill';track.append(fill);const out=document.createElement('output');row.append(name,track,out);box.append(row)});return values=>{[...box.children].forEach((row,i)=>{const a=clean(values[i]);row.querySelector('.lab-fill').style.width=percent(a*a);row.querySelector('.lab-fill').classList.toggle('negative',a<0);row.querySelector('output').textContent=percent(a*a);row.setAttribute('aria-label',`${labels[i]}: amplitude ${fmt(a)}, probability ${percent(a*a)}`)})}}
+ document.querySelectorAll('[data-lab="gates"]').forEach(lab=>{let v=[1,0],history=[];const bars=chart(lab,['0','1']);function draw(){bars(v);math(lab.querySelector('[data-state]'),`State: \\(${fmt(v[0])}\\ket0 ${v[1]<0?'-':'+'} ${fmt(Math.abs(v[1]))}\\ket1\\)`);lab.querySelector('[data-status]').textContent=history.length?'Operations, in order: '+history.join(' → '):'Choose a gate to change the state.';lab.dataset.amplitudes=JSON.stringify(v)}lab.querySelectorAll('[data-gate]').forEach(b=>b.onclick=()=>{const [a,c]=v,g=b.dataset.gate;v=g==='H'?[(a+c)/Math.SQRT2,(a-c)/Math.SQRT2]:g==='X'?[c,a]:[a,-c];history.push(g);draw()});lab.querySelector('[data-reset]').onclick=()=>{v=[1,0];history=[];draw()};draw()});
+ document.querySelectorAll('[data-lab="bell"]').forEach(lab=>{let step=0;const bars=chart(lab,['00','01','10','11']),next=lab.querySelector('[data-next]');function draw(){const v=step===0?[1,0,0,0]:step===1?[1/Math.SQRT2,0,1/Math.SQRT2,0]:[1/Math.SQRT2,0,0,1/Math.SQRT2];bars(v);math(lab.querySelector('[data-state]'),['State: \\(\\ket{00}\\)','State: \\((\\ket{00}+\\ket{10})/\\sqrt2\\)','State: \\((\\ket{00}+\\ket{11})/\\sqrt2\\)'][step]);math(lab.querySelector('[data-status]'),['Both qubits start in \\(\\ket{00}\\).','The first qubit is in a superposition; the second is still \\(\\ket0\\). This state is a product.','CNOT changes the \\(\\ket{10}\\) component into \\(\\ket{11}\\). This pure state is entangled; a \\(Z\\)-basis measurement gives \\(00\\) or \\(11\\) with equal probability.'][step]);next.textContent=['Apply H to the first qubit','Apply CNOT','Bell state prepared'][step];next.disabled=step===2;lab.dataset.amplitudes=JSON.stringify(v)}next.onclick=()=>{step=Math.min(2,step+1);draw()};lab.querySelector('[data-reset]').onclick=()=>{step=0;draw()};draw()});
+ document.querySelectorAll('[data-lab="grover"]').forEach(lab=>{let k=0,timer=null;const n=lab.querySelector('[data-size]'),slider=lab.querySelector('[data-slider]'),play=lab.querySelector('[data-play]');function pause(){clearInterval(timer);timer=null;play.textContent='Play';play.setAttribute('aria-pressed','false')}function draw(){const theta=Math.asin(1/Math.sqrt(Number(n.value))),angle=(2*k+1)*theta,p=Math.sin(angle)**2;slider.value=k;lab.querySelector('[data-iteration]').value=k;math(lab.querySelector('[data-repetitions]'),`\\((D\\,O_f)^{${k}}\\)`);math(lab.querySelector('[data-state]'),`Probability of finding the marked item: \\(P = \\sin^2((2k+1)\\theta) = ${percent(p)}\\).`);math(lab.querySelector('[data-status]'),`Iteration \\(k = ${k}\\). The marked amplitude is \\(\\sin((2k+1)\\theta) = ${fmt(Math.sin(angle))}\\); its squared magnitude gives the success probability.`);lab.dataset.probability=p;lab.querySelector('[data-next]').disabled=k===30;if(k===30)pause()}lab.querySelector('[data-next]').onclick=()=>{pause();k=Math.min(30,k+1);draw()};play.onclick=()=>{if(timer){pause();return}if(k===30)k=0;play.textContent='Pause';play.setAttribute('aria-pressed','true');timer=setInterval(()=>{k=Math.min(30,k+1);draw()},matchMedia('(prefers-reduced-motion: reduce)').matches?1800:900)};slider.oninput=()=>{pause();k=Number(slider.value);draw()};n.onchange=lab.querySelector('[data-reset]').onclick=()=>{pause();k=0;draw()};lab.closest('.book-section')?.addEventListener('slideleave',pause);document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});draw()});
+ document.querySelectorAll('[data-lab="phase"]').forEach(lab=>{
+  let stage=0,timer=null;
+  const select=lab.querySelector('[data-function]'),next=lab.querySelector('[data-next]'),play=lab.querySelector('[data-play]');
+  const pulseX=[75,205,365,495,605];
+  function pause(){clearInterval(timer);timer=null;if(play){play.textContent='Play';play.setAttribute('aria-pressed','false')}}
+  function draw(){
+    const f=select.value.split(',').map(Number),signs=stage<2?[1,1]:f.map(v=>v?-1:1),out=[(signs[0]+signs[1])/2,(signs[0]-signs[1])/2],balanced=f[0]!==f[1];
+    signs.forEach((s,i)=>{
+      const p=lab.querySelector(`[data-path="${i}"]`),sg=lab.querySelector(`[data-sign="${i}"]`);
+      if(p)p.classList.toggle('negative',s<0);
+      svgMath(sg,`${s<0?'-':'+'}1/\\sqrt{2}`,{x:i===0?302:615,y:182},(s<0?'−':'+')+'1/√2');
+    });
+    lab.querySelectorAll('[data-gate-stage]').forEach(g=>g.classList.toggle('active',Number(g.dataset.gateStage)===stage));
+    const pt=lab.querySelector('[data-pulse-top]'),pb=lab.querySelector('[data-pulse-bot]'),arc=lab.querySelector('[data-kickback-arc]'),outBadge=lab.querySelector('[data-outcome]');
+    if(pt){pt.setAttribute('cx',pulseX[stage]);pt.classList.toggle('neg',stage>=2&&balanced)}
+    if(pb){pb.setAttribute('cx',stage<=2?pulseX[stage]:365);pb.style.opacity=stage<=2?'1':'0.45'}
+    if(arc)arc.classList.toggle('active',stage===2&&(f[0]===1||f[1]===1));
+    svgMath(outBadge,stage===4?(balanced?'1\\text{ (balanced)}':'0\\text{ (constant)}'):'\\text{—}',{x:660,y:60,'text-anchor':'start','font-weight':'600'},stage===4?(balanced?'1 (balanced)':'0 (constant)'):'—');
+    const stateTexts=[
+      'Initial state: \\(\\ket{0}\\ket{1}\\).',
+      'After \\(H\\otimes H\\): \\(\\ket{+}\\ket{-}\\). Both input branches carry \\(+1/\\sqrt2\\).',
+      `After \\(U_f\\): \\((${signs[0]<0?'-':'+'}\\ket0 ${signs[1]<0?'-':'+'}\\ket1)/\\sqrt2\\otimes\\ket{-}\\). Target stays unentangled.`,
+      `After final \\(H\\): input becomes \\(${f[0]?'-':''}\\ket{${balanced?1:0}}\\).`,
+      `Measured bit: \\(${balanced?1:0}\\) (${balanced?'balanced':'constant'}). Probabilities: \\(p(0)=${percent(out[0]**2)}\\), \\(p(1)=${percent(out[1]**2)}\\).`
+    ];
+    const statusTexts=[
+      'Choose a function \\(f\\), then step through or play the circuit.',
+      'Preparation: \\(H\\otimes H\\) opens both input paths and places the target in \\(\\ket{-}\\).',
+      'Query \\(U_f\\): phase kickback attaches \\((-1)^{f(x)}\\) to each input branch without entangling the target.',
+      'Interference: the final \\(H\\) recombines the two branches onto \\(\\ket{0}\\) (equal signs) or \\(\\ket{1}\\) (opposite signs).',
+      'Readout complete in 1 quantum query (classical determinism requires 2).'
+    ];
+    math(lab.querySelector('[data-state]'),stateTexts[stage]);
+    math(lab.querySelector('[data-status]'),statusTexts[stage]);
+    math(next,['Prepare \\(H\\otimes H\\)','Query \\(U_f\\)','Apply final \\(H\\)','Measure \\(M\\)','Done'][stage]);
+    next.disabled=stage===4;
+    lab.dataset.result=stage>=3?String(out[1]**2):'';
+    if(stage===4)pause();
+  }
+  next.onclick=()=>{pause();stage=Math.min(4,stage+1);draw()};
+  if(play)play.onclick=()=>{if(timer){pause();return}if(stage===4)stage=0;play.textContent='Pause';play.setAttribute('aria-pressed','true');draw();timer=setInterval(()=>{stage=Math.min(4,stage+1);draw()},matchMedia('(prefers-reduced-motion: reduce)').matches?1800:950)};
+  select.onchange=lab.querySelector('[data-reset]').onclick=()=>{pause();stage=0;draw()};
+  lab.closest('.book-section')?.addEventListener('slideleave',pause);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});
+  draw();
+});
+ document.querySelectorAll('[data-lab="kickback"]').forEach(lab=>{
+  let stage=0,timer=null;
+  const inp=lab.querySelector('[data-input]'),fn=lab.querySelector('[data-function]'),next=lab.querySelector('[data-next]'),play=lab.querySelector('[data-play]');
+  const pulseX=[90,270,450];
+  function pause(){clearInterval(timer);timer=null;if(play){play.textContent='Play';play.setAttribute('aria-pressed','false')}}
+  function draw(){
+    const x=inp.value,f=fn.value.split(',').map(Number),kicked=(x==='0'&&f[0]===1)||(x==='1'&&f[1]===1)||(x==='+'&&(f[0]===1||f[1]===1));
+    lab.querySelectorAll('[data-gate-stage]').forEach(g=>g.classList.toggle('active',Number(g.dataset.gateStage)===stage));
+    const pt=lab.querySelector('[data-pulse-top]'),pb=lab.querySelector('[data-pulse-bot]'),arc=lab.querySelector('[data-kickback-arc]'),inLbl=lab.querySelector('[data-in-lbl]'),outLbl=lab.querySelector('[data-out-lbl]');
+    if(pt){pt.setAttribute('cx',pulseX[stage]);pt.classList.toggle('neg',stage>=1&&kicked)}
+    if(pb)pb.setAttribute('cx',pulseX[stage]);
+    if(arc)arc.classList.toggle('active',stage===1&&kicked);
+    const texIn=x==='+'?'\\ket{+}':`\\ket{${x}}`;
+    let texOut=texIn;
+    if(x==='0')texOut=(f[0]?'-':'')+'\\ket{0}';
+    else if(x==='1')texOut=(f[1]?'-':'')+'\\ket{1}';
+    else texOut=`\\frac{${f[0]?'-':''}\\ket{0}${f[1]?'-':'+'}\\ket{1}}{\\sqrt2}`;
+    let outTxt=x==='+'?'|+⟩':`|${x}⟩`;
+    if(stage>=1){
+      if(x==='0')outTxt=(f[0]?'-':'')+'|0⟩';
+      else if(x==='1')outTxt=(f[1]?'-':'')+'|1⟩';
+      else outTxt=`(${f[0]?'-':'+'}|0⟩ ${f[1]?'-':'+'}|1⟩)/√2`;
+    }
+    svgMath(inLbl,texIn,{x:63,y:60,'text-anchor':'end'},x==='+'?'|+⟩':`|${x}⟩`);
+    svgMath(outLbl,stage>=1?texOut:'\\cdots',{x:475,y:60,'text-anchor':'start','data-max-width':'115'},stage>=1?outTxt:'…');
+    math(lab.querySelector('[data-state]'),stage===0?`Input state: \\(${texIn}\\otimes\\ket{-}\\).`:`After \\(U_f\\): \\(${texOut}\\otimes\\ket{-}\\).`);
+    math(lab.querySelector('[data-status]'),[
+      'Target starts in the \\(X\\)-eigenstate \\(\\ket{-}\\). Step or play to query \\(U_f\\).',
+      kicked?'Inside \\(U_f\\): because \\(X\\ket{-}=-\\ket{-}\\), the bit flip kicks a \\(-1\\) eigenvalue onto the input wire.':'Inside \\(U_f\\): \\(f(x)=0\\) leaves \\(\\ket{-}\\) untouched, so the phase factor is \\(+1\\).',
+      'After \\(U_f\\): the target exits unchanged in \\(\\ket{-}\\) with zero entanglement.'
+    ][stage]);
+    math(next,['Apply \\(U_f\\)','Complete','Done'][stage]);
+    next.disabled=stage===2;
+    if(stage===2)pause();
+  }
+  next.onclick=()=>{pause();stage=Math.min(2,stage+1);draw()};
+  if(play)play.onclick=()=>{if(timer){pause();return}if(stage===2)stage=0;play.textContent='Pause';play.setAttribute('aria-pressed','true');draw();timer=setInterval(()=>{stage=Math.min(2,stage+1);draw()},matchMedia('(prefers-reduced-motion: reduce)').matches?1800:950)};
+  inp.onchange=fn.onchange=lab.querySelector('[data-reset]').onclick=()=>{pause();stage=0;draw()};
+  lab.closest('.book-section')?.addEventListener('slideleave',pause);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});
+  draw();
+});
+ /* Animated figures. Each replaces a static drawing that stays in the page, hidden,
+    for readers without scripting. Every frame is redrawn from the figure's state. */
+ const gcd=(a,b)=>b?gcd(b,a%b):a;
+ const still=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function node(parent,tag,attrs={},text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;parent.append(e);return e}
+ function label(parent,x,y,text,attrs={}){return node(parent,'text',{x,y,'text-anchor':'middle',...attrs},text)}
  function arrow(parent,x1,y1,x2,y2,tint,width=2.5){const g=node(parent,'g',{class:tint}),dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy);if(l<1)return g;const ux=dx/l,uy=dy/l,h=Math.min(11,l*.5);node(g,'path',{d:`M${x1} ${y1}L${x2-ux*h*.7} ${y2-uy*h*.7}`,class:'lf-line',style:`stroke-width:${width}`});node(g,'path',{d:`M${x2} ${y2}L${x2-h*ux+h*.42*uy} ${y2-h*uy-h*.42*ux}L${x2-h*ux-h*.42*uy} ${y2-h*uy+h*.42*ux}Z`,class:'lf-head'});return g}
  // Ease from 0 to 1 over ms, calling step(t); jump to the end when motion is reduced.
  function tween(ms,step,done){if(still()){step(1);done?.();return()=>{}}let start,id;const frame=now=>{start??=now;const t=Math.min(1,(now-start)/ms);step(t*t*(3-2*t));if(t<1)id=requestAnimationFrame(frame);else done?.()};id=requestAnimationFrame(frame);return()=>cancelAnimationFrame(id)}

@@ -214,22 +214,32 @@
     "teleportation"
   ],
   "topic-7-1-1": [
-    "global property"
+    "oracle",
+    "black-box"
   ],
   "topic-7-1-2": [
-    "constructive interference"
+    "phase kickback"
   ],
-  "topic-7-1-3": [
+  "topic-7-1-4": [
+    "compute, phase, uncompute"
+  ],
+  "topic-7-2-1": [
+    "global property",
+    "constant",
+    "balanced",
+    "promise"
+  ],
+  "topic-7-2-2": [
+    "query"
+  ],
+  "topic-7-2-3": [
+    "constructive interference",
     "which-path"
   ],
   "topic-7-3-2": [
-    "phase kickback"
+    "Deutsch’s algorithm"
   ],
   "topic-7-3-3": [
-    "compute, phase, uncompute"
-  ],
-  "topic-7-4-2": [
-    "Deutsch\u2019s algorithm",
     "query separation"
   ],
   "topic-9-1-1": [
@@ -391,17 +401,5 @@
   ],
   "topic-6-5-1": [
     "quantum parallelism"
-  ],
-  "topic-7-2-1": [
-    "constant",
-    "balanced",
-    "promise"
-  ],
-  "topic-7-2-2": [
-    "query"
-  ],
-  "topic-7-2-3": [
-    "oracle",
-    "black-box"
   ]
 }

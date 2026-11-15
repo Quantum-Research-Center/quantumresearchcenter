@@ -23,7 +23,7 @@
   },
   "topic-2-1-2": {
     "kind": "table",
-    "title": "AND as a complete input\u2013output specification",
+    "title": "AND as a complete input–output specification",
     "caption": "The truth table lists four possible inputs. Only the input \\(11\\) produces one; a circuit must implement all four rows.",
     "headers": [
       "\\(x\\)",
@@ -665,7 +665,7 @@
   "topic-6-3-3": {
     "kind": "circuit",
     "title": "Local operations and remote readout",
-    "caption": "H and CNOT prepare the shared Bell pair. Alice\u2019s local gate UA cannot affect Bob\u2019s outcome probabilities, even when Bob chooses a different readout gate V.",
+    "caption": "H and CNOT prepare the shared Bell pair. Alice’s local gate UA cannot affect Bob’s outcome probabilities, even when Bob chooses a different readout gate V.",
     "circuits": [
       {
         "inputs": [
@@ -720,7 +720,7 @@
           ]
         ],
         "notes": [
-          "Alice\u2019s result is not sent to Bob.",
+          "Alice’s result is not sent to Bob.",
           "\\(p(b=0)=p(b=1)=1/2\\)"
         ],
         "outputs": [
@@ -732,10 +732,10 @@
       }
     ]
   },
-  "topic-7-1-3": {
+  "topic-7-2-3": {
     "kind": "circuit",
     "title": "Interfere the input branches",
-    "caption": "After \\(U_f\\), H on each input combines contributions from all four inputs. A constant \\(f\\) returns the readout 00 with certainty; for AND the target\u2019s record keeps the branches apart, and 00 has probability \\(5/8\\).",
+    "caption": "After \\(U_f\\), H on each input combines contributions from all four inputs. A constant \\(f\\) returns the readout 00 with certainty; for AND the target’s record keeps the branches apart, and 00 has probability \\(5/8\\).",
     "circuits": [
       {
         "inputs": [
@@ -810,281 +810,7 @@
       }
     ]
   },
-  "topic-7-2-1": {
-    "kind": "circuit",
-    "title": "Four possible one-bit oracles",
-    "caption": "The four reversible circuits encode the four Boolean functions. They retain x and update y by XOR with f(x). This anticipates the reversible query definition in 7.1.3.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket x\\)",
-          "\\(\\ket y\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "I",
-              "wires": [
-                1
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(\\ket{x,y}\\mapsto\\ket{x,y\\oplus f(x)}\\)"
-        ],
-        "outputs": [
-          "",
-          ""
-        ],
-        "label": "Constant: f(x) = 0",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket x\\)",
-          "\\(\\ket y\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "X",
-              "wires": [
-                1
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(\\ket{x,y}\\mapsto\\ket{x,y\\oplus f(x)}\\)"
-        ],
-        "outputs": [
-          "",
-          ""
-        ],
-        "label": "Constant: f(x) = 1",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket x\\)",
-          "\\(\\ket y\\)"
-        ],
-        "steps": [
-          [
-            {
-              "kind": "cx",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(\\ket{x,y}\\mapsto\\ket{x,y\\oplus f(x)}\\)"
-        ],
-        "outputs": [
-          "",
-          ""
-        ],
-        "label": "Balanced: f(x) = x",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket x\\)",
-          "\\(\\ket y\\)"
-        ],
-        "steps": [
-          [
-            {
-              "kind": "cx",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "label": "X",
-              "wires": [
-                1
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(\\ket{x,y}\\mapsto\\ket{x,y\\oplus f(x)}\\)"
-        ],
-        "outputs": [
-          "",
-          ""
-        ],
-        "label": "Balanced: f(x) = 1 XOR x",
-        "bundles": []
-      }
-    ]
-  },
-  "topic-7-2-2": {
-    "kind": "circuit",
-    "title": "Two classical value queries",
-    "caption": "Two separate basis-input runs of the reversible oracle reproduce classical value-query access. Each target is measured to read a function value; no superposition is used.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket0\\)",
-          "\\(\\ket0\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "\\(U_f\\)",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                1
-              ]
-            }
-          ]
-        ],
-        "notes": [],
-        "outputs": [
-          "",
-          "f(0)"
-        ],
-        "label": "Query 1",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket1\\)",
-          "\\(\\ket0\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "\\(U_f\\)",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                1
-              ]
-            }
-          ]
-        ],
-        "notes": [],
-        "outputs": [
-          "",
-          "f(1)"
-        ],
-        "label": "Query 2",
-        "bundles": []
-      }
-    ]
-  },
-  "topic-7-2-3": {
-    "kind": "circuit",
-    "title": "The reversible query gate",
-    "caption": "The box acts on both wires and retains the input label. One use counts as one query in the specified oracle model.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket x\\)",
-          "\\(\\ket y\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "\\(U_f\\)",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(U_f\\ket{x,y}=\\ket{x,y\\oplus f(x)}\\)"
-        ],
-        "outputs": [
-          "",
-          ""
-        ],
-        "label": "",
-        "bundles": []
-      }
-    ]
-  },
-  "topic-7-3-1": {
-    "kind": "circuit",
-    "title": "Flip eigenstates on a wire",
-    "caption": "X leaves the plus state unchanged and multiplies the minus state by a common minus sign. In a controlled operation that factor becomes a relative phase between control alternatives.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket+\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "X",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(X\\ket+=\\ket+\\)"
-        ],
-        "outputs": [
-          ""
-        ],
-        "label": "",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket-\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "X",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(X\\ket-=-\\ket-\\)"
-        ],
-        "outputs": [
-          ""
-        ],
-        "label": "",
-        "bundles": []
-      }
-    ]
-  },
-  "topic-7-3-3": {
+  "topic-7-1-4": {
     "kind": "circuit",
     "title": "Compute, phase, uncompute",
     "caption": "A computes the answer and workspace. Z changes the answer-one sign. The inverse A restores the answer and workspace to zero, leaving the input phase.",
@@ -1137,206 +863,6 @@
         "bundles": [
           2
         ]
-      }
-    ]
-  },
-  "topic-7-4-1": {
-    "kind": "circuit",
-    "title": "Read the relative sign",
-    "caption": "The final H makes equal and opposite oracle signs distinguishable. M reads the parity of the two function values, not their individual values.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket{\\phi_f}\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "Input: \\((s_0\\ket0+s_1\\ket1)/\\sqrt2\\)",
-          "\\(s_x=(-1)^{f(x)};\\quad y=f(0)\\oplus f(1)\\)"
-        ],
-        "outputs": [
-          "y"
-        ],
-        "label": "",
-        "bundles": []
-      }
-    ]
-  },
-  "topic-7-4-3": {
-    "kind": "circuit",
-    "title": "Preparation and readout both matter",
-    "caption": "With target input 1, the first H prepares the minus state and the full circuit returns the desired parity. Starting the target at 0 instead makes a plus state and always yields zero. Omitting the final H gives random input-wire outcomes.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket0\\)",
-          "\\(\\ket1\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            },
-            {
-              "label": "H",
-              "wires": [
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "label": "\\(U_f\\)",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [],
-        "outputs": [
-          "y",
-          ""
-        ],
-        "label": "",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket0\\)",
-          "\\(\\ket0\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            },
-            {
-              "label": "H",
-              "wires": [
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "label": "\\(U_f\\)",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [],
-        "outputs": [
-          "y",
-          ""
-        ],
-        "label": "",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket0\\)",
-          "\\(\\ket1\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            },
-            {
-              "label": "H",
-              "wires": [
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "label": "\\(U_f\\)",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [],
-        "outputs": [
-          "y",
-          ""
-        ],
-        "label": "",
-        "bundles": []
       }
     ]
   },
@@ -1480,7 +1006,7 @@
   "topic-9-2-2": {
     "kind": "circuit",
     "title": "Readout before amplification",
-    "caption": "Measuring the uniform preparation succeeds with probability M/N. The angle in the text describes this circuit\u2019s initial amplitudes, not a second register.",
+    "caption": "Measuring the uniform preparation succeeds with probability M/N. The angle in the text describes this circuit’s initial amplitudes, not a second register.",
     "circuits": [
       {
         "inputs": [
@@ -1833,7 +1359,7 @@
   "topic-8-1-2": {
     "kind": "circuit",
     "title": "The oracle inside a circuit",
-    "caption": "Deutsch\u2019s algorithm uses one oracle gate between its preparation and readout gates. The Uf box specifies a joint operation, not its internal gate count.",
+    "caption": "Deutsch’s algorithm uses one oracle gate between its preparation and readout gates. The Uf box specifies a joint operation, not its internal gate count.",
     "circuits": [
       {
         "inputs": [
@@ -2673,7 +2199,7 @@
         ],
         "notes": [
           "Unique mark: \\(k=O(\\sqrt N)\\) queries for constant success.",
-          "Factoring uses a different construction, beyond this book\u2019s derivation."
+          "Factoring uses a different construction, beyond this book’s derivation."
         ],
         "outputs": [
           "x"
@@ -3143,7 +2669,7 @@
     "title": "A derivation generates a string",
     "caption": "Apply \\(S\\to aSb\\) twice, then \\(S\\to\\) empty string. This demonstrates generation of \\(aabb\\); it does not yet give a procedure for rejecting arbitrary strings.",
     "height": 440,
-    "summary": "Parse tree. The start symbol S expands by S \u2192 aSb into a, S, b; the inner S expands the same way; the innermost S becomes the empty string. Reading the leaves from left to right gives aabb.",
+    "summary": "Parse tree. The start symbol S expands by S → aSb into a, S, b; the inner S expands the same way; the innermost S becomes the empty string. Reading the leaves from left to right gives aabb.",
     "nodes": [
       {
         "id": "s25085",
@@ -3416,7 +2942,7 @@
     "title": "Use conjugation when normalizing",
     "caption": "For the complex vector \\((3,4i)\\), the squared norm is \\(9+16=25\\). Dividing by five gives a unit vector; the imaginary coordinate contributes positively to its norm.",
     "height": 360,
-    "summary": "Two ways to square the length of v = (3, 4i). Transpose only: 3\u00b73 + (4i)(4i) = 9 \u2212 16 = \u22127, which cannot be a squared length. Conjugate transpose: 9 + 16 = 25, so the norm is 5 and v/5 = (3/5, 4i/5) is a unit vector.",
+    "summary": "Two ways to square the length of v = (3, 4i). Transpose only: 3·3 + (4i)(4i) = 9 − 16 = −7, which cannot be a squared length. Conjugate transpose: 9 + 16 = 25, so the norm is 5 and v/5 = (3/5, 4i/5) is a unit vector.",
     "shapes": [
       {
         "type": "line",
@@ -3661,7 +3187,7 @@
     "title": "Queries can increase polynomial degree",
     "caption": "Starting from amplitudes independent of hidden input bits, each Boolean query raises their degree by at most one. Squaring magnitudes gives the factor of two for acceptance probabilities.",
     "height": 330,
-    "summary": "A query algorithm alternates input-independent unitaries U0, U1, \u2026, UT with T queries O_x, then measures. Below each stage is the largest possible degree of the amplitudes as polynomials in the input bits: 0 at the start, rising by at most one at each query and unchanged by each U. The acceptance probability, a sum of squared magnitudes, has degree at most 2T.",
+    "summary": "A query algorithm alternates input-independent unitaries U0, U1, …, UT with T queries O_x, then measures. Below each stage is the largest possible degree of the amplitudes as polynomials in the input bits: 0 at the start, rising by at most one at each query and unchanged by each U. The acceptance probability, a sum of squared magnitudes, has degree at most 2T.",
     "shapes": [
       {
         "type": "line",
@@ -3972,7 +3498,7 @@
       {
         "x": 380,
         "y": 195,
-        "text": "\u22ee"
+        "text": "⋮"
       },
       {
         "x": 380,
@@ -4031,7 +3557,7 @@
       {
         "x": 170,
         "y": 195,
-        "text": "\u22ee"
+        "text": "⋮"
       },
       {
         "x": 170,
@@ -4521,7 +4047,7 @@
   "topic-5-1-3": {
     "kind": "circuit",
     "title": "One run gives one result",
-    "caption": "Each fresh run prepares its input and repeats the circuit. The double line carries the sampled classical result, not the state\u2019s amplitude list.",
+    "caption": "Each fresh run prepares its input and repeats the circuit. The double line carries the sampled classical result, not the state’s amplitude list.",
     "circuits": [
       {
         "inputs": [

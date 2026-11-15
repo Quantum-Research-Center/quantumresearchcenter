@@ -846,3 +846,17 @@ main :is(p,li,dd,td,th,blockquote,figcaption) a:not([class]):not(nav a,.chapter-
 @media(max-width:760px){.book-drawing,.research-figure{padding:14px;border-radius:8px}}
 @media(prefers-reduced-motion:reduce){[data-linked-diagram] .diagram-link{transition:none;filter:none}}
 @media print{.book-drawing,.research-figure{background:white;box-shadow:none;border-color:#ccc}.diagram-guide{display:none}[data-linked-diagram] .diagram-link{opacity:1!important;filter:none!important}.hero-visual svg{filter:none}}
+
+/* Minimalistic, futuristic precision polish: translucent toolbars, hairline surfaces, tabular numerals. */
+@media screen{
+  :is(.toolbar,.book-toolbar,.news-toolbar){background:color-mix(in srgb,var(--paper) 84%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  html[data-theme=dark] :is(.toolbar,.book-toolbar,.news-toolbar){background:color-mix(in srgb,#10131d 82%,transparent)}
+  :is(.toolbar,.book-toolbar)::after{opacity:.85}
+  html[data-theme=dark] :is(.toolbar,.book-toolbar)::after{box-shadow:0 0 8px color-mix(in srgb,var(--blue) 50%,transparent)}
+  :is(.course-card,.paper-card,.landing-paths>section,.research-category,.book-drawing,.research-figure){box-shadow:none;border-radius:4px;transition:border-color .15s cubic-bezier(.2,.8,.2,1),background-color .15s cubic-bezier(.2,.8,.2,1)}
+  :is(.primary-link,.ebook .start-reading,.theme-toggle,.landing-actions a:not(.primary-link),.paper-pager a,input[type=search]){border-radius:4px;box-shadow:none;transition:border-color .15s cubic-bezier(.2,.8,.2,1),background-color .15s cubic-bezier(.2,.8,.2,1),color .15s cubic-bezier(.2,.8,.2,1)}
+  :is(.topic-number,.part-label,.chapter-kicker,.kicker,.nav-chapter a>span,.nav-chapter summary>span,table){font-variant-numeric:tabular-nums}
+  dialog::backdrop{background:color-mix(in srgb,var(--paper) 60%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  html[data-theme=dark] dialog::backdrop{background:rgba(6,8,14,.68)}
+  html[data-theme=dark] .home-interference{background:radial-gradient(ellipse at 50% 45%,color-mix(in srgb,var(--blue) 8%,transparent),transparent 72%);border-color:var(--line-strong)}
+}
