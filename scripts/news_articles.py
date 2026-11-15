@@ -13,6 +13,7 @@ from companies import render_companies
 from paper_news import load_papers, long_date, paper_path
 from site_navigation import site_navigation
 from tools import render_tools
+from games import render_games
 from ai_problem_claims import render_claims_home, render_claims_page
 
 TOPICS = {'discoveries': 'Discoveries', 'companies': 'Companies',
@@ -228,6 +229,7 @@ def render_editorial(root, outputs, book, site_logo, social_meta, json_ld):
     render_conferences(root, shell)
     render_companies(root, shell)
     render_tools(root, shell)
+    render_games(root, shell)
     render_claims_page(root, articles, shell)
 
     for source in ('index.html', 'news/index.html'):

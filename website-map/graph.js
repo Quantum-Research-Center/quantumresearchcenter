@@ -11,7 +11,7 @@
   const sections = [...new Set(data.nodes.map(n => n.section))].sort();
   const palette = ['#628fd5','#bd7a55','#8b80cd','#479a83','#bf759b','#b69b46','#659faf','#9a876d'];
   const colours = Object.fromEntries(sections.map((s,i) => [s,palette[i % palette.length]]));
-  const labels = {home:'Home',education:'Education',research:'Research',news:'News',tools:'Tools',map:'Topic map','website-map':'Website map',references:'References',conferences:'Conferences'};
+  const labels = {home:'Home',education:'Education',research:'Research',news:'News',tools:'Tools',games:'Games',map:'Topic map','website-map':'Website map',references:'References',conferences:'Conferences'};
   sections.forEach(section => {
     const option = new Option(labels[section] || section, section); $('graph-section').append(option);
     const key = document.createElement('span'); key.className = 'graph-key';

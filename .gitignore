@@ -12,6 +12,7 @@ scripts/.generated-manifest.json
 /conferences/index.html
 /references/index.html
 /tools/*.html
+/games/*.html
 /map/index.html
 /map/topics.json
 /website-map/index.html

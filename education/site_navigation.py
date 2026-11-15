@@ -4,7 +4,7 @@ import posixpath
 
 SECTIONS = (('index.html', 'Home'), ('news/index.html', 'News'),
             ('education/index.html', 'Education'), ('research/index.html', 'Research'),
-            ('tools/index.html', 'Tools'))
+            ('tools/index.html', 'Tools'), ('games/index.html', 'Games'))
 
 
 def site_navigation(source, cls='site-nav', extra=''):

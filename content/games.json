@@ -1,0 +1,13 @@
+{
+  "intro": "Small puzzles whose rules come from real quantum effects: superposition, measurement and interference. Each game page says which rules follow the physics and which are conventions of the game, so playing well and understanding the effect go together.",
+  "games": [
+    {
+      "id": "quantum-2028",
+      "kind": "Sliding puzzle",
+      "title": "Quantum 2028",
+      "href": "games/quantum-2028.html",
+      "summary": "Slide numbered tiles and merge equal ones, but a merged tile lands in both of its cells at once, as two identical photons do at a beam splitter. Observe it to find out where it is, rejoin its halves to place it yourself, and use tiles of opposite sign to cancel each other.",
+      "ideas": ["Two-photon bunching", "Superposition", "Measurement", "Interference"]
+    }
+  ]
+}

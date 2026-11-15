@@ -1,0 +1,75 @@
+/* Games: the catalogue and the Quantum 2028 board. Colours come from the shared tokens, so both themes work. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Catalogue */
+.game-catalog{margin-top:10px;border-top:1px solid var(--line);padding-top:26px}
+.game-count{font:12px var(--sans);color:var(--muted)}
+.game-list{list-style:none;padding:0;margin:22px 0 0;border-top:1px solid var(--line)}
+.game-card{display:grid;grid-template-columns:64px minmax(0,1fr);gap:22px;padding:28px 0;border-bottom:1px solid var(--line)}
+.game-index{font:normal 30px/1.2 Georgia,serif;color:var(--line-strong);margin:2px 0 0}
+.editorial .game-card h3{font:500 23px/1.3 var(--sans);letter-spacing:-.03em;margin:0 0 8px}
+.game-card h3 a{color:var(--heading)}
+.game-card h3 a:hover{color:var(--blue-strong);text-decoration:underline}
+.game-kind{font:500 10px/1.6 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--blue-strong);margin:0 0 8px}
+.game-summary{font:15px/1.75 var(--sans);color:var(--ink-soft);margin:0;max-width:760px}
+.game-ideas{font:13px/1.7 var(--sans);color:var(--muted);margin:12px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px}
+/* Game page */
+.game-lab{display:grid;grid-template-columns:minmax(0,520px) minmax(260px,1fr);gap:38px;align-items:start;margin:26px 0 10px}
+.bunch-figure{margin:0}
+.bunch-board{position:relative;aspect-ratio:1;width:100%;container-type:inline-size;border-radius:6px;background:var(--line-strong);touch-action:none;-webkit-user-select:none;user-select:none;outline:none}
+.bunch-board:focus-visible{outline:2px solid var(--focus);outline-offset:4px}
+.bunch-cells,.bunch-links,.bunch-pieces{position:absolute;inset:0}
+.bunch-cells{display:grid;grid-template-columns:repeat(4,1fr);gap:3%;padding:3%}
+.bunch-cells span{border-radius:4px;background:var(--surface)}
+.bunch-links{width:100%;height:100%;pointer-events:none;z-index:1}
+.bunch-link{stroke:var(--blue-strong);stroke-width:1.5;stroke-dasharray:3 4;stroke-linecap:round}
+.bunch-link.is-minus{stroke:var(--warm)}
+.bunch-pieces{z-index:2}
+.bunch-piece{--tone:var(--blue);position:absolute;width:21.25%;height:21.25%;display:grid;place-items:center;padding:0;border:2px solid transparent;border-radius:4px;
+  background:color-mix(in srgb,var(--tone) var(--mix,20%),var(--card));color:var(--heading);font:600 10cqw/1 var(--sans);font-variant-numeric:tabular-nums;
+  cursor:default;transition:left .12s ease-out,top .12s ease-out,opacity .2s,transform .2s}
+.bunch-piece.is-minus{--tone:var(--warm)}
+.bunch-piece.is-dark{color:var(--on-blue)}
+.bunch-piece.is-long .bunch-value{font-size:7.5cqw}
+.bunch-piece.is-split{border:2px dashed var(--tone);cursor:pointer}
+.bunch-piece:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.bunch-sign{position:absolute;top:6%;left:9%;font:600 4.2cqw/1 var(--sans);opacity:.8}
+.bunch-prob{position:absolute;bottom:6%;right:9%;font:500 3.8cqw/1 var(--sans);opacity:.85;display:none}
+.bunch-piece.is-split .bunch-prob{display:block}
+.is-flipping .bunch-piece{cursor:pointer;box-shadow:0 0 0 2px var(--violet)}
+.bunch-piece.is-new{animation:bunch-appear .18s ease-out}
+.bunch-piece.is-born{animation:bunch-appear .22s ease-out .08s backwards}
+.bunch-piece.is-folding{opacity:0;z-index:-1}
+.bunch-piece.is-vanishing{opacity:0;transform:scale(.6)}
+@keyframes bunch-appear{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.is-over .bunch-pieces{opacity:.55}
+.bunch-figure figcaption{font:12px/1.65 var(--sans);color:var(--muted);margin:10px 0 0}
+.bunch-panel{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bunch-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0}
+.bunch-scores div{border:1px solid var(--line-strong);border-radius:4px;padding:10px 12px;background:var(--paper)}
+.bunch-scores dt{font:500 10px/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.bunch-scores dd{font:600 22px/1.3 var(--sans);font-variant-numeric:tabular-nums;color:var(--heading);margin:2px 0 0}
+.bunch-buttons{display:flex;flex-wrap:wrap;gap:8px}
+.bunch-buttons button{min-height:40px;padding:8px 14px;border:1px solid var(--line-strong);border-radius:4px;background:var(--card);color:var(--ink);font:500 13px/1.4 var(--sans);cursor:pointer}
+.bunch-buttons button:hover:not(:disabled){background:var(--hover);border-color:var(--field-border);color:var(--blue-strong)}
+.bunch-buttons button[aria-pressed=true]{border-color:var(--violet);color:var(--violet)}
+.bunch-buttons button:disabled{opacity:.5;cursor:default}
+.bunch-buttons button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.bunch-status{font:14px/1.6 var(--sans);color:var(--heading);margin:0;min-height:3.2em}
+.bunch-log{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);font:13px/1.6 var(--sans);color:var(--muted)}
+.bunch-log li{padding:6px 0;border-bottom:1px solid var(--line)}
+.bunch-key{margin:0;padding:0;list-style:none;font:13px/1.6 var(--sans);color:var(--ink-soft)}
+.bunch-key li{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:center;padding:3px 0}
+.bunch-swatch{width:30px;height:22px;border-radius:3px;background:color-mix(in srgb,var(--blue) 30%,var(--card))}
+.bunch-swatch.is-minus{background:color-mix(in srgb,var(--warm) 30%,var(--card))}
+.bunch-swatch.is-split{border:2px dashed var(--blue);background:color-mix(in srgb,var(--blue) 18%,var(--card))}
+.game-reading{margin-top:44px;border-top:1px solid var(--line);padding-top:30px}
+.editorial .game-reading h2{font:500 25px/1.3 var(--sans);letter-spacing:-.03em;margin:0 0 14px}
+.game-reading p,.game-rules,.game-try{font:15px/1.8 var(--sans);color:var(--ink-soft);max-width:74ch;margin:0 0 16px}
+.game-rules,.game-try{padding-left:22px}
+.game-rules li,.game-try li{margin-bottom:10px;padding-left:4px}
+.game-rules li::marker,.game-try li::marker{color:var(--blue-strong);font-weight:600}
+.game-note{border-left:2px solid var(--line-strong);padding-left:16px;font-size:14px!important;color:var(--muted)!important}
+.game-noscript{font:14px/1.6 var(--sans);color:var(--muted)}
+@media(max-width:860px){.game-lab{grid-template-columns:1fr;gap:24px}}
+@media(max-width:600px){.game-card{grid-template-columns:1fr;gap:6px}.game-index{display:none}.bunch-scores dd{font-size:19px}}
+@media(prefers-reduced-motion:reduce){.bunch-piece{transition:none;animation:none!important}}

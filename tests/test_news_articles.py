@@ -183,6 +183,7 @@ class NewsPublishingTests(unittest.TestCase):
             (root / 'content/news.json').write_text('{"featured": null}')
             paper_news.save_papers(root, {'papers': []})
             (root / 'content/tools.json').write_text(json.dumps({'intro': 'Tools.', 'tools': [], 'planned': []}))
+            (root / 'content/games.json').write_text(json.dumps({'intro': 'Games.', 'games': []}))
             output = {}
             news_articles.render_editorial(root, output, self.book, build.site_logo, build.social_meta, build.json_ld)
             self.assertIn('Our first stories are on the way', output['index.html'])
