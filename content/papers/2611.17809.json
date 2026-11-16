@@ -1,0 +1,46 @@
+{
+  "id": "2611.17809",
+  "topic": "information",
+  "title": "No universal LOCC entanglement purification",
+  "authors": "C. L. Liu, Baoqing Sun, D. M. Tong",
+  "submitted": "2026-11-13",
+  "version": "v1",
+  "kind": "Theory",
+  "problem": "Purification protocols usually assume many identical copies of a known noisy state. A universal \\(n\\)-to-1 protocol would take any \\(n\\) entangled states, unknown and possibly different, and with nonzero probability output one state at least as close to the target maximally entangled state as the best input. Such protocols were known not to exist for two qubits. Do they exist in higher dimensions or for multipartite states?",
+  "result": "No. For every \\(n\\ge2\\) and all finite local dimensions, no LOCC protocol is universal for all bipartite entangled states (target: a maximally entangled state of Schmidt rank \\(\\min(d_1,d_2)\\)) or for all genuinely multipartite entangled states (target: a generalized GHZ state). The impossibility persists under separable operations, when inputs are restricted to fidelities above any threshold below 1, and with a pure catalyst. An analogous statement holds for coherence purification under strictly incoherent operations.",
+  "significance": "It closes the cases left open by the two-qubit result and shows the obstruction comes from the product structure of local operations, not from dimension. Practical purification must therefore use what is known about the noise, and the useful question becomes the widest input class for which one protocol can be universal.",
+  "limitations": "The definition of universality is demanding: the output must never be worse than the best input, for every input combination, which is why near-pure inputs suffice to break it. The result says nothing about approximate or average-case universality, or about restricted but realistic families. The multipartite proof is only sketched in the main text, with the details in a supplement not included in the HTML.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-16: the introduction, preliminaries, the full proof of Theorem 1, the proof sketch of Theorem 2, Corollary 1, the statement of Theorem 3 and the conclusions; the Supplemental Material (multipartite and catalytic proofs, the coherence result) was not read. Editorial checks: the isotropic states are entangled exactly when \\(p>1/(d+1)\\) for \\(d_1=d_2\\) (partial-transpose eigenvalue changes sign there), the transpose identity holds numerically, and a global non-product operator satisfies all of the proof's support constraints while acting nontrivially on \\(\\Phi\\otimes\\Phi\\).",
+  "verified_on": "2026-11-16",
+  "methods_source_section": "Sec. III, proof of Theorem 1 (Eqs. (1)–(15)); proof sketch of Theorem 2; Corollary 1",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "Entanglement purification turns several noisy entangled states into fewer, better ones by local operations and classical communication (LOCC). Standard protocols assume independent, identical copies of a known state. Realistic sources give finitely many states that may differ and are only partly characterized, which raises the question of a protocol that needs no such knowledge. The paper uses the definition from earlier two-qubit work: an \\(n\\)-to-1 protocol is universal on a set of states if, for every choice of \\(n\\) inputs from the set, it succeeds with positive probability and the output fidelity with the target is at least the largest input fidelity.",
+    "The proof feeds the protocol carefully chosen inputs. Let \\(\\tau=p\\Phi_d+(1-p)I/d^2\\), an isotropic state that is full rank and, for \\(p>1/(d+1)\\), entangled. Consider \\(\\Omega_0=\\Phi^{\\otimes n}\\) and, for each \\(k\\), \\(\\Omega_k\\) with \\(\\Phi\\) in slot \\(k\\) and \\(\\tau\\) everywhere else. Each \\(\\Omega_k\\) contains a perfect input, so universality forces the successful output to be exactly \\(\\Phi\\), and positivity then forces every Kraus operator of the success branch to map the support of \\(\\Omega_k\\) into the line spanned by \\(\\Phi_{\\mathrm{out}}\\).",
+    "Because \\(\\tau\\) is full rank, that support is \\(\\Phi\\) in slot \\(k\\) tensored with anything elsewhere. A product Kraus operator \\(M\\otimes N\\) that is nonzero on \\(\\Phi^{\\otimes n}\\) would then have to map both \\(\\Phi\\otimes\\text{anything}\\) and \\(\\text{anything}\\otimes\\Phi\\) to multiples of \\(\\Phi_{\\mathrm{out}}\\). Writing the operators in matrix form, the paper shows this forces every \\(d\\times d\\) matrix \\(X\\) to be a multiple of the identity, which is absurd for \\(d\\ge2\\). Unequal dimensions reduce to the equal case by projecting onto the \\(d\\)-dimensional supports, and multipartite states reduce to the bipartite case by cutting the parties into two groups, across which the GHZ target is maximally entangled.",
+    "The extensions follow from the same construction. Separable operations also have product Kraus operators. Taking \\(p\\to1\\) puts every input above any fidelity threshold \\(1-\\epsilon\\) without changing supports. A pure catalyst that must be returned intact does not help either. For coherence, strictly incoherent operations play the role of LOCC and the maximally coherent state that of \\(\\Phi\\).",
+    "The authors read the result as redirecting the search: experiments usually know which error processes dominate, and the useful question is the largest input class, defined by such knowledge, on which one protocol can be universal."
+  ],
+  "methods": [
+    {
+      "technique": "Forcing support constraints with a perfect input",
+      "explanation": "Universality is a statement about outputs, but the contradiction needs constraints on the protocol's Kraus operators. Including one perfect copy among the inputs makes the required output pure, and a sum of positive terms equal to a pure state forces each term into its span. Full-rank companions then turn this into a constraint on a large subspace.",
+      "math": [
+        "If \\(\\Lambda_0(\\Omega_k)=p_k\\Phi_{\\mathrm{out}}\\), then with \\(P_\\perp=I-\\Phi_{\\mathrm{out}}\\), \\[0=P_\\perp\\Lambda_0(\\Omega_k)P_\\perp=\\sum_\\mu\\bigl(P_\\perp K_\\mu\\Omega_k^{1/2}\\bigr)\\bigl(P_\\perp K_\\mu\\Omega_k^{1/2}\\bigr)^\\dagger,\\] so each \\(K_\\mu\\) maps \\(\\mathrm{supp}\\,\\Omega_k=\\mathrm{span}\\{\\lvert\\Phi\\rangle_k\\}\\otimes\\mathcal H_{\\bar k}\\) into \\(\\mathrm{span}\\{\\lvert\\Phi_{\\mathrm{out}}\\rangle\\}\\).",
+        "The isotropic state \\(\\tau=p\\Phi_d+(1-p)I/d^2\\) has fidelity \\(F=p+(1-p)/d^2\\) and is entangled iff \\(F>1/d\\), that is \\(p>1/(d+1)\\); it is full rank for every \\(p<1\\). Editorial check: its partial transpose has smallest eigenvalue \\(\\pm7.5\\times10^{-4}\\) at \\(p=1/(d+1)\\mp10^{-3}\\) for \\(d=2\\), confirming the threshold."
+      ],
+      "transfer": "To show that no protocol meets a worst-case guarantee, pick inputs for which the guarantee forces a pure output; positivity then constrains every Kraus operator on the input support, and full-rank companion inputs make that support as large as possible."
+    },
+    {
+      "technique": "Matrix form of product operators on maximally entangled states",
+      "explanation": "The final contradiction is linear algebra. Through the identity \\((A\\otimes B)\\lvert\\Phi\\rangle=(AB^{\\mathsf T}\\otimes I)\\lvert\\Phi\\rangle\\), the two support constraints become matrix equations, and they force a product operator that is nonzero on \\(\\Phi\\otimes\\Phi\\) to act on an arbitrary matrix \\(X\\) as a scalar.",
+      "math": [
+        "Decompose \\(\\tilde M=\\sum_iM_i(\\langle i\\rvert\\otimes I)\\) and \\(\\tilde N=\\sum_jN_j(\\langle j\\rvert\\otimes I)\\). With \\(\\lvert\\phi_X\\rangle=(X\\otimes I)\\lvert\\Phi\\rangle\\), the constraints read \\[\\sum_iM_iXN_i^{\\mathsf T}=\\alpha(X)\\,I,\\qquad\\sum_{r,s}X_{rs}M_rN_s^{\\mathsf T}=\\beta(X)\\,I\\] for all \\(X\\), with \\(\\alpha(I)=\\beta(I)\\neq0\\). The second gives \\(M_rN_s^{\\mathsf T}=c_{rs}I\\); some \\(c_{tt}\\neq0\\), so \\(M_t,N_t\\) are invertible and every \\(M_i\\), \\(N_i\\) is a multiple of them.",
+        "Substituting into the first equation gives \\(S\\,c_{tt}\\,M_tXM_t^{-1}=\\alpha(X)I\\) with \\(S\\neq0\\), so \\(X\\propto I\\) for every \\(X\\), a contradiction at \\(d\\ge2\\). Editorial remark: the product form is essential. The global operator \\(K=\\lvert\\Phi_{\\mathrm{out}}\\rangle\\langle\\Phi\\otimes\\Phi\\rvert\\) satisfies all the support constraints and is nonzero on \\(\\Phi\\otimes\\Phi\\) (checked numerically for \\(d=2\\)), so the obstruction is specific to operations that are product across the parties."
+      ],
+      "transfer": "Questions about local operators acting on maximally entangled inputs can often be turned into matrix equations through the transpose trick, where impossibility reduces to a matrix being forced to commute with, or be proportional to, everything."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-16"
+}

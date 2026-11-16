@@ -1,7 +1,7 @@
 {
-  "title": "Oral Exam: Foundations of Quantum Computation",
-  "subtitle": "20 Thought-Provoking Conceptual Problems for a 30-Minute Viva (Chapters 1–6)",
-  "intro": "These 20 questions probe conceptual understanding, structural intuition, and physical vision across Chapters 1 through 6. They are designed for a 30-minute viva-voce or oral examination, tracing the foundations of computation from classical deterministic and reversible models to stochastic systems, state geometry, composite entanglement, and quantum parallelism.",
+  "title": "Exam 1: Foundations of Quantum Computation",
+  "subtitle": "Conceptual Problems and Solutions (Chapters 1–6)",
+  "intro": "Twenty conceptual problems and solutions across Chapters 1 through 6.",
   "styles": [],
   "scripts": [],
   "classes": [
