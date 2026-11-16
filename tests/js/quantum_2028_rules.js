@@ -131,6 +131,35 @@ test('contact with an equal tile measures the half first: not found there, it va
   assert.deepStrictEqual(out.events.map(e => e.type), ['collapse']);
 });
 
+test('two split 8s meeting half to half become a split 16, whatever chance gives', () => {
+  for (const r of [0.1, 0.9]) {
+    const g = start(['8a 8a . .', '8b 8b . .', '. . . .', '. . . .'], () => r);
+    const out = g.move('up', {spawns: false});
+    same(g, ['16a 16a . .', '. . . .', '. . . .', '. . . .']);
+    assert.deepStrictEqual(out.events.map(e => e.type), ['merge']);
+    assert.strictEqual(g.score, 16);
+  }
+});
+
+test('pairs meet half to half within one line too', () => {
+  const g = start(['8a 8b 8a 8b', '. . . .', '. . . .', '. . . .']);
+  g.move('left', {spawns: false});
+  same(g, ['16a 16a . .', '. . . .', '. . . .', '. . . .']);
+});
+
+test('a split 8 and a split −8 meeting half to half cancel', () => {
+  const g = start(['. 8a 8a .', '. -8b -8b .', '. . . .', '. . . .']);
+  g.move('down', {spawns: false});
+  same(g, ['. . . .', '. . . .', '. . . .', '. . . .']);
+  assert.strictEqual(g.score, 0);
+});
+
+test('split tiles that meet in only one place are measured first', () => {
+  const g = start(['8a 8a . .', '8b . . 8b', '. . . .', '. . . .'], fixed([0.1]));
+  const out = g.move('up', {spawns: false});
+  assert.strictEqual(out.events[0].type, 'collapse');
+});
+
 test('observing finds the tile in each cell about half the time', () => {
   const random = seeded(7); let first = 0; const runs = 4000;
   for (let i = 0; i < runs; i++) {

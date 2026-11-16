@@ -1,7 +1,9 @@
 /* Quantum 2028: a sliding-merge puzzle on quantum rules.
    Two equal tiles with the same sign bunch into one tile of twice the value, held in both of their cells
    at once (the Hong–Ou–Mandel effect). Observation, or contact with an equal tile, finds it in one cell
-   with probability 1/2. Equal tiles of opposite sign cancel. The two halves of one tile rejoin on contact.
+   with probability 1/2, except that two equal split tiles whose halves meet pairwise in one slide
+   combine into a split tile of twice the value without being observed. Equal tiles of opposite sign
+   cancel. The two halves of one tile rejoin on contact.
 
    The rules live in createGame(), which touches no page and takes its random numbers as a parameter, so
    tests can replay exact positions. The page code below it only draws the state and reports events. */
@@ -45,6 +47,7 @@
        first, otherwise the actions and whether the board would change. Each tile acts at most once. */
     function plan(dir) {
       const actions = [];
+      const meetings = new Map();  // two split tiles of equal value -> the places where their halves meet
       let changed = false;
       for (const cells of lines(dir)) {
         const list = cells.map(([r, c]) => at(r, c)).filter(Boolean);
@@ -56,12 +59,19 @@
             slot += 1; i += 2; changed = true; continue;
           }
           if (q && p.v === q.v) {
+            if (p.split && q.split) {
+              const key = Math.min(p.tid, q.tid) + ':' + Math.max(p.tid, q.tid);
+              if (!meetings.has(key)) meetings.set(key, []);
+              meetings.get(key).push({p, q, cell: cells[slot]});
+              slot += 1; i += 2; changed = true; continue;
+            }
             if (p.split || q.split) return {collapse: p.split ? p.tid : q.tid};
+            const to = [cells[slot], cells[slot + 1]];
             if (p.s === q.s) {
-              actions.push({kind: 'merge', from: [p, q], to: [cells[slot], cells[slot + 1]], v: p.v * 2, s: p.s});
+              actions.push({kind: 'merge', from: [p, q], fold: to, to, v: p.v * 2, s: p.s});
               slot += 2;
             } else {
-              actions.push({kind: 'cancel', from: [p, q], to: cells[slot]});
+              actions.push({kind: 'cancel', from: [p, q], fold: [to[0], to[0]], v: p.v});
             }
             i += 2; changed = true; continue;
           }
@@ -70,6 +80,14 @@
           actions.push({kind: 'slide', piece: p, to});
           slot += 1; i += 1;
         }
+      }
+      /* Two split tiles combine without measurement only when both halves of one meet both halves of the
+         other: the result is again split, over the two meeting places. A lone meeting is a measurement. */
+      for (const met of meetings.values()) {
+        if (met.length !== 2) return {collapse: met[0].p.tid};
+        const [a, b] = met, from = [a.p, a.q, b.p, b.q], fold = [a.cell, a.cell, b.cell, b.cell];
+        if (a.p.s === a.q.s) actions.push({kind: 'merge', from, fold, to: [a.cell, b.cell], v: a.p.v * 2, s: a.p.s});
+        else actions.push({kind: 'cancel', from, fold, v: a.p.v});
       }
       return {actions, changed};
     }
@@ -97,14 +115,14 @@
           out.gone.push({pid: a.drop.pid, to: a.to, how: 'fold'});
           out.events.push({type: 'rejoin', v: a.keep.v, s: a.keep.s, at: a.to});
         } else if (a.kind === 'cancel') {
-          for (const p of a.from) { game.pieces.delete(p.pid); out.gone.push({pid: p.pid, to: a.to, how: 'vanish'}); }
-          out.events.push({type: 'cancel', v: a.from[0].v});
+          a.from.forEach((p, k) => { game.pieces.delete(p.pid); out.gone.push({pid: p.pid, to: a.fold[k], how: 'vanish'}); });
+          out.events.push({type: 'cancel', v: a.v, split: a.from.length > 2});
         } else {
-          a.from.forEach((p, k) => { game.pieces.delete(p.pid); out.gone.push({pid: p.pid, to: a.to[k], how: 'fold'}); });
+          a.from.forEach((p, k) => { game.pieces.delete(p.pid); out.gone.push({pid: p.pid, to: a.fold[k], how: 'fold'}); });
           const tid = game.nextId;
           for (const [r, c] of a.to) born.push(make(r, c, a.v, a.s, tid, true));
           game.score += a.v; game.merges += 1;
-          out.events.push({type: 'merge', from: a.from[0].v, v: a.v, s: a.s, cells: a.to});
+          out.events.push({type: 'merge', from: a.from[0].v, v: a.v, s: a.s, cells: a.to, split: a.from.length > 2});
           if (game.merges % rules.mergesPerFlip === 0 && game.flips < rules.maxFlips) {
             game.flips += 1; out.events.push({type: 'flip-earned', merges: game.merges});
           }
@@ -231,8 +249,9 @@
     switch (e.type) {
       case 'collapse': return `${e.cause === 'contact' ? 'Contact observed a split tile' : 'You observed a split tile'}: the ${named(e.v, e.s)} was found at ${where(e.at)}; ${where(e.emptied)} is empty.`;
       case 'rejoin': return `The two halves of the ${named(e.v, e.s)} rejoined at ${where(e.at)}.`;
-      case 'cancel': return `${capital(an(e.v))} ${e.v} and a −${e.v} cancelled.`;
-      case 'merge': return `Two ${named(e.from, e.s)}s bunched into ${an(e.v)} ${named(e.v, e.s)}, split between ${where(e.cells[0])} and ${where(e.cells[1])}.`;
+      case 'cancel': return e.split ? `A split ${e.v} and a split −${e.v} met half to half and cancelled.`
+        : `${capital(an(e.v))} ${e.v} and a −${e.v} cancelled.`;
+      case 'merge': return `Two ${e.split ? 'split ' : ''}${named(e.from, e.s)}s bunched into ${an(e.v)} ${named(e.v, e.s)}, split between ${where(e.cells[0])} and ${where(e.cells[1])}.`;
       case 'flip-earned': return `Merge ${e.merges}: you earned a phase flip.`;
       case 'won': return `You made ${an(e.v)} ${e.v}. Keep going if you like.`;
       case 'flip': return `Phase flip: the tile at ${where(e.at)} is now ${signWord(e.s)} ${e.v}.`;
