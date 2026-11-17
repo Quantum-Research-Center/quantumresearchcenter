@@ -1550,4 +1550,104 @@
   resetBtn.onclick=()=>{stateType='bell';stateSelect.value='bell';aliceOp='I';bobBasis='Z';aliceOutcome='avg';if(aliceOutcomeSelect)aliceOutcomeSelect.value='avg';aliceButtons.forEach(b=>b.classList.toggle('active',b.dataset.alice==='I'));bobButtons.forEach(b=>b.classList.toggle('active',b.dataset.bob==='Z'));if(measureOpt)measureOpt.hidden=true;update()};
   update();
  });
+ /* Circuit practice: a random two-qubit start, a random sequence of H, X, Z and CNOT gates,
+    and four candidate end states. The wrong candidates come from common slips. */
+ document.querySelectorAll('[data-lab="circuit-quiz"]').forEach(lab=>{
+  const svg=stage(lab,400,120,'A random two-qubit circuit'),optionsBox=lab.querySelector('[data-options]'),status=lab.querySelector('[data-status]'),trace=lab.querySelector('[data-trace]');
+  const R=Math.SQRT1_2,pick=a=>a[Math.floor(Math.random()*a.length)];
+  const starts={'0':[1,0],'1':[0,1],'+':[R,R],'-':[R,-R]};
+  const bitOf=w=>w===0?2:1;
+  function gate(v,g){
+   v=[...v];
+   if(g.kind==='CNOT'){const cb=bitOf(g.c),tb=bitOf(g.t);for(let i=0;i<4;i++)if(i&cb&&!(i&tb))[v[i],v[i|tb]]=[v[i|tb],v[i]];return v}
+   const b=bitOf(g.wire);
+   for(let i=0;i<4;i++)if(!(i&b)){const a=v[i],c=v[i|b];v[i]=g.kind==='H'?(a+c)*R:g.kind==='X'?c:a;v[i|b]=g.kind==='H'?(a-c)*R:g.kind==='X'?a:-c}
+   return v;
+  }
+  const run=(v,gates)=>gates.reduce(gate,v);
+  // Write a state as a common factor times a signed sum of basis kets, first sign positive.
+  function tex(v){
+   const on=[0,1,2,3].filter(i=>Math.abs(v[i])>1e-9);
+   const m=Math.abs(v[on[0]]),flip=v[on[0]]<0?-1:1;
+   const factor=Math.abs(m-1)<1e-9?'':Math.abs(m-R)<1e-9?'\\tfrac{1}{\\sqrt2}':Math.abs(m-.5)<1e-9?'\\tfrac12':fmt(m);
+   const sum=on.map((i,k)=>(flip*v[i]<0?'-':k?'+':'')+`\\ket{${i.toString(2).padStart(2,'0')}}`).join('');
+   return on.length>1&&factor?`${factor}(${sum})`:factor+sum;
+  }
+  const name=g=>g.kind==='CNOT'?`CNOT with control ${g.c+1} and target ${g.t+1}`:`\\(${g.kind}\\) on qubit ${g.wire+1}`;
+  function randomGate(prev){
+   for(;;){
+    const g=Math.random()<.35?(c=>({kind:'CNOT',c,t:1-c}))(pick([0,1])):{kind:pick(['H','X','Z']),wire:pick([0,1])};
+    if(!prev||JSON.stringify(g)!==JSON.stringify(prev))return g;
+   }
+  }
+  let puzzle,tally={right:0,tries:0};
+  function make(){
+   for(;;){
+    const start=[pick(Object.keys(starts)),pick(Object.keys(starts))],n=3+Math.floor(Math.random()*3),gates=[];
+    for(let k=0;k<n;k++)gates.push(randomGate(gates[k-1]));
+    if(!gates.some(g=>g.kind==='CNOT'))continue;
+    const s0=[0,1,2,3].map(i=>starts[start[0]][i>>1]*starts[start[1]][i&1]),end=run(s0,gates),answer=tex(end);
+    if(answer===tex(s0))continue;
+    // Each slip is a plausible way to misread or mis-trace the circuit.
+    const slips=[
+     [run(s0,gates.map(g=>g.kind==='CNOT'?{kind:'CNOT',c:g.t,t:g.c}:g)),'This is the result with control and target of the CNOT exchanged. The dot marks the control; the \\(\\oplus\\) marks the target.'],
+     [run(s0,[...gates].reverse()),'This is the result of applying the gates from right to left. A circuit is read left to right, in the order the gates act.'],
+     [run(s0,gates.map(g=>g.kind==='CNOT'?g:{...g,wire:1-g.wire})),'This is the result of applying each single-qubit gate to the other wire.'],
+     [[end[0],end[2],end[1],end[3]],'This is the right state with the two qubits read in the opposite order. In \\(\\ket{ab}\\), \\(a\\) is the top qubit.'],
+     ...gates.map((g,k)=>[run(s0,gates.filter((_,j)=>j!==k)),`This is the result if ${name(g)} is skipped.`]),
+     ...[0,1,2,3].filter(i=>Math.abs(end[i])>1e-9).map(i=>[end.map((a,j)=>j===i?-a:a),'This state has the right terms, but one relative sign is wrong. Track the minus signs that \\(H\\) and \\(Z\\) produce on \\(\\ket1\\).'])
+    ];
+    const seen=new Set([answer]),wrong=[];
+    for(const [v,why] of slips.sort(()=>Math.random()-.5).sort((a,b)=>(a[1].includes('relative sign'))-(b[1].includes('relative sign')))){const t=tex(v);if(!seen.has(t)){seen.add(t);wrong.push({t,why})}if(wrong.length===3)break}
+    if(wrong.length<3)continue;
+    const choices=[{t:answer,right:true},...wrong].sort(()=>Math.random()-.5);
+    return {start,gates,s0,end,choices};
+   }
+  }
+  function drawCircuit(){
+   const {start,gates}=puzzle,W=96+gates.length*62+44,ys=[38,92];
+   svg.setAttribute('viewBox',`0 0 ${W} 120`);svg.replaceChildren();
+   ys.forEach((y,w)=>{
+    node(svg,'path',{d:`M64 ${y}H${W-20}`,class:'lf-thin'});
+    label(svg,30,y+5,`|${start[w]}⟩`,{'data-tex':`\\ket{${start[w]}}`});
+   });
+   gates.forEach((g,k)=>{
+    const x=110+k*62;
+    if(g.kind==='CNOT'){
+     const cy=ys[g.c],ty=ys[g.t];
+     node(svg,'path',{d:`M${x} ${Math.min(cy,ty)}V${Math.max(cy,ty)}`,class:'lf-thin',style:'stroke-width:1.8'});
+     node(svg,'circle',{cx:x,cy,r:5,class:'lf-dot'});
+     node(svg,'circle',{cx:x,cy:ty,r:11,class:'lf-node'});
+     node(svg,'path',{d:`M${x-11} ${ty}H${x+11}M${x} ${ty-11}V${ty+11}`,class:'lf-thin',style:'stroke-width:1.6'});
+    }else{
+     node(svg,'rect',{x:x-16,y:ys[g.wire]-16,width:32,height:32,rx:3,class:'lf-node'});
+     label(svg,x,ys[g.wire]+5,g.kind,{'data-tex':g.kind});
+    }
+   });
+   svg.setAttribute('aria-label',`Start in |${start[0]}⟩ on the top qubit and |${start[1]}⟩ on the bottom qubit, then apply, in order: `+gates.map(g=>g.kind==='CNOT'?`CNOT with control on qubit ${g.c+1}`:`${g.kind} on qubit ${g.wire+1}`).join(', ')+'.');
+   typesetSvg(svg);
+  }
+  function answer(choice,button){
+   const buttons=[...optionsBox.querySelectorAll('button')];
+   buttons.forEach((b,i)=>{b.disabled=true;if(puzzle.choices[i].right)b.classList.add('quiz-right')});
+   tally.tries++;
+   if(choice.right){tally.right++;math(status,`Correct. ${tally.right} of ${tally.tries} right so far.`)}
+   else{button.classList.add('quiz-wrong');math(status,`Not this one. ${choice.why} ${tally.right} of ${tally.tries} right so far.`)}
+   let v=puzzle.s0;
+   const rows=[`<li>Start: \\(\\ket{${puzzle.start[0]}}\\otimes\\ket{${puzzle.start[1]}}=${tex(v)}\\)</li>`];
+   puzzle.gates.forEach(g=>{v=gate(v,g);rows.push(`<li>${name(g)}: \\(${tex(v)}\\)</li>`)});
+   math(trace,`<p>Trace, one gate at a time:</p><ol>${rows.join('')}</ol>`);
+   trace.hidden=false;
+  }
+  function fresh(){
+   puzzle=make();drawCircuit();
+   optionsBox.replaceChildren();
+   puzzle.choices.forEach((c,i)=>{const b=document.createElement('button');b.type='button';math(b,`<span class="quiz-letter">${'ABCD'[i]}</span> \\(${c.t}\\)`);b.onclick=()=>answer(c,b);optionsBox.append(b)});
+   math(status,'Choose the state the register is in after the last gate. States that differ only by an overall sign are the same state, so each is written with its first term positive.');
+   trace.hidden=true;trace.replaceChildren();
+   lab.dataset.answer=puzzle.choices.find(c=>c.right).t;
+  }
+  lab.querySelector('[data-random]').onclick=fresh;
+  fresh();
+ });
 })();

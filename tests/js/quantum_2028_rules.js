@@ -117,18 +117,45 @@ test('halves in different lines drift apart and stay one tile', () => {
   same(g, ['4 . . .', '. . . .', '. . . .', '. . . .']);
 });
 
-test('contact with an equal tile measures the half first: found there, it merges', () => {
-  const g = start(['8a 8 . .', '8a . . .', '. . . .', '. . . .'], fixed([0.1]));
-  const out = g.move('left', {spawns: false});
-  same(g, ['16a 16a . .', '. . . .', '. . . .', '. . . .']);
-  assert.deepStrictEqual(out.events.map(e => e.type), ['collapse', 'merge']);
+test('a 4 meeting one half of a split 4 makes a split 8, without measurement', () => {
+  for (const r of [0.1, 0.9]) {
+    const g = start(['4a 4 . .', '4a . . .', '. . . .', '. . . .'], () => r);
+    const out = g.move('left', {spawns: false});
+    same(g, ['8a . . .', '8a . . .', '. . . .', '. . . .']);
+    assert.deepStrictEqual(out.events.map(e => e.type), ['merge']);
+    assert.strictEqual(g.score, 8);
+  }
 });
 
-test('contact with an equal tile measures the half first: not found there, it vanishes', () => {
-  const g = start(['8a 8 . .', '8a . . .', '. . . .', '. . . .'], fixed([0.9]));
-  const out = g.move('left', {spawns: false});
-  same(g, ['8 . . .', '8 . . .', '. . . .', '. . . .']);
+test('the new split tile sits where the whole tile met the half and where the other half slid', () => {
+  const g = start(['. 8a . 8', '. . 8a .', '. . . .', '. . . .']);
+  g.move('right', {spawns: false});
+  same(g, ['. . . 16a', '. . . 16a', '. . . .', '. . . .']);
+});
+
+test('the half may be hit from behind as well as in front', () => {
+  const g = start(['8 8a . .', '. . . 8a', '. . . .', '. . . .']);
+  g.move('left', {spawns: false});
+  same(g, ['16a . . .', '16a . . .', '. . . .', '. . . .']);
+});
+
+test('contact with an equal tile of opposite sign still measures the half first', () => {
+  const found = start(['8a -8 . .', '8a . . .', '. . . 2', '. . . .'], fixed([0.1]));
+  let out = found.move('left', {spawns: false});
+  same(found, ['. . . .', '. . . .', '2 . . .', '. . . .']);
+  assert.deepStrictEqual(out.events.map(e => e.type), ['collapse', 'cancel']);
+  const missed = start(['8a -8 . .', '8a . . .', '. . . .', '. . . .'], fixed([0.9]));
+  out = missed.move('left', {spawns: false});
+  same(missed, ['-8 . . .', '8 . . .', '. . . .', '. . . .']);
   assert.deepStrictEqual(out.events.map(e => e.type), ['collapse']);
+});
+
+test('if the other half is busy in the same slide, the contact measures first', () => {
+  // Both halves are hit by equal whole tiles at once.
+  const g = start(['8a 8 . .', '8a 8 . .', '. . . .', '. . . .'], fixed([0.1]));
+  const out = g.move('left', {spawns: false});
+  assert.strictEqual(out.events[0].type, 'collapse');
+  checkConsistent(g);
 });
 
 test('two split 8s meeting half to half become a split 16, whatever chance gives', () => {

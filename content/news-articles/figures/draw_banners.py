@@ -486,7 +486,45 @@ def control_software():
     return svg(''.join(out))
 
 
+def qpu_scheduler():
+    """A job queue feeding one scheduler, which dispatches to racks of classical nodes and to a square-lattice quantum chip."""
+    out = [grid(0, 0, W, H, 40)]
+    for k in range(6):
+        y = 70 + k * 46
+        w = 70 + (k * 53) % 110
+        out.append(rect(60, y, w, 26, 'fig-fill-1' if k % 3 else 'fig-fill-2', 4))
+        out.append(arrow(60 + w + 10, y + 13, 300, 200, 'fig-link', 10))
+    out.append(rect(310, 130, 150, 140, 'fig-wash-1', 10))
+    out.append(rect(310, 130, 150, 140, 'fig-box-claimed', 10))
+    for k in range(4):
+        out.append(line(330, 160 + k * 27, 440, 160 + k * 27, 'fig-grid'))
+    for k, ty in enumerate((90, 200, 310)):
+        out.append(arrow(470, 200, 600, ty, 'fig-line-1', 14))
+    for r in range(2):
+        x0 = 620 + r * 120
+        out.append(rect(x0, 40, 96, 120, 'fig-box', 6))
+        for k in range(5):
+            out.append(rect(x0 + 10, 52 + k * 21, 76, 13, 'fig-fill-muted', 2))
+    out.append(rect(620, 250, 216, 110, 'fig-box', 6))
+    for k in range(4):
+        out.append(rect(632 + k * 50, 268, 40, 74, 'fig-wash-2', 4))
+    x0, y0, s = 930, 120, 34
+    out.append(rect(x0 - 24, y0 - 24, 4 * s + 48, 4 * s + 48, 'fig-box', 10))
+    for i in range(5):
+        for j in range(5):
+            x, y = x0 + i * s, y0 + j * s
+            if i < 4: out.append(line(x, y, x + s, y, 'fig-link'))
+            if j < 4: out.append(line(x, y, x, y + s, 'fig-link'))
+    for i in range(5):
+        for j in range(5):
+            out.append(circle(x0 + i * s, y0 + j * s, 6, 'fig-fill-1' if (i + j) % 2 else 'fig-node'))
+    out.append(arrow(840, 200, 896, 200, 'fig-line-2', 12))
+    out.append(arrow(840, 100, 896, 160, 'fig-line-2', 12))
+    return svg(''.join(out))
+
+
 BANNERS = {
+    'ibm-fermilab-nvidia-modular-codesign-slurm': qpu_scheduler,
     'q-ctrl-290-million-series-c': control_software,
     'ibm-nighthawk-r3-1040-qubit-plan': nighthawk_link,
     'google-ai-formally-verified-quantum-programs': verified_programs,

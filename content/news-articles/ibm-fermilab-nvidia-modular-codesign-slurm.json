@@ -1,0 +1,90 @@
+{
+  "slug": "ibm-fermilab-nvidia-modular-codesign-slurm",
+  "title": "IBM, Fermilab and NVIDIA plan a modular quantum co-design platform as quantum processors join Slurm",
+  "summary": "At the SC26 supercomputing conference on 16 November 2026, IBM, Fermilab and NVIDIA announced plans for a platform to design modular quantum computers alongside GPU supercomputing, and several quantum companies said their processors can now be scheduled by Slurm, the job manager used by most supercomputers. Both are plans and infrastructure, not new quantum results.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a queue of jobs entering one scheduler, which sends work to racks of classical nodes and to a square-lattice quantum chip."
+  },
+  "key_points": [
+    "On 16 November 2026 IBM, Fermilab and NVIDIA announced plans for a modular quantum co-design platform that places IBM quantum computers next to NVIDIA DGX B200 systems.",
+    "Fermilab says a first phase would emulate links between quantum modules; a later phase would add its superconducting cavities as quantum memories. No dates, site or funding were given.",
+    "The same day, Alice & Bob, IBM, IQM, Pasqal, Quantinuum and others said their processors can be scheduled by Slurm 26.11, due later in November, alongside CPUs and GPUs.",
+    "NVIDIA counts nearly 30 supercomputing centres deploying more than 50 quantum processors; the scheduling work removes custom middleware, it does not make the processors more capable."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-17",
+  "status": "published",
+  "topic": "projects",
+  "format": "News",
+  "sections": [
+    {
+      "heading": "What was announced",
+      "paragraphs": [
+        "On 16 November 2026, at the SC26 supercomputing conference in Chicago, IBM, NVIDIA and the US Department of Energy’s Fermi National Accelerator Laboratory announced that they plan to build a modular quantum computing co-design platform. IBM’s release describes plans to collaborate on applications, on integrating quantum processors with supercomputers and on designing quantum components; it does not describe a deployed system.",
+        "The platform would co-locate IBM quantum computers with NVIDIA DGX B200 GPU systems. IBM’s release cites its Nighthawk processor at 120 qubits, circuits of up to 7,500 two-qubit gates and up to 100,000 samples per second. Fermilab will coordinate researchers’ access and software workflows through HEPCloud, its computing infrastructure for high-energy physics. None of the three announcements gives a site, a schedule or a budget."
+      ],
+      "source_refs": [
+        1,
+        2
+      ]
+    },
+    {
+      "heading": "Why modular, and what the phases are",
+      "paragraphs": [
+        "A single superconducting chip is limited in size by wiring, fabrication yield and cooling, so IBM and others plan to scale by linking modules. Links between modules are slower and noisier than gates inside a chip, and how much their errors, latency and feedback delays cost a computation is still an open engineering question.",
+        "Fermilab’s description has two stages. First, researchers would model and emulate communication between modules, using the GPUs to study how link errors, latency and classical feedback affect performance; the results are meant to guide IBM and Fermilab’s Superconducting Quantum Materials and Systems Center (SQMS) in building physical interconnects. Later, SQMS would add its high-coherence superconducting cavities to the platform, to test them as quantum memories, entanglement buffers and resources for bosonic error correction.",
+        "Fermilab names high-energy and nuclear physics as the target applications, including lattice gauge theories, neutrino interactions and nuclear simulations, and frames the work as a step toward a future DOE quantum computing user facility. The platform would complement the error-correction co-design platform that IBM, Oak Ridge National Laboratory and AMD announced on 5 November."
+      ],
+      "source_refs": [
+        1,
+        2
+      ]
+    },
+    {
+      "heading": "Quantum processors in Slurm",
+      "paragraphs": [
+        "Slurm is the open-source workload manager that most supercomputing centres use to queue jobs and share CPUs and GPUs between users. Until now, each centre hosting a quantum processor needed custom middleware to give users access to it. NVIDIA says that Slurm 26.11, due later in November 2026, lets a hardware maker describe its processor through one interface that any centre can reuse, supporting two community-developed interfaces, QRMI and QDMI.",
+        "IBM’s release says the work, done with Pasqal and the open-source community, lets Slurm allocate, reserve and account for quantum processor time under the same policies as CPUs and GPUs, so a hybrid quantum-classical workflow runs as an ordinary Slurm job without a separate queue or login. NVIDIA lists Alice & Bob, IBM, IQM, Pasqal, Quantinuum and the Munich Quantum Software Company as adopters, and counts nearly 30 supercomputing centres deploying more than 50 quantum processors, a number it says has grown almost sevenfold in five years. Quantum Computing Report covered the separate vendor announcements the same day."
+      ],
+      "source_refs": [
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "heading": "What this does and does not show",
+      "paragraphs": [
+        "Neither announcement is a new quantum computing result. The co-design platform is a plan with phases but no dates, and its first phase emulates the links it intends to study. The Slurm change is infrastructure: it makes quantum processors easier to share and to combine with classical computing in existing centres, which matters for the hybrid workflows most near-term applications use, but it does not change what the processors can compute.",
+        "IBM also cited a related result with RIKEN and NVIDIA: sample-based quantum diagonalization of an iron–sulfur cluster on IBM hardware, with circuits of about 4,000 two-qubit gates on 72 qubits, which IBM says improved accuracy 79-fold over earlier runs and came within 4.3 millihartree of a classical DMRG reference. That work is described in an arXiv preprint (2611.04496) and has not been peer reviewed."
+      ],
+      "source_refs": [
+        1,
+        4
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "IBM Newsroom: IBM, Fermilab, and NVIDIA announce plans for new co-design platform to accelerate the development of next-generation, modular quantum computers, 16 November 2026",
+      "url": "https://newsroom.ibm.com/2026-11-16-ibm,-fermilab,-and-nvidia-announce-plans-for-new-co-design-platform-to-accelerate-the-development-of-next-generation,-modular-quantum-computers"
+    },
+    {
+      "title": "Fermilab News: Fermilab, IBM and NVIDIA plan modular quantum computing co-design platform to advance scientific discovery, 16 November 2026",
+      "url": "https://news.fnal.gov/2026/11/fermilab-ibm-and-nvidia-plan-modular-quantum-computing-co-design-platform-to-advance-scientific-discovery/"
+    },
+    {
+      "title": "NVIDIA Blog (Sam Stanwyck): Slurm and quantum computing in supercomputing, 16 November 2026",
+      "url": "https://blogs.nvidia.com/blog/slurm-quantum-computing-supercomputing/"
+    },
+    {
+      "title": "Quantum Computing Report: IBM, Fermilab, and NVIDIA unveil modular quantum co-design platform, Slurm HRES integration, and GPU QEC tools at SC26, 16 November 2026",
+      "url": "https://quantumcomputingreport.com/ibm-fermilab-and-nvidia-unveil-modular-quantum-co-design-platform-slurm-hres-integration-and-gpu-qec-tools-at-sc26/"
+    }
+  ],
+  "related_articles": [
+    "ibm-ornl-amd-error-correction-platform",
+    "ibm-nighthawk-r3-1040-qubit-plan"
+  ]
+}
