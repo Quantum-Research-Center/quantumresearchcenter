@@ -1,5 +1,5 @@
 # Every push and pull request builds the whole site from its sources and checks the result.
-# A push to main that passes is published; the built pages are never committed.
+# A push to main of the organization repository that passes is published; the built pages are never committed.
 name: Site checks and deployment
 
 on:
@@ -35,13 +35,15 @@ jobs:
       - name: Tests
         run: python3 -m unittest discover -s tests -v
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.repository == 'Quantum-Research-Center/quantumresearchcenter' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         with:
           path: _site
 
+  # Only the organization repository publishes quantumresearch.center;
+  # the personal mirror still builds and checks every push but never deploys.
   deploy:
     needs: build
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.repository == 'Quantum-Research-Center/quantumresearchcenter' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       pages: write
