@@ -523,7 +523,43 @@ def qpu_scheduler():
     return svg(''.join(out))
 
 
+def contextuality():
+    """A 3x3 magic-square table of +1/-1 cells with row and column checks, beside a grid of qubits joined in one GHZ chain."""
+    out = [grid(0, 0, W, H, 40)]
+    x0, y0, s = 140, 80, 80
+    out.append(rect(x0 - 30, y0 - 30, 3 * s + 60, 3 * s + 60, 'fig-wash-1', 10))
+    vals = [[1, 1, 1], [1, -1, -1], [-1, 1, -1]]
+    for i in range(3):
+        for j in range(3):
+            cx, cy = x0 + j * s + s / 2 - 10, y0 + i * s + s / 2 - 10
+            out.append(rect(cx - 26, cy - 26, 52, 52, 'fig-box', 6))
+            out.append(circle(cx, cy, 15, 'fig-fill-1' if vals[i][j] > 0 else 'fig-fill-2'))
+    for i in range(3):
+        y = y0 + i * s + s / 2 - 10
+        out.append(arrow(x0 + 3 * s + 20, y, x0 + 3 * s + 60, y, 'fig-line-1', 10))
+        x = x0 + i * s + s / 2 - 10
+        out.append(arrow(x, y0 + 3 * s + 10, x, y0 + 3 * s + 50, 'fig-line-2', 10))
+    gx, gy, g = 640, 70, 52
+    out.append(rect(gx - 34, gy - 34, 9 * g + 68, 5 * g + 68, 'fig-wash-2', 10))
+    order = []
+    for r in range(6):
+        cols = range(10) if r % 2 == 0 else range(9, -1, -1)
+        order += [(c, r) for c in cols]
+    order = order[:47]
+    for (c1, r1), (c2, r2) in zip(order, order[1:]):
+        out.append(line(gx + c1 * g, gy + r1 * g, gx + c2 * g, gy + r2 * g, 'fig-line-1'))
+    on = set(order)
+    for r in range(6):
+        for c in range(10):
+            x, y = gx + c * g, gy + r * g
+            if x > W - 20: continue
+            out.append(circle(x, y, 9, 'fig-fill-1' if (c, r) in on else 'fig-node'))
+    out.append(circle(gx, gy, 16, 'fig-box-claimed'))
+    return svg(''.join(out))
+
+
 BANNERS = {
+    'google-contextuality-willow-science': contextuality,
     'ibm-fermilab-nvidia-modular-codesign-slurm': qpu_scheduler,
     'q-ctrl-290-million-series-c': control_software,
     'ibm-nighthawk-r3-1040-qubit-plan': nighthawk_link,

@@ -1,0 +1,142 @@
+{
+  "slug": "google-contextuality-willow-science",
+  "title": "Google tests quantum contextuality on up to 105 qubits",
+  "summary": "In a Science paper published on 19 November 2026, Google Quantum AI reports four tests of measurement contextuality on its Willow processors, from a two-player game won 98.3% of the time to tasks on grids of up to 105 qubits. The results are clean demonstrations and a new kind of benchmark, not a proven computational advantage at these sizes.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a three-by-three table of plus and minus cells with row and column checks, beside a grid of qubits joined into one long chain."
+  },
+  "key_points": [
+    "Google Quantum AI published four contextuality experiments in Science on 19 November 2026; the work first appeared as an arXiv preprint in December 2025.",
+    "Two players sharing four qubits won the Mermin–Peres magic square game 98.3% of the time, against a classical maximum of 8/9 (88.9%).",
+    "Google's announcement gives a contextuality score of 5.590 ± 0.008 against a classical limit of 4 and a quantum maximum of 6; the preprint, and Quantum Computing Report, give 5.618 ± 0.005.",
+    "Up to 71 qubits beat the classical bound of a many-player GHZ game, and constant-depth circuits solved hidden linear function problems on up to 105 qubits.",
+    "All players sit on one chip, so these are not loophole-free tests, and the 105-qubit task is compared with a conjectured classical bound, not a proven one."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-21",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "News",
+  "sections": [
+    {
+      "heading": "What Google reported",
+      "paragraphs": [
+        "On 19 November 2026 Google Quantum AI published “Quantum-classical separation in bounded-resource tasks arising from measurement contextuality” in Science, as the issue's cover story, with a company blog post and a research blog post by two of the authors, Shashwat Kumar and Rodrigo Cortiñas. The paper first appeared on arXiv on 1 December 2025 (arXiv:2512.02284), so the experiments themselves are about a year old; the news is the peer-reviewed publication.",
+        "The team ran four experiments on two of its Willow superconducting processors, with 72 and 105 qubits: a two-player game on four qubits, a measurement of a contextuality inequality on three qubits, a game with up to 71 players, and a shallow-circuit problem on up to 105 qubits. Google presents them as evidence that contextuality, a basic feature of quantum measurement, gives an edge in tasks with bounded resources, and proposes these tasks as benchmarks for quantum hardware."
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "heading": "What contextuality means",
+      "paragraphs": [
+        "A measurement outcome is non-contextual if it could have been fixed in advance, independently of which other compatible measurements are made alongside it. Quantum mechanics rules this out. The preprint's own example uses three qubits in the state \\((\\ket{000}-\\ket{111})/\\sqrt2\\): the products \\(X_1Y_2Y_3\\), \\(Y_1X_2Y_3\\) and \\(Y_1Y_2X_3\\) always come out \\(+1\\), while \\(X_1X_2X_3\\) always comes out \\(-1\\). If each \\(X_i\\) and \\(Y_i\\) had a predetermined value \\(\\pm1\\), multiplying the first three products would give \\(x_1x_2x_3=+1\\), because every \\(y_i\\) appears twice. No assignment of values fits all four results.",
+        "The magic square game turns this into a task. Alice is given a row and Bob a column of a three-by-three table; each must fill their line with \\(\\pm1\\) entries, Alice's row multiplying to \\(+1\\) and Bob's column to \\(-1\\), and they win if they agree on the shared cell. A fixed table would need an even number of \\(-1\\) entries in total, counted by rows, and an odd number, counted by columns, so at least one of the nine row–column pairs must fail and the best classical strategy wins 8/9 of the time. Players who share two Bell pairs and measure the Pauli operators of the Mermin–Peres table win every time in an ideal device."
+      ],
+      "source_refs": [
+        3,
+        4
+      ]
+    },
+    {
+      "heading": "The four experiments",
+      "paragraphs": [
+        "The magic square game was played 100,000 times for each of the nine row–column pairs, 900,000 rounds in all, with a win rate of \\(0.9830\\pm0.0001\\). In the second experiment the same nine operators were measured one after another on two qubits through an ancilla, 540 non-demolition measurements in random order, repeated 1,000 times. The sum of the six row and column averages, \\(\\chi\\), cannot exceed 4 if outcomes are predetermined and equals 6 in ideal quantum mechanics, for any state.",
+        "In the GHZ parity game each of \\(N\\) players receives a bit, the bits having even sum, and must answer with a bit so that the answers' parity equals half the questions' sum, modulo 2. Players sharing a GHZ state win every time; without it the best is \\(\\tfrac12+2^{-\\lceil N/2\\rceil}\\), 75% for three players and close to 50% for many. Google reports winning above the classical bound for every size up to 71 qubits, and, in its blog post, genuine multipartite entanglement across 45 qubits.",
+        "The fourth experiment solved instances of the two-dimensional hidden linear function problem of Bravyi, Gosset and König, who proved in 2018 that a constant-depth quantum circuit solves it while classical circuits of bounded fan-in need depth growing with the problem size. Google ran four layers of CZ gates on grids from 9 to 105 qubits, 1,000 random instances per size, and checked each output against a classical simulation. The success probability falls from about 1 on small grids to about 0.6 at 105 qubits; the preprint expresses this as an effective depth that rises from four layers to about six."
+      ],
+      "stats": [
+        {
+          "value": "98.3%",
+          "label": "magic square win rate (classical limit 88.9%)"
+        },
+        {
+          "value": "5.590",
+          "label": "contextuality score in Google's post (limit 4, maximum 6)"
+        },
+        {
+          "value": "71",
+          "label": "players in the GHZ game"
+        },
+        {
+          "value": "105",
+          "label": "qubits in the hidden linear function task"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ]
+    },
+    {
+      "heading": "Which number to quote",
+      "paragraphs": [
+        "The contextuality score differs between sources. The December 2025 preprint reports \\(\\chi=5.618\\pm0.005\\), and Quantum Computing Report's article of 19 November repeats that figure. Google's research blog post of the same day, describing the published paper, gives \\(\\chi=5.590\\pm0.008\\) from the same protocol. We could not read the Science paper itself, so we quote Google's current figure and note that the published value appears to have been revised from the preprint. Both are far above the classical limit; the preprint says its value exceeds earlier experiments, citing the 2009 trapped-ion test of Kirchmair and colleagues.",
+        "A smaller slip in the preprint: it states the classical GHZ-game bound as \\(\\tfrac12+2^{-\\lfloor N/2\\rfloor}\\), which would give certainty for three players. A brute-force check of all classical strategies gives 0.75 for three players and 0.625 for five, matching \\(\\tfrac12+2^{-\\lceil N/2\\rceil}\\) and the 75% that Google's blog post quotes."
+      ],
+      "source_refs": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "heading": "What the results do and do not show",
+      "paragraphs": [
+        "These are careful, large-scale demonstrations of contextual correlations, and the supplementary material gives error budgets that match the measured shortfalls from the ideal values. They are not loophole-free tests of the kind done with separated photons or atoms. All players are qubits on one chip, and the rule that they cannot communicate is enforced by the circuit design, not by distance, so the experiments assume the device does what its circuits say. Read that way, they test the processor's quantum behaviour rather than nature's.",
+        "The 105-qubit task does not show a quantum computational advantage. Bravyi, Gosset and König's separation applies to circuits that succeed with probability at least 7/8 and becomes meaningful only around a million qubits, as the preprint notes; at these sizes Google compares against a conjectured classical depth of \\(\\log_2 s\\) layers, for a function of \\(s\\) inputs. The circuits are Clifford circuits, which an ordinary computer simulates easily; that is how the outputs were checked. For many players the GHZ bound is almost exactly one half, so beating it amounts to a positive GHZ stabilizer fidelity, \\(P_w=(1+F^X)/2\\). The lasting value is the proposal itself: tasks whose ideal score is known exactly, and whose shortfall exposes coherent errors that random-circuit benchmarks average away."
+      ],
+      "source_refs": [
+        3,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Google Research blog, A game you cannot win unless you have a quantum computer, 19 November 2026",
+      "url": "https://research.google/blog/a-game-you-cannot-win-unless-you-have-a-quantum-computer/"
+    },
+    {
+      "title": "Google blog, How we're putting one of quantum mechanics' deepest features to the test at scale, 19 November 2026",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/quantum-computing/putting-one-of-quantum-mechanics-deepest-features-to-test-at-scale/"
+    },
+    {
+      "title": "Science, Quantum-classical separation in bounded-resource tasks arising from measurement contextuality, 19 November 2026 (DOI 10.1126/science.aec3042)",
+      "url": "https://www.science.org/doi/10.1126/science.aec3042"
+    },
+    {
+      "title": "S. Kumar et al., Quantum-Classical Separation in Bounded-Resource Tasks Arising from Measurement Contextuality, arXiv:2512.02284v1, 1 December 2025",
+      "url": "https://arxiv.org/abs/2512.02284"
+    },
+    {
+      "title": "Quantum Computing Report, Google Quantum AI Demonstrates Measurement Contextuality Across 105 Qubits on Willow Processors, 19 November 2026",
+      "url": "https://quantumcomputingreport.com/google-quantum-ai-demonstrates-measurement-contextuality-across-105-qubits-on-willow-processors/"
+    },
+    {
+      "title": "S. Bravyi, D. Gosset and R. König, Quantum advantage with shallow circuits, arXiv:1704.00690",
+      "url": "https://arxiv.org/abs/1704.00690"
+    },
+    {
+      "title": "G. Brassard, A. Broadbent and A. Tapp, Recasting Mermin's multi-player game into the framework of pseudo-telepathy, arXiv:quant-ph/0407221",
+      "url": "https://arxiv.org/abs/quant-ph/0407221"
+    }
+  ],
+  "related_papers": [
+    "2611.24604",
+    "2610.26465"
+  ],
+  "related_articles": [
+    "google-ai-formally-verified-quantum-programs"
+  ]
+}
