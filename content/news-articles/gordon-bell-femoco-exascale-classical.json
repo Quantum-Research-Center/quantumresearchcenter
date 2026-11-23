@@ -1,0 +1,177 @@
+{
+  "slug": "gordon-bell-femoco-exascale-classical",
+  "title": "Gordon Bell Prize goes to a classical attack on a favourite quantum computing target",
+  "summary": "A Chinese team has won the 2026 ACM Gordon Bell Prize for a supercomputer calculation of FeMoco, the molecule used for a decade to argue for fault-tolerant quantum computers, with a run of 105 minutes against a published quantum projection of 8.6 hours. The abstract gives no energy, error bar or method, so what the run established cannot yet be checked.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a cage-shaped cluster of atoms joined by bonds, beside rows of identical computer cabinets with a few marked as active."
+  },
+  "key_points": [
+    "The 2026 ACM Gordon Bell Prize, announced at SC26 in Chicago on 19 November 2026, went to ten researchers from Chinese institutions for a classical calculation on the FeMoco benchmark.",
+    "The abstract reports 1.456 exaflops in double precision on 20,480 nodes of the LineShine machine, and a ground-state run of 105 minutes on 1,280 nodes.",
+    "It compares that run with 8.6 hours, a 2025 projection for a machine of 4.5 million physical qubits that does not exist.",
+    "The abstract names no method and gives no energy or error, and we could not find a preprint.",
+    "A separate classical study estimated the same energy to about chemical accuracy in January 2026, so the model was already within classical reach by extrapolation."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-23",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "News",
+  "sections": [
+    {
+      "heading": "What was announced",
+      "paragraphs": [
+        "The Association for Computing Machinery awarded its 2026 Gordon Bell Prize, given each year for advances in applying high-performance computing, to a ten-member team from Chinese institutions. The reports place the award at the SC26 supercomputing conference in Chicago; CASRAI dates it to 19 November 2026, and The Quantum Insider reported it the next day. The winning paper is “Closing the FeMo-Cofactor ‘Quantum-Advantage’ Gap with Exascale Supercomputers”. Its first author is Honghui Shang and its last is Jinlong Yang, both of the University of Science and Technology of China.",
+        "The abstract on the SC26 site calls the work “the first exascale classical solution” of a problem with 113 electrons in 76 orbitals. The code was tuned for two machines, LineShine and China's New-generation Intelligent Supercomputer. On 20,480 LineShine nodes it sustained 1.456 exaflops in double precision, 58.9% of the machine's peak, and 5.626 exaflops in mixed precision. Those are hardware figures. The scientific claim is a separate sentence: a “ground-state consensus” reached on 1,280 nodes in 105 minutes from start to finish, “approximately one-fifth of the best published 8.6-hour single-run projection for fault-tolerant quantum computing on the same active space”."
+      ],
+      "stats": [
+        {
+          "value": "105 min",
+          "label": "measured classical run on 1,280 nodes"
+        },
+        {
+          "value": "8.6 h",
+          "label": "projected quantum run on 4.5 million physical qubits"
+        },
+        {
+          "value": "113 in 76",
+          "label": "electrons in orbitals in the model"
+        },
+        {
+          "value": "1.456 EF",
+          "label": "sustained double-precision speed on 20,480 nodes"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "heading": "Why this molecule matters to quantum computing",
+      "paragraphs": [
+        "FeMoco, the iron–molybdenum cofactor, is the part of the enzyme nitrogenase where bacteria turn nitrogen from the air into ammonia. Several of its iron atoms carry unpaired electrons whose spins can be arranged in many nearly equivalent ways, and that makes its electronic structure hard to compute. Since the mid-2010s it has been the standard example for what an error-corrected quantum computer might do for chemistry, and resource estimates for new quantum algorithms are routinely quoted for it.",
+        "Those estimates use fixed models. The one at issue here, proposed by Li and colleagues in 2019, keeps 76 orbitals and so needs 152 qubits to represent. The task is to find the lowest total energy to within chemical accuracy, about 1.6 thousandths of a hartree or 1 kilocalorie per mole. The energy itself is not measurable, as the authors of the January study note. It is a yardstick for algorithms, chosen because the problem is exactly specified."
+      ],
+      "source_refs": [
+        1,
+        4
+      ]
+    },
+    {
+      "heading": "Where the 8.6 hours comes from",
+      "paragraphs": [
+        "The figure appears in a 2025 paper by Guang Hao Low and colleagues, published in Physical Review X. Its authors estimate that their phase-estimation algorithm would solve the 76-orbital model in 8.6 hours on 4.5 million physical qubits, assuming an error rate of one in a thousand, a surface-code cycle of one microsecond and four factories for special gate states. It is a projection for hardware that does not exist, and it covers a single run from a good starting state.",
+        "Other assumptions give other numbers. An October 2026 study compiled for cat qubits by Kroell and colleagues needs only 7,462 of them for the same model, with an expected 3.3 days per run. So the fivefold ratio in the abstract compares a measured time on one machine with one point in a wide range of quantum projections. Time on a large share of a supercomputer is also not the same resource as time on a quantum machine; neither side states a common cost such as energy or money."
+      ],
+      "table": {
+        "columns": [
+          "Approach",
+          "Status",
+          "Time",
+          "Hardware"
+        ],
+        "rows": [
+          [
+            "SC26 prize paper",
+            "measured",
+            "105 minutes",
+            "1,280 LineShine nodes"
+          ],
+          [
+            "Low et al. 2025",
+            "projected",
+            "8.6 hours",
+            "4.5 million physical qubits, surface code"
+          ],
+          [
+            "Kroell et al. 2026",
+            "projected",
+            "3.3 days",
+            "7,462 cat qubits"
+          ],
+          [
+            "Zhai et al. 2026, extrapolation data",
+            "ideal conversion of work done",
+            "46 seconds",
+            "all of Frontier"
+          ],
+          [
+            "Zhai et al. 2026, no extrapolation",
+            "estimated",
+            "22.9 hours",
+            "all of Frontier"
+          ]
+        ],
+        "caption": "Published times for the 76-orbital FeMoco model. The classical times from Zhai et al. divide counted operations by Frontier's peak speed and are not measured wall times."
+      },
+      "source_refs": [
+        1,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "heading": "The model had already been approached classically",
+      "paragraphs": [
+        "The prize paper is not the first classical answer. In January 2026 Huanchen Zhai, Garnet Chan and colleagues reported an energy for the same model of \\(-22140.409\\) hartree with an uncertainty of about 1.3 kilocalories per mole. They observed that the problem is mostly one of ranking many competing but individually simple states, 35 families of spin arrangements among them. They then combined coupled-cluster theory up to quadruple excitations with large density-matrix renormalization group calculations and extrapolated both. Several spin arrangements came out degenerate at that accuracy.",
+        "Their result comes with caveats that they state themselves. The extrapolations have no formal error theory, and a fully variational calculation at the same accuracy would need an estimated 22.9 hours on all of the Frontier supercomputer. In a March 2026 essay Chan argued that there is “nothing especially mysterious” about the electronic structure of FeMoco, and that the evidence for an exponential quantum advantage on it is much weaker than for random circuit sampling. Kroell and colleagues, writing about quantum hardware, now treat FeMoco as a benchmark and say explicitly that they do not present it as a demonstration of quantum advantage."
+      ],
+      "source_refs": [
+        4,
+        6,
+        7
+      ]
+    },
+    {
+      "heading": "What cannot be checked yet",
+      "paragraphs": [
+        "The public abstract names no method. It gives no energy, no error estimate and no statement of whether the result is an upper bound, an extrapolation or an agreement between several calculations; the phrase “ground-state consensus” suggests the last, but that is our reading. ACM's own announcement returned an access error when we tried it, and CASRAI, citing another report, notes that the announcement does not say how close the result comes to the accuracy chemists want. We searched arXiv and found no preprint. Until the paper is available, the natural first test is whether its energy agrees with the January estimate within the stated errors.",
+        "The comparison also leaves something out on the quantum side. Phase estimation comes with an error guarantee once the starting state overlaps well enough with the true ground state, which classical extrapolation does not. The January study found an overlap as large as 0.45 between a simple trial state and its best wavefunction, which is encouraging for quantum algorithms and also part of why classical methods work. What the prize does settle is narrower and still useful: for this model, the burden of proof has moved. A quantum estimate for FeMoco-76 now has to be compared with measured classical runs, and the search for chemistry that truly needs a quantum computer has to look at larger or less regular problems."
+      ],
+      "source_refs": [
+        1,
+        3,
+        4,
+        7
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "SC26 proceedings, Closing the FeMo-Cofactor “Quantum-Advantage” Gap with Exascale Supercomputers (paper page and abstract, gb103)",
+      "url": "https://sc26.supercomputing.org/proceedings/papers/paper_pages/gb103.html"
+    },
+    {
+      "title": "The Quantum Insider, 10-Member Team Drawn from Chinese Institutions Wins 2026 Gordon Bell Prize, 20 November 2026",
+      "url": "https://thequantuminsider.com/2026/11/20/10-member-team-drawn-from-chinese-institutions-wins-2026-gordon-bell-prize/"
+    },
+    {
+      "title": "CASRAI, report on the 2026 ACM Gordon Bell Prize, 22 November 2026",
+      "url": "https://casrai.org/news/acm-gordon-bell-prize-2026-femoco-exascale-chinese-team"
+    },
+    {
+      "title": "Zhai, Li, Zhang, Li, Lee and Chan, Classical computational simulation of the FeMo-cofactor model to chemical accuracy and its implications, arXiv:2601.04621v2 (January 2026, revised June 2026)",
+      "url": "https://arxiv.org/abs/2601.04621"
+    },
+    {
+      "title": "Low et al., Fast quantum simulation of electronic structure by spectrum amplification, arXiv:2502.15882 (February 2025); Physical Review X 15, 041016",
+      "url": "https://arxiv.org/abs/2502.15882"
+    },
+    {
+      "title": "Kroell et al., Ground-state energy estimation compiled on cat qubits, arXiv:2610.37840v2 (October 2026, revised 18 November 2026)",
+      "url": "https://arxiv.org/abs/2610.37840"
+    },
+    {
+      "title": "Garnet Chan, The FeMo-cofactor and classical and quantum computing, Quantum Frontiers, 12 March 2026",
+      "url": "https://quantumfrontiers.com/2026/03/12/the-femo-cofactor-and-classical-and-quantum-computing/"
+    }
+  ],
+  "related_articles": [
+    "beyond-the-qubit-count",
+    "ibm-fermilab-nvidia-modular-codesign-slurm"
+  ]
+}

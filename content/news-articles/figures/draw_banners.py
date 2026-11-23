@@ -558,7 +558,41 @@ def contextuality():
     return svg(''.join(out))
 
 
+def femoco():
+    """A cage-shaped metal-sulfur cluster of atoms joined by bonds, beside rows of computer cabinets, a few of them active."""
+    out = [grid(0, 0, W, H, 40)]
+    cx, cy = 310, 200
+    out.append(circle(cx, cy, 165, 'fig-wash-1'))
+    # two cubane halves sharing a centre: vertices left to right along the axis
+    metal = [(-150, 0), (-85, -70), (-85, 70), (-78, 4), (78, -4), (85, -70), (85, 70), (150, 0)]
+    sulfur = [(-128, -62), (-128, 62), (-104, -2), (128, -62), (128, 62), (104, 2), (0, -104), (0, 104), (0, -46)]
+    bonds = [(0, 0), (0, 1), (0, 2), (1, 0), (2, 1), (1, 2), (3, 2), (3, 0), (2, 2),
+             (7, 3), (7, 4), (7, 5), (5, 3), (6, 4), (5, 5), (4, 5), (4, 3), (6, 5),
+             (1, 6), (5, 6), (2, 7), (6, 7), (3, 8), (4, 8)]
+    for m, q in bonds:
+        (x1, y1), (x2, y2) = metal[m], sulfur[q]
+        out.append(line(cx + x1, cy + y1, cx + x2, cy + y2, 'fig-line-1'))
+    for m in range(1, 7):
+        x1, y1 = metal[m]
+        out.append(line(cx + x1, cy + y1, cx, cy + 12, 'fig-link'))
+    for x, y in sulfur:
+        out.append(circle(cx + x, cy + y, 11, 'fig-fill-2'))
+    for i, (x, y) in enumerate(metal):
+        out.append(circle(cx + x, cy + y, 17 if i < 7 else 21, 'fig-fill-1'))
+    out.append(circle(cx, cy + 12, 10, 'fig-box-claimed'))
+    x0, y0 = 620, 60
+    for r in range(4):
+        for c in range(16):
+            x, y = x0 + c * 34, y0 + r * 74
+            on = r == 1 and 4 <= c < 8
+            out.append(rect(x, y, 26, 58, 'fig-box', 4))
+            for k in range(4):
+                out.append(rect(x + 5, y + 8 + k * 12, 16, 5, 'fig-fill-1' if on else 'fig-fill-muted', 2))
+    return svg(''.join(out))
+
+
 BANNERS = {
+    'gordon-bell-femoco-exascale-classical': femoco,
     'google-contextuality-willow-science': contextuality,
     'ibm-fermilab-nvidia-modular-codesign-slurm': qpu_scheduler,
     'q-ctrl-290-million-series-c': control_software,
