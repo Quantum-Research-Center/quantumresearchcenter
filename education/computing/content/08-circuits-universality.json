@@ -7,98 +7,105 @@
   "sections": [
     {
       "id": "topic-8-1-1",
-      "title": "Wires and gate ordering",
+      "title": "When two circuits agree",
       "number": "8.1.1",
-      "group": "8.1 · Circuit Representation",
+      "group": "8.1 · Circuit Identities",
       "part_id": "section-8-1"
     },
     {
       "id": "topic-8-1-2",
-      "title": "Circuits for query and search algorithms",
+      "title": "Turning flips into signs",
       "number": "8.1.2",
-      "group": "8.1 · Circuit Representation",
+      "group": "8.1 · Circuit Identities",
       "part_id": "section-8-1"
     },
     {
       "id": "topic-8-1-3",
-      "title": "Measurement and classical control",
+      "title": "Marking a string with a phase",
       "number": "8.1.3",
-      "group": "8.1 · Circuit Representation",
+      "group": "8.1 · Circuit Identities",
+      "part_id": "section-8-1"
+    },
+    {
+      "id": "topic-8-1-4",
+      "title": "Reflection about the uniform state",
+      "number": "8.1.4",
+      "group": "8.1 · Circuit Identities",
       "part_id": "section-8-1"
     },
     {
       "id": "topic-8-2-1",
-      "title": "Pauli, Hadamard, and rotation gates",
+      "title": "Controlled phase gates",
       "number": "8.2.1",
-      "group": "8.2 · Gate Constructions",
+      "group": "8.2 · Controlled Gates",
       "part_id": "section-8-2"
     },
     {
       "id": "topic-8-2-2",
-      "title": "Controlled and entangling gates",
+      "title": "Controlled one-qubit gates",
       "number": "8.2.2",
-      "group": "8.2 · Gate Constructions",
+      "group": "8.2 · Controlled Gates",
       "part_id": "section-8-2"
     },
     {
       "id": "topic-8-2-3",
-      "title": "Oracle and reflection circuits",
+      "title": "Two controls from one",
       "number": "8.2.3",
-      "group": "8.2 · Gate Constructions",
+      "group": "8.2 · Controlled Gates",
       "part_id": "section-8-2"
     },
     {
       "id": "topic-8-3-1",
-      "title": "Limits of local operations",
+      "title": "Two-level unitaries",
       "number": "8.3.1",
       "group": "8.3 · Universal Gate Sets",
       "part_id": "section-8-3"
     },
     {
       "id": "topic-8-3-2",
-      "title": "Entangling gates and universality",
+      "title": "Universality of CNOT and one-qubit gates",
       "number": "8.3.2",
       "group": "8.3 · Universal Gate Sets",
       "part_id": "section-8-3"
     },
     {
       "id": "topic-8-3-3",
-      "title": "Exact synthesis and approximation",
+      "title": "The cost of a generic unitary",
       "number": "8.3.3",
       "group": "8.3 · Universal Gate Sets",
       "part_id": "section-8-3"
     },
     {
+      "id": "topic-8-3-4",
+      "title": "Finite gate sets and approximation",
+      "number": "8.3.4",
+      "group": "8.3 · Universal Gate Sets",
+      "part_id": "section-8-3"
+    },
+    {
       "id": "topic-8-4-1",
-      "title": "Gate count, depth, and workspace",
+      "title": "Connectivity and SWAP",
       "number": "8.4.1",
-      "group": "8.4 · Implementation Resources",
+      "group": "8.4 · Physical Constraints",
       "part_id": "section-8-4"
     },
     {
       "id": "topic-8-4-2",
-      "title": "Connectivity and data preparation",
+      "title": "Correcting bit flips",
       "number": "8.4.2",
-      "group": "8.4 · Implementation Resources",
-      "part_id": "section-8-4"
-    },
-    {
-      "id": "topic-8-4-3",
-      "title": "Error accumulation and reliability",
-      "number": "8.4.3",
-      "group": "8.4 · Implementation Resources",
+      "group": "8.4 · Physical Constraints",
       "part_id": "section-8-4"
     }
   ],
   "parts": [
     {
       "id": "section-8-1",
-      "title": "Circuit Representation",
+      "title": "Circuit Identities",
       "number": "8.1"
     },
     {
       "id": "section-8-2",
-      "title": "Gate Constructions",
+      "title": "Controlled Gates",
       "number": "8.2"
     },
     {
@@ -108,11 +115,11 @@
     },
     {
       "id": "section-8-4",
-      "title": "Implementation Resources",
+      "title": "Physical Constraints",
       "number": "8.4"
     }
   ],
-  "opening": "In the preceding chapters, we used single-qubit gates, CNOT gates, and reversible oracle boxes to build quantum computations. On an actual quantum computer, however, any multi-qubit unitary transformation must be constructed step by step from a small set of elementary gates.",
-  "opening_continuation": "We first set out the rules for reading and composing multi-qubit circuit diagrams and build standard gate families. We then ask which gate sets can construct any unitary operation and how to count the resources a circuit requires.",
-  "intro_continuation": "Can a small, fixed collection of one- and two-qubit gates build—or closely approximate—every \\(n\\)-qubit unitary matrix? And if so, how do we diagram, assemble, and measure the cost of the resulting circuits?"
+  "opening": "In Chapter 7, every oracle was built from bit flips and Toffoli gates, and phase kickback with a few Hadamards turned those flips into signs and interference. Those gates move basis strings around and attach signs to them. A quantum step, however, may be any unitary transformation of the register, and a device applies only a few kinds of gate, each to one or two qubits.",
+  "opening_continuation": "We start with identities between circuits, which let us shorten a circuit and change the basis in which a gate acts. That turns flips into phases and gives a reflection that mixes every amplitude at once. Building those gates requires multi-controlled operations, so we reduce them to CNOT and one-qubit gates. With that reduction every unitary can be assembled, and counting the gates shows that most unitaries are nevertheless expensive. A finite set of gates can only approximate, and real devices add their own costs of moving qubits and correcting errors. The reflection built here is the step that quantum search repeats.",
+  "intro_continuation": "Classical reversible circuits are complete once we have the Toffoli gate. Can a fixed set of one- and two-qubit gates similarly build every unitary on \\(n\\) qubits, and how many gates does that take?"
 }

@@ -51,8 +51,8 @@
   [
     "08-circuits-universality",
     "Quantum Circuits and Universality",
-    "What separates an operation we can write down as a matrix from one we can build efficiently out of elementary gates?",
-    "In Chapter 2, we saw that every Boolean function can be built from a small set of classical gates. In quantum computation, the space of allowed operations is much larger: any unitary matrix on \\(n\\) qubits defines a valid quantum step.",
+    "Which gates must a quantum computer provide to build every quantum operation, and at what cost?",
+    "A Toffoli gate and its relatives only rearrange basis strings. A Hadamard mixes two amplitudes, and a phase gate turns one.",
     ""
   ],
   [

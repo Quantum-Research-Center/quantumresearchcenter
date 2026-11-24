@@ -87,3 +87,40 @@ for alpha in np.linspace(-np.pi/2,np.pi/2,19):
 plus=(zero+one)/np.sqrt(2);minus=(zero-one)/np.sqrt(2)
 close(abs(H@plus)**2,[1,0]);close(abs(H@minus)**2,[0,1])
 print('Verified rotated-basis measurement probabilities, completeness, and conditional repeatability.')
+# Chapter 8: conjugation, controlled phases, controlled-U, two controls from one, SWAP, two-level pieces, bit-flip code.
+def ctrl(n,cs,t,U):
+ N=2**n;m=np.zeros((N,N),complex)
+ for x in range(N):
+  bits=[(x>>(n-1-w))&1 for w in range(n)]
+  if all(bits[c] for c in cs):
+   for y in range(2):
+    b2=bits[:];b2[t]=y;m[sum(b<<(n-1-w) for w,b in enumerate(b2)),x]+=U[y,bits[t]]
+  else:m[x,x]=1
+ return m
+def op(n,gates):
+ m=np.array([[1.]])
+ for w in range(n):m=np.kron(m,gates.get(w,I))
+ return m
+R=lambda t:np.diag([1,np.exp(1j*t)]);S=R(np.pi/2);T=R(np.pi/4)
+close(H@X@H,Z);close(op(2,{1:H})@cx(2,0,1)@op(2,{1:H}),cz)
+close(op(2,{0:X})@cz@op(2,{0:X}),np.diag([1,-1,1,1]))
+close(S@S,Z);close(T@T,S);close(np.linalg.matrix_power(T,8),I)
+def cphase(n,c,t,phi):return cx(n,c,t)@op(n,{t:R(-phi/2)})@cx(n,c,t)@op(n,{c:R(phi/2),t:R(phi/2)})
+for phi in np.linspace(-np.pi,np.pi,9):close(cphase(2,0,1,phi),np.diag([1,1,1,np.exp(1j*phi)]))
+rng=np.random.default_rng(8)
+for _ in range(25):
+ U,_r=np.linalg.qr(rng.normal(size=(2,2))+1j*rng.normal(size=(2,2)));lam,W=np.linalg.eig(U);W,_r=np.linalg.qr(W);lam=np.diag(W.conj().T@U@W);a,b=np.angle(lam)
+ close(op(2,{1:W})@ctrl(2,[0],1,R(b-a))@op(2,{0:R(a)})@op(2,{1:W.conj().T}),ctrl(2,[0],1,U))
+ V=W@np.diag(np.sqrt(lam))@W.conj().T
+ close(ctrl(3,[0],2,V)@cx(3,0,1)@ctrl(3,[1],2,V.conj().T)@cx(3,0,1)@ctrl(3,[1],2,V),ctrl(3,[0,1],2,U))
+ccz=cphase(3,0,2,np.pi/2)@cx(3,0,1)@cphase(3,1,2,-np.pi/2)@cx(3,0,1)@cphase(3,1,2,np.pi/2)
+close(ccz,np.diag([1]*7+[-1]));close(op(3,{2:H})@ccz@op(3,{2:H}),ctrl(3,[0,1],2,X))
+close(cx(2,0,1)@cx(2,1,0)@cx(2,0,1),np.eye(4)[[0,2,1,3]])
+close(ctrl(2,[1],0,H)@op(2,{1:X})@ctrl(2,[1],0,H)@op(2,{1:X}),np.kron(H,I))
+p,q=0.6,0.8j;r=np.hypot(abs(p),abs(q));G=np.array([[np.conj(p),np.conj(q)],[-q,p]])/r;close(G@G.conj().T,I);close(G@np.array([p,q]),[r,0])
+amp=np.zeros(8,complex);amp[0],amp[7]=0.6,0.8;theta=0.4
+hit=op(3,{1:np.cos(theta/2)*I-1j*np.sin(theta/2)*X})@amp
+syn=lambda x:(((x>>2)^(x>>1))&1,((x>>1)^x)&1)
+p00=sum(abs(hit[x])**2 for x in range(8) if syn(x)==(0,0));p11=sum(abs(hit[x])**2 for x in range(8) if syn(x)==(1,1))
+close([p00,p11],[np.cos(theta/2)**2,np.sin(theta/2)**2])
+print('Verified Chapter 8 constructions: controlled-Z, marking, controlled phases, controlled-U, two controls from one, Toffoli from CNOT, H and T, SWAP, two-level pieces, and syndrome probabilities.')

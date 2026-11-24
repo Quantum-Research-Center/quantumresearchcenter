@@ -27,15 +27,20 @@ class CircuitDrawing:
     for gate in col:
      wires=gate['wires'];kind=gate.get('kind','gate');y=ys[wires[0]]
      assert all(0<=w<n for w in wires)
-     if kind in ('cx','cz','swap'):
+     if kind=='swap':
       y2=ys[wires[-1]];self.line(x,y,x,y2)
-      if kind=='swap':
-       for yy in (y,y2):self.line(x-8,yy-8,x+8,yy+8);self.line(x-8,yy+8,x+8,yy-8)
+      for yy in (y,y2):self.line(x-8,yy-8,x+8,yy+8);self.line(x-8,yy+8,x+8,yy-8)
+     elif kind in ('cx','cz','cu'):
+      # Every wire but the last is a control; the last is the target.
+      span=[ys[w] for w in wires];y2=ys[wires[-1]];self.line(x,min(span),x,max(span))
+      for w in wires[:-1]:self.parts.append(f'<circle cx="{x}" cy="{ys[w]}" r="5" fill="#476b70"/>')
+      if kind=='cz':self.parts.append(f'<circle cx="{x}" cy="{y2}" r="5" fill="#476b70"/>')
+      elif kind=='cx':
+       self.parts.append(f'<circle class="gate" cx="{x}" cy="{y2}" r="14"/>');self.line(x-14,y2,x+14,y2);self.line(x,y2-14,x,y2+14)
       else:
-       self.parts.append(f'<circle cx="{x}" cy="{y}" r="5" fill="#476b70"/>')
-       if kind=='cz':self.parts.append(f'<circle cx="{x}" cy="{y2}" r="5" fill="#476b70"/>')
-       else:
-        self.parts.append(f'<circle class="gate" cx="{x}" cy="{y2}" r="14"/>');self.line(x-14,y2,x+14,y2);self.line(x,y2-14,x,y2+14)
+       width=gate.get('width',min(60,430/count))
+       self.parts.append(f'<rect class="gate" x="{x-width/2}" y="{y2-20}" width="{width}" height="40" rx="3"/>')
+       self.text(x,y2+6,gate['label'],width=width-8)
      else:
       width=gate.get('width',min(100,430/count));h=ys[wires[-1]]-y+40
       self.parts.append(f'<rect class="gate" x="{x-width/2}" y="{y-20}" width="{width}" height="{h}" rx="3"/>')

@@ -195,7 +195,7 @@
     "term": "Quantum circuit",
     "slug": "quantum-circuit",
     "definition": "An ordered description of operations on quantum registers, with any measurements and classical control specified.",
-    "url": "08-circuits-universality.html#topic-8-1-1"
+    "url": "05-quantum-model.html#topic-5-1-2"
   },
   {
     "term": "Universal gate set",
@@ -207,7 +207,7 @@
     "term": "Circuit depth",
     "slug": "circuit-depth",
     "definition": "The number of sequential layers of operations when compatible operations can run in parallel.",
-    "url": "08-circuits-universality.html#topic-8-4-1"
+    "url": "06-composite-systems.html#topic-6-1-4"
   },
   {
     "term": "Query complexity",

@@ -385,64 +385,69 @@
     "challenge": "Preparing an arbitrary list of \\(N\\) amplitudes costs about \\(N\\) gates. For a search among \\(N\\) items with one marked item, so that \\(p=1/N\\), compare the cost of amplitude amplification with a classical scan of the list."
   },
   "topic-8-1-1": {
-    "foundation": "A circuit applies \\(H\\) to qubit 1, then \\(X\\) to qubit 2, then CNOT with qubit 1 as control and qubit 2 as target, starting from \\(\\ket{00}\\). Write the state after each step.",
-    "application": "Apply, to \\(\\ket{00}\\), first \\(H\\) on qubit 1 and then CNOT, and in the other order. Do the two operations commute?",
-    "challenge": "Prove that \\((U\\otimes I)(I\\otimes V)=(I\\otimes V)(U\\otimes I)=U\\otimes V\\): gates on different wires commute."
+    "foundation": "Show that two CNOTs in a row, with the same control and target, cancel, by following a basis state \\(\\ket a\\ket b\\).",
+    "application": "Simplify the circuit: \\(Z\\) on the target, then a CNOT, then \\(Z\\) on the control and \\(Z\\) on the target.",
+    "challenge": "\\(XZ\\) and \\(ZX\\) differ only by a global sign. Are controlled-\\((XZ)\\) and controlled-\\((ZX)\\) the same gate? If not, which one-qubit gate turns one into the other?"
   },
   "topic-8-1-2": {
-    "foundation": "In the four-item search circuit, how many oracle uses and how many Hadamard gates does one Grover iteration contain, and how many Hadamard gates prepare the start?",
-    "application": "List the gates of Deutsch\u2019s algorithm in time order, starting from \\(\\ket{00}\\), with the qubits each acts on.",
-    "challenge": "An oracle box \\(O_f\\) on \\(n\\) qubits marks one fixed string. It is built from \\(X\\) gates and a phase flip controlled on all \\(n\\) qubits, which in turn uses Toffoli gates and \\(n-2\\) workspace qubits. Count the gates in such a construction."
+    "foundation": "Show that \\(HXH=Z\\) by applying \\(H\\), then \\(X\\), then \\(H\\) to \\(\\ket0\\) and to \\(\\ket1\\).",
+    "application": "Apply controlled-\\(Z\\) to \\(\\ket+\\ket+\\). Is the result a product of two one-qubit states?",
+    "challenge": "Apply \\(X\\) to both qubits and then CZ. Using the rule for moving \\(X\\) through CZ, show that this equals CZ, then \\(Z\\) on both qubits, then \\(X\\) on both qubits, up to an overall sign. What is the sign?"
   },
   "topic-8-1-3": {
-    "foundation": "Bob receives a bit \\(b\\) and applies \\(X\\) only if \\(b=1\\). Write his operation for each value of \\(b\\).",
-    "application": "For the input \\((\\alpha\\ket0+\\beta\\ket1)\\ket0\\), compare (a) CNOT followed by measuring the control with (b) measuring the control first and then applying \\(X\\) to the target if the result is \\(1\\). Show that the outcomes and final states agree.",
-    "challenge": "Now the control is not measured at the end. Compare CNOT with \u201cmeasure the control, then apply \\(X\\) if \\(1\\)\u201d on the input \\(\\ket+\\ket-\\), by applying \\(H\\) to the control afterward and measuring it."
+    "foundation": "Which gates mark the string \\(10\\) on two qubits? Trace \\(\\ket{10}\\) and \\(\\ket{00}\\) through them.",
+    "application": "On three qubits, give a circuit for \\(O_{010}\\). How many \\(X\\) gates does it use?",
+    "challenge": "A two-qubit function has \\(f(01)=f(10)=1\\) and \\(f(00)=f(11)=0\\). Build its phase oracle from two marking gates. Then use \\(f(x)=x_1\\oplus x_2\\) to find a cheaper circuit."
+  },
+  "topic-8-1-4": {
+    "foundation": "For two qubits, write \\(R_0=2\\ketbra{00}{00}-I\\) as a diagonal matrix. Show that \\(X\\otimes X\\), then CZ, then \\(X\\otimes X\\) gives \\(-R_0\\).",
+    "application": "Apply the two-qubit reflection \\(D=2\\ketbra ss-I\\) to \\(\\ket{00}\\). What are the four amplitudes?",
+    "challenge": "Let \\(A\\) be a circuit with \\(A\\ket{0^n}=\\ket\\psi\\). Show that \\(AR_0A^\\dagger\\) keeps \\(\\ket\\psi\\) and negates every state orthogonal to \\(\\ket\\psi\\)."
   },
   "topic-8-2-1": {
-    "foundation": "Compute \\(R_X(\\pi)\\) and \\(R_Z(\\pi)\\), and compare them with \\(X\\) and \\(Z\\).",
-    "application": "Verify by multiplying matrices that \\(HZH=X\\), \\(HXH=Z\\), \\(S^2=Z\\), and \\(T^2=S\\).",
-    "challenge": "Show that \\(R_Z(\\theta)=\\operatorname{diag}(e^{-i\\theta/2},e^{i\\theta/2})\\), and that up to a global phase it is \\(\\operatorname{diag}(1,e^{i\\theta})\\). Which values of \\(\\theta\\) give \\(S\\) and \\(T\\)?"
+    "foundation": "Check \\(a\\oplus b=a+b-2ab\\) for all four pairs of bits.",
+    "application": "Write out the controlled-\\(S\\) circuit and find the phase it attaches to each of \\(\\ket{00},\\ket{01},\\ket{10},\\ket{11}\\).",
+    "challenge": "Can CNOTs and phase gates attach the phase \\(\\phi\\,abc\\) to \\(\\ket{abc}\\)? Use \\(4abc=a+b+c-(a\\oplus b)-(a\\oplus c)-(b\\oplus c)+(a\\oplus b\\oplus c)\\), after checking it."
   },
   "topic-8-2-2": {
-    "foundation": "Apply controlled-\\(Z\\) to the four basis states. Show that exchanging the roles of control and target gives the same operation.",
-    "application": "Verify that \\((I\\otimes H)\\,\\mathrm{CNOT}\\,(I\\otimes H)\\) acts as controlled-\\(Z\\) on \\(\\ket{10}\\) and \\(\\ket{11}\\).",
-    "challenge": "Let \\(\\ket v\\) be an eigenvector of \\(U\\) with \\(U\\ket v=e^{i\\phi}\\ket v\\). Show that controlled-\\(U\\) sends \\(\\ket+\\ket v\\) to \\(\\tfrac1{\\sqrt2}(\\ket0+e^{i\\phi}\\ket1)\\otimes\\ket v\\). Is the result entangled?"
+    "foundation": "Find the eigenvectors and angles of \\(Z\\). What does the controlled-\\(U\\) formula give for \\(U=Z\\)?",
+    "application": "Let \\(V=iX\\). Write controlled-\\(V\\) using one CNOT and one more one-qubit gate.",
+    "challenge": "Show that every eigenvalue of \\(H\\) is \\(+1\\) or \\(-1\\) by using \\(H^2=I\\). Explain why none of \\(\\ket0,\\ket1,\\ket+,\\ket-\\) is an eigenvector, and check that \\(\\cos\\tfrac\\pi8\\ket0+\\sin\\tfrac\\pi8\\ket1\\) is one."
   },
   "topic-8-2-3": {
-    "foundation": "Which gates mark the string \\(01\\) on two qubits, that is, multiply \\(\\ket{01}\\) by \\(-1\\) and leave the other basis states alone?",
-    "application": "For two qubits, verify that \\((H\\otimes H)(2\\ket{00}\\bra{00}-I)(H\\otimes H)\\) and \\(2\\ket s\\bra s-I\\) agree on \\(\\ket{00}\\).",
-    "challenge": "Show that \\((X\\otimes X)\\,CZ\\,(X\\otimes X)=-(2\\ket{00}\\bra{00}-I)\\). Why does this sign not matter in an ordinary Grover iteration, and when would it matter?"
+    "foundation": "Check the five-gate construction for \\(a=0,b=1\\) and for \\(a=b=1\\).",
+    "application": "Use \\(V=HSH\\) in the construction. Show that \\(V^2=X\\), and name the resulting three-qubit gate.",
+    "challenge": "A flip with \\(n\\) controls uses \\(2n-3\\) Toffolis. If each Toffoli uses six CNOTs, seven \\(T\\)-type gates, and two Hadamards, how many gates does the flip use? How does this grow with \\(n\\)?"
   },
   "topic-8-3-1": {
-    "foundation": "Apply \\(H\\otimes H\\) to \\(\\ket{00}\\), and check that the result is a product state.",
-    "application": "A circuit applies \\(H\\) to qubit 1, then \\(X\\) to qubit 2, then \\(H\\) to qubit 1 again. Find the result on \\(\\ket{00}\\), and explain why it had to be a product state.",
-    "challenge": "Show that one-qubit operations cannot turn an entangled two-qubit state into a product state."
+    "foundation": "Is CNOT a two-level unitary? Is \\(H\\otimes I\\)?",
+    "application": "Apply the elimination step to \\((p,q)=(\\tfrac35,\\tfrac45)\\): find \\(G\\) and check \\(G(p,q)^T=(1,0)^T\\).",
+    "challenge": "Show that if a unitary has first column \\((1,0,\\dots,0)\\), then its first row is \\((1,0,\\dots,0)\\). Use only the orthogonality of its columns."
   },
   "topic-8-3-2": {
-    "foundation": "Which of these gate sets can prepare a Bell state from \\(\\ket{00}\\): \\(\\{H,X,Z\\}\\); \\(\\{H,\\text{CNOT}\\}\\); \\(\\{\\text{CNOT},X\\}\\)?",
-    "application": "Show that circuits of CNOT and \\(X\\) gates only permute computational basis states.",
-    "challenge": "A reversible circuit on \\(m\\) wires uses \\(g\\) gates, each an \\(X\\), CNOT, or Toffoli on chosen wires. Show that there are at most \\((3m^3)^g\\) such circuits, and deduce that most Boolean functions of \\(n\\) bits need at least about \\(2^n/\\log_2(3m^3)\\) gates."
+    "foundation": "As a two-level unitary, which strings does CNOT mix? What does the construction give for it?",
+    "application": "On three qubits, give a Gray code from \\(000\\) to \\(111\\) and describe the gates for a two-level unitary that mixes \\(000\\) and \\(111\\).",
+    "challenge": "Explain why the universality argument fails if the only gates are CNOT, \\(H\\), and \\(X\\)."
   },
   "topic-8-3-3": {
-    "foundation": "Each of \\(1000\\) gates is approximated within \\(10^{-6}\\). What error bound holds for the whole circuit?",
-    "application": "A circuit has \\(10^6\\) gates and its total error must be at most \\(10^{-2}\\). What accuracy must each gate have if the error is split equally?",
-    "challenge": "Prove that \\(\\|U_2U_1-V_2V_1\\|\\leq\\|U_2-V_2\\|+\\|U_1-V_1\\|\\) for unitaries \\(U_1,U_2,V_1,V_2\\)."
+    "foundation": "Repeat the parameter count for one qubit. How many real numbers specify a one-qubit unitary up to global phase?",
+    "application": "For \\(n=10\\), how many gates does the counting bound require for almost every unitary? Compare with the reflection \\(D\\) on ten qubits.",
+    "challenge": "The bound shows that most unitaries are expensive. Does it show that a particular unitary you write down is expensive?"
+  },
+  "topic-8-3-4": {
+    "foundation": "Show that \\(T^8=I\\) and \\(T^7=T^\\dagger\\).",
+    "application": "A circuit has \\(1000\\) gates. How accurately must each gate be built so that no outcome probability changes by more than \\(0.01\\)?",
+    "challenge": "Let \\(V=e^{i\\gamma}U\\). Show that \\(\\|U-V\\|=|1-e^{i\\gamma}|\\) although \\(U\\) and \\(V\\) give identical probabilities. When does the difference matter?"
   },
   "topic-8-4-1": {
-    "foundation": "A circuit on three qubits applies \\(H\\) to each qubit, then CNOT from qubit 1 to qubit 2, then CNOT from qubit 2 to qubit 3. Give its gate count, depth, and width.",
-    "application": "Compute the AND of \\(n=8\\) bits with a chain of Toffoli gates: \\(w_1=x_1x_2\\), \\(w_2=w_1x_3\\), and so on, then the output, then uncompute the workspace. Give the gate count, depth, and width.",
-    "challenge": "Compute the AND of the same \\(8\\) bits with a balanced tree instead: combine bits in pairs, then pairs of results, and so on. Compare gate count, depth, and workspace with the chain."
+    "foundation": "Trace the three-CNOT SWAP on \\(\\ket{01}\\).",
+    "application": "On a line of five qubits, how many CNOTs does a CNOT between the first and last qubits cost if we swap along the line and back?",
+    "challenge": "Show that SWAP maps every product state to a product state, although it is built from CNOTs, which can entangle. Explain."
   },
   "topic-8-4-2": {
-    "foundation": "Three qubits sit on a line, \\(1\\)\u2013\\(2\\)\u2013\\(3\\), and only neighbours can interact. How many SWAP gates are needed to apply a CNOT between qubits 1 and 3 and restore the original placement?",
-    "application": "A SWAP gate costs three CNOT gates. Count the CNOT gates in the construction above, and for a CNOT between the two ends of a line of \\(n\\) qubits.",
-    "challenge": "A data set of \\(N=2^n\\) numbers is loaded into amplitudes using one gate per number, and then searched with about \\(\\sqrt N\\) queries. When does the quadratic query speedup survive in the total cost?"
-  },
-  "topic-8-4-3": {
-    "foundation": "Each gate fails independently with probability \\(10^{-3}\\). What is the probability that a circuit of \\(1000\\) gates runs without any failure?",
-    "application": "How small must the failure probability per gate be for a circuit of \\(10^9\\) gates to run without failure with probability at least \\(0.9\\)?",
-    "challenge": "A repetition code stores a classical bit as three identical bits and decodes by majority. With independent flip probability \\(0<q<1\\), derive the failure probability and find when encoding helps. Now consider \\(\\alpha\\ket{000}+\\beta\\ket{111}\\): what does a phase flip \\(Z\\) on its first qubit do, and why does majority voting miss it?"
+    "foundation": "Encode \\(a\\ket0+b\\ket1\\) and apply \\(X\\) to qubit 3. Which syndrome results, and which correction?",
+    "application": "Flips strike qubits 1 and 2. Which syndrome results, what does the correction do, and what is the final state?",
+    "challenge": "Show that \\(Z\\) on qubit 1 of \\(a\\ket{000}+b\\ket{111}\\) leaves the syndrome unchanged. How could conjugation by Hadamards give a code that detects such errors?"
   },
   "topic-10-1-1": {
     "foundation": "How many bits does \\(N=10^9\\) have in binary? A procedure takes about \\(\\sqrt N\\) steps. Is that polynomial in the input length?",

@@ -1312,24 +1312,99 @@
   },
   "topic-8-1-1": {
     "kind": "circuit",
-    "title": "Wire order and gate order",
-    "caption": "The two wires identify subsystems. U followed by V on the first wire gives VU; W on the separate wire may run independently.",
+    "title": "Moving X through a CNOT",
+    "caption": "Both circuits send \\(\\ket a\\ket b\\) to \\(\\ket{a\\oplus1}\\ket{a\\oplus b\\oplus1}\\). An \\(X\\) on the control before a CNOT equals \\(X\\) on both wires after it, so in a longer circuit the \\(X\\) can be moved past the CNOT and cancelled against a matching gate.",
     "circuits": [
       {
         "inputs": [
-          "\\(\\ket\\psi\\)",
-          "\\(\\ket\\phi\\)"
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)"
         ],
         "steps": [
           [
             {
-              "label": "U",
+              "label": "\\(X\\)",
+              "wires": [
+                0
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ]
+        ],
+        "notes": [
+          "Output: \\(\\ket{a\\oplus1}\\ket{a\\oplus b\\oplus1}\\)"
+        ],
+        "outputs": [
+          "",
+          ""
+        ],
+        "label": "X on the control, then CNOT",
+        "bundles": []
+      },
+      {
+        "inputs": [
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)"
+        ],
+        "steps": [
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "label": "\\(X\\)",
               "wires": [
                 0
               ]
             },
             {
-              "label": "W",
+              "label": "\\(X\\)",
+              "wires": [
+                1
+              ]
+            }
+          ]
+        ],
+        "notes": [
+          "Output: \\(\\ket{a\\oplus1}\\ket{a\\oplus b\\oplus1}\\)"
+        ],
+        "outputs": [
+          "",
+          ""
+        ],
+        "label": "CNOT, then X on both wires",
+        "bundles": []
+      }
+    ]
+  },
+  "topic-8-1-2": {
+    "kind": "circuit",
+    "title": "Hadamards turn a flip into a sign",
+    "caption": "When the control is \\(1\\), the target of the first circuit undergoes \\(HXH=Z\\), so both circuits multiply \\(\\ket a\\ket b\\) by \\((-1)^{ab}\\). Controlled-\\(Z\\) is drawn with two dots because neither qubit is singled out as its control.",
+    "circuits": [
+      {
+        "inputs": [
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)"
+        ],
+        "steps": [
+          [
+            {
+              "label": "\\(H\\)",
               "wires": [
                 1
               ]
@@ -1337,7 +1412,91 @@
           ],
           [
             {
-              "label": "V",
+              "kind": "cx",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "label": "\\(H\\)",
+              "wires": [
+                1
+              ]
+            }
+          ]
+        ],
+        "notes": [
+          "Output: \\((-1)^{ab}\\ket a\\ket b\\)"
+        ],
+        "outputs": [
+          "",
+          ""
+        ],
+        "label": "CNOT between Hadamards on the target",
+        "bundles": []
+      },
+      {
+        "inputs": [
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)"
+        ],
+        "steps": [
+          [
+            {
+              "kind": "cz",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ]
+        ],
+        "notes": [
+          "Output: \\((-1)^{ab}\\ket a\\ket b\\)"
+        ],
+        "outputs": [
+          "",
+          ""
+        ],
+        "label": "Controlled-\\(Z\\)",
+        "bundles": []
+      }
+    ]
+  },
+  "topic-8-1-3": {
+    "kind": "circuit",
+    "title": "Marking the string 01",
+    "caption": "The \\(X\\) on the first wire maps \\(01\\) to \\(11\\), the only string that controlled-\\(Z\\) changes, and then maps it back. Every other string leaves and returns without a sign.",
+    "circuits": [
+      {
+        "inputs": [
+          "\\(\\ket{x_1}\\)",
+          "\\(\\ket{x_2}\\)"
+        ],
+        "steps": [
+          [
+            {
+              "label": "\\(X\\)",
+              "wires": [
+                0
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cz",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "label": "\\(X\\)",
               "wires": [
                 0
               ]
@@ -1345,7 +1504,7 @@
           ]
         ],
         "notes": [
-          "Output: \\((VU\\ket\\psi)\\otimes(W\\ket\\phi)\\)"
+          "Output: \\((-1)^{m_{01}(x)}\\ket{x_1}\\ket{x_2}\\)"
         ],
         "outputs": [
           "",
@@ -1356,26 +1515,26 @@
       }
     ]
   },
-  "topic-8-1-2": {
+  "topic-8-1-4": {
     "kind": "circuit",
-    "title": "The oracle inside a circuit",
-    "caption": "Deutsch’s algorithm uses one oracle gate between its preparation and readout gates. The Uf box specifies a joint operation, not its internal gate count.",
+    "title": "Reflection about the uniform state on two qubits",
+    "caption": "The middle three gates negate \\(\\ket{00}\\) alone, which is \\(-R_0\\). The Hadamard layers on either side conjugate it into \\(-D\\). The overall sign changes no probability unless the reflection is itself controlled.",
     "circuits": [
       {
         "inputs": [
-          "\\(\\ket0\\)",
-          "\\(\\ket1\\)"
+          "\\(\\ket{x_1}\\)",
+          "\\(\\ket{x_2}\\)"
         ],
         "steps": [
           [
             {
-              "label": "H",
+              "label": "\\(H\\)",
               "wires": [
                 0
               ]
             },
             {
-              "label": "H",
+              "label": "\\(H\\)",
               "wires": [
                 1
               ]
@@ -1383,7 +1542,21 @@
           ],
           [
             {
-              "label": "\\(U_f\\)",
+              "label": "\\(X\\)",
+              "wires": [
+                0
+              ]
+            },
+            {
+              "label": "\\(X\\)",
+              "wires": [
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cz",
               "wires": [
                 0,
                 1
@@ -1392,24 +1565,38 @@
           ],
           [
             {
-              "label": "H",
+              "label": "\\(X\\)",
               "wires": [
                 0
+              ]
+            },
+            {
+              "label": "\\(X\\)",
+              "wires": [
+                1
               ]
             }
           ],
           [
             {
-              "kind": "measure",
+              "label": "\\(H\\)",
               "wires": [
                 0
+              ]
+            },
+            {
+              "label": "\\(H\\)",
+              "wires": [
+                1
               ]
             }
           ]
         ],
-        "notes": [],
+        "notes": [
+          "Implements \\(-D=-(2\\ket s\\bra s-I)\\)"
+        ],
         "outputs": [
-          "y",
+          "",
           ""
         ],
         "label": "",
@@ -1419,148 +1606,88 @@
   },
   "topic-8-2-1": {
     "kind": "circuit",
-    "title": "Rotations and phase gates",
-    "caption": "These are separate single-qubit circuits. Rotation parameters are continuous; S and T are fixed phase operations.",
+    "title": "A controlled phase from CNOTs and phase gates",
+    "caption": "The middle phase gate acts while the second wire holds \\(a\\oplus b\\). The three phases add to \\(\\phi\\,ab\\), so only \\(\\ket{11}\\) acquires \\(e^{i\\phi}\\), and the second CNOT restores \\(b\\).",
     "circuits": [
       {
         "inputs": [
-          "\\(\\ket\\psi\\)"
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)"
         ],
         "steps": [
           [
             {
-              "label": "\\(R_P(\\theta)\\)",
+              "label": "\\(R_{\\phi/2}\\)",
               "wires": [
                 0
+              ]
+            },
+            {
+              "label": "\\(R_{\\phi/2}\\)",
+              "wires": [
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "label": "\\(R_{-\\phi/2}\\)",
+              "wires": [
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                1
               ]
             }
           ]
         ],
         "notes": [
-          "\\(R_P(\\theta)=\\cos(\\theta/2)I-i\\sin(\\theta/2)P\\)"
+          "Total phase: \\(\\tfrac\\phi2\\bigl(a+b-(a\\oplus b)\\bigr)=\\phi\\,ab\\)"
         ],
         "outputs": [
+          "",
           ""
-        ],
-        "label": "",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket0\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "S",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(p(1)=1/2\\)"
-        ],
-        "outputs": [
-          "y"
-        ],
-        "label": "",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket0\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "T",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "measure",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(p(1)=(1-\\cos(\\pi/4))/2\\)"
-        ],
-        "outputs": [
-          "y"
         ],
         "label": "",
         "bundles": []
       }
     ]
   },
-  "topic-8-3-1": {
+  "topic-8-2-2": {
     "kind": "circuit",
-    "title": "Local gates preserve product states",
-    "caption": "No wire connection appears in this circuit. Each output depends only on the input on its own wire, so local gates cannot create entanglement from a product input.",
+    "title": "Controlled-U by conjugation",
+    "caption": "\\(W^\\dagger\\) carries the eigenvectors of \\(U\\) to \\(\\ket0\\) and \\(\\ket1\\), where the controlled operation is a controlled phase; \\(W\\) carries them back. \\(R_\\alpha\\) on the control supplies the phase \\(e^{i\\alpha}\\) on the control-\\(1\\) branch.",
     "circuits": [
       {
         "inputs": [
-          "\\(\\ket\\psi\\)",
-          "\\(\\ket\\phi\\)"
+          "\\(\\ket c\\)",
+          "\\(\\ket t\\)"
         ],
         "steps": [
           [
             {
-              "label": "\\(U_1\\)",
+              "label": "\\(R_\\alpha\\)",
               "wires": [
                 0
               ]
             },
             {
-              "label": "\\(U_2\\)",
+              "label": "\\(W^\\dagger\\)",
               "wires": [
                 1
               ]
@@ -1568,13 +1695,18 @@
           ],
           [
             {
-              "label": "\\(V_1\\)",
+              "kind": "cu",
               "wires": [
-                0
-              ]
-            },
+                0,
+                1
+              ],
+              "label": "\\(R_{\\beta-\\alpha}\\)",
+              "width": 80
+            }
+          ],
+          [
             {
-              "label": "\\(V_2\\)",
+              "label": "\\(W\\)",
               "wires": [
                 1
               ]
@@ -1582,9 +1714,83 @@
           ]
         ],
         "notes": [
-          "Output: \\((V_1U_1\\ket\\psi)\\otimes(V_2U_2\\ket\\phi)\\)"
+          "Equals controlled-\\(U\\), where \\(U=W\\operatorname{diag}(e^{i\\alpha},e^{i\\beta})W^\\dagger\\)"
         ],
         "outputs": [
+          "",
+          ""
+        ],
+        "label": "",
+        "bundles": []
+      }
+    ]
+  },
+  "topic-8-2-3": {
+    "kind": "circuit",
+    "title": "Two controls from one",
+    "caption": "The controlled-\\(V^\\dagger\\) acts while the middle wire holds \\(a\\oplus b\\). The powers of \\(V\\) applied to the target add to \\(2ab\\), so the target undergoes \\(U=V^2\\) exactly when both controls are one.",
+    "circuits": [
+      {
+        "inputs": [
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)",
+          "\\(\\ket t\\)"
+        ],
+        "steps": [
+          [
+            {
+              "kind": "cu",
+              "wires": [
+                1,
+                2
+              ],
+              "label": "\\(V\\)"
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cu",
+              "wires": [
+                1,
+                2
+              ],
+              "label": "\\(V^\\dagger\\)"
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cu",
+              "wires": [
+                0,
+                2
+              ],
+              "label": "\\(V\\)"
+            }
+          ]
+        ],
+        "notes": [
+          "The target undergoes \\(V^{\\,b-(a\\oplus b)+a}=V^{2ab}=U^{ab}\\)"
+        ],
+        "outputs": [
+          "",
           "",
           ""
         ],
@@ -1595,24 +1801,18 @@
   },
   "topic-8-3-2": {
     "kind": "circuit",
-    "title": "Local gates with entangling connections",
-    "caption": "A representative circuit uses arbitrary single-qubit gates and CNOT. This finite example shows the gate repertoire; it does not claim that two CNOTs synthesize every two-qubit unitary.",
+    "title": "Two two-level pieces of H on one qubit",
+    "caption": "The first controlled-\\(H\\), whose control is masked by \\(X\\), mixes only \\(00\\) and \\(10\\); the second mixes only \\(01\\) and \\(11\\). Each is a two-level unitary, and together they apply \\(H\\) to the first qubit whatever the second holds.",
     "circuits": [
       {
         "inputs": [
-          "\\(\\ket\\psi\\)",
-          "\\(\\ket\\phi\\)"
+          "\\(\\ket{x_1}\\)",
+          "\\(\\ket{x_2}\\)"
         ],
         "steps": [
           [
             {
-              "label": "U",
-              "wires": [
-                0
-              ]
-            },
-            {
-              "label": "V",
+              "label": "\\(X\\)",
               "wires": [
                 1
               ]
@@ -1620,178 +1820,56 @@
           ],
           [
             {
-              "kind": "cx",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "label": "W",
-              "wires": [
-                0
-              ]
-            },
-            {
-              "label": "R",
-              "wires": [
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "cx",
+              "kind": "cu",
               "wires": [
                 1,
                 0
+              ],
+              "label": "\\(H\\)"
+            }
+          ],
+          [
+            {
+              "label": "\\(X\\)",
+              "wires": [
+                1
               ]
             }
           ],
           [
             {
-              "label": "S",
+              "kind": "cu",
               "wires": [
+                1,
                 0
-              ]
-            },
-            {
-              "label": "T",
-              "wires": [
-                1
-              ]
+              ],
+              "label": "\\(H\\)"
             }
           ]
         ],
         "notes": [
-          "U, V, W, R, S, T here denote arbitrary single-qubit unitaries."
+          "Equals \\(H\\otimes I\\)"
         ],
         "outputs": [
           "",
           ""
         ],
         "label": "",
-        "bundles": []
-      }
-    ]
-  },
-  "topic-8-3-3": {
-    "kind": "circuit",
-    "title": "Approximate a gate sequence",
-    "caption": "Each Vj approximates the corresponding Uj with a specified operator-norm error. The diagram compares two circuits; it does not assert an exact finite-alphabet synthesis.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket\\psi\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "\\(U_1\\)",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "\\(U_2\\)",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "\\(U_3\\)",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [],
-        "outputs": [
-          ""
-        ],
-        "label": "Ideal circuit",
-        "bundles": []
-      },
-      {
-        "inputs": [
-          "\\(\\ket\\psi\\)"
-        ],
-        "steps": [
-          [
-            {
-              "label": "\\(V_1\\)",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "\\(V_2\\)",
-              "wires": [
-                0
-              ]
-            }
-          ],
-          [
-            {
-              "label": "\\(V_3\\)",
-              "wires": [
-                0
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "\\(\\|U_3U_2U_1-V_3V_2V_1\\|\\leq\\epsilon_1+\\epsilon_2+\\epsilon_3\\)"
-        ],
-        "outputs": [
-          ""
-        ],
-        "label": "Approximate circuit",
         "bundles": []
       }
     ]
   },
   "topic-8-4-1": {
     "kind": "circuit",
-    "title": "Count gates, layers, and wires",
-    "caption": "Three initial Hadamards run in parallel, followed by two successive CNOTs. This example has five gates, depth three, and width three when these gates are available directly.",
+    "title": "SWAP from three CNOTs",
+    "caption": "The three CNOTs alternate direction. Each holds on every basis state, so by linearity the circuit exchanges any two-qubit state.",
     "circuits": [
       {
         "inputs": [
-          "\\(\\ket0\\)",
-          "\\(\\ket0\\)",
-          "\\(\\ket0\\)"
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)"
         ],
         "steps": [
-          [
-            {
-              "label": "H",
-              "wires": [
-                0
-              ]
-            },
-            {
-              "label": "H",
-              "wires": [
-                1
-              ]
-            },
-            {
-              "label": "H",
-              "wires": [
-                2
-              ]
-            }
-          ],
           [
             {
               "kind": "cx",
@@ -1806,85 +1884,68 @@
               "kind": "cx",
               "wires": [
                 1,
-                2
+                0
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                1
               ]
             }
           ]
         ],
         "notes": [
-          "Gate count: 5     Depth: 3     Width: 3"
+          "\\(\\ket a\\ket b\\to\\ket a\\ket{a\\oplus b}\\to\\ket b\\ket{a\\oplus b}\\to\\ket b\\ket a\\)"
         ],
         "outputs": [
           "",
+          ""
+        ],
+        "label": "Three CNOTs",
+        "bundles": []
+      },
+      {
+        "inputs": [
+          "\\(\\ket a\\)",
+          "\\(\\ket b\\)"
+        ],
+        "steps": [
+          [
+            {
+              "kind": "swap",
+              "wires": [
+                0,
+                1
+              ]
+            }
+          ]
+        ],
+        "notes": [
+          "Output: \\(\\ket b\\ket a\\)"
+        ],
+        "outputs": [
           "",
           ""
         ],
-        "label": "",
+        "label": "SWAP",
         "bundles": []
       }
     ]
   },
   "topic-8-4-2": {
     "kind": "circuit",
-    "title": "Route an interaction through a neighbour",
-    "caption": "For a linear three-qubit layout, SWAP brings the third logical qubit next to the first. CNOT acts there, and the second SWAP restores the original ordering. Each SWAP itself requires implementation.",
+    "title": "Encoding and syndrome extraction",
+    "caption": "Two CNOTs spread one qubit over three. After a possible error \\(E\\), four CNOTs write two parities onto fresh qubits, and only those are measured. Every branch of the encoded state has the same parities, so the measurement locates a single flip without revealing \\(a\\) or \\(b\\).",
     "circuits": [
       {
         "inputs": [
-          "\\(\\ket a\\)",
-          "\\(\\ket b\\)",
-          "\\(\\ket c\\)"
-        ],
-        "steps": [
-          [
-            {
-              "kind": "swap",
-              "wires": [
-                1,
-                2
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "cx",
-              "wires": [
-                0,
-                1
-              ]
-            }
-          ],
-          [
-            {
-              "kind": "swap",
-              "wires": [
-                1,
-                2
-              ]
-            }
-          ]
-        ],
-        "notes": [
-          "Output on basis inputs: \\(\\ket{a,b,c\\oplus a}\\)"
-        ],
-        "outputs": [
-          "",
-          "",
-          ""
-        ],
-        "label": "",
-        "bundles": []
-      }
-    ]
-  },
-  "topic-8-4-3": {
-    "kind": "circuit",
-    "title": "Encoding is not cloning",
-    "caption": "Two CNOTs encode one unknown qubit into a joint three-qubit state. This is the repetition-code encoding used for bit-flip protection; it is not a complete error-correction or fault-tolerance circuit.",
-    "circuits": [
-      {
-        "inputs": [
-          "\\(\\ket\\psi\\)",
+          "\\(a\\ket0+b\\ket1\\)",
+          "\\(\\ket0\\)",
+          "\\(\\ket0\\)",
           "\\(\\ket0\\)",
           "\\(\\ket0\\)"
         ],
@@ -1906,16 +1967,77 @@
                 2
               ]
             }
+          ],
+          [
+            {
+              "label": "\\(E\\)",
+              "wires": [
+                0,
+                1,
+                2
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                0,
+                3
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                1,
+                3
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                1,
+                4
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "cx",
+              "wires": [
+                2,
+                4
+              ]
+            }
+          ],
+          [
+            {
+              "kind": "measure",
+              "wires": [
+                3
+              ]
+            },
+            {
+              "kind": "measure",
+              "wires": [
+                4
+              ]
+            }
           ]
         ],
         "notes": [
-          "\\(\\ket\\psi=\\alpha\\ket0+\\beta\\ket1\\)",
-          "Encoded state: \\(\\alpha\\ket{000}+\\beta\\ket{111}\\)"
+          "Syndrome: \\((x_1\\oplus x_2,\\;x_2\\oplus x_3)\\)"
         ],
         "outputs": [
           "",
           "",
-          ""
+          "",
+          "\\(x_1\\oplus x_2\\)",
+          "\\(x_2\\oplus x_3\\)"
         ],
         "label": "",
         "bundles": []

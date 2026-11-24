@@ -1794,4 +1794,259 @@
   lab.querySelector('[data-random]').onclick=fresh;
   fresh();
  });
+ // Chapter 8 practice: a short circuit hidden inside a longer one by identities; identify or simplify it.
+ document.querySelectorAll('[data-lab="identities"]').forEach(lab=>{
+  lab.querySelector('.lab-fallback').hidden=true;lab.querySelectorAll('[data-live]').forEach(e=>e.hidden=false);
+  const R=Math.SQRT1_2,rnd=k=>Math.floor(Math.random()*k),pick=a=>a[rnd(a.length)],shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+  const q=sel=>lab.querySelector(sel),stage=q('[data-stage]'),options=q('[data-options]'),palette=q('[data-palette]'),answerBox=q('[data-answer]'),status=q('[data-status]'),trace=q('[data-trace]'),prompt=q('[data-prompt]');
+  // Two qubits; qubit 0 is the top wire and the more significant bit.
+  const G={H:w=>({g:'H',w}),X:w=>({g:'X',w}),Z:w=>({g:'Z',w}),CX:(c,t)=>({g:'CX',c,t}),CZ:()=>({g:'CZ'})},other=w=>1-w;
+  const singles=[G.H(0),G.H(1),G.X(0),G.X(1),G.Z(0),G.Z(1),G.CX(0,1),G.CX(1,0),G.CZ()];
+  function apply(v,x){
+   v=[...v];
+   if(x.g==='CX'){const cb=x.c===0?2:1,tb=x.t===0?2:1;for(let i=0;i<4;i++)if(i&cb&&!(i&tb))[v[i],v[i|tb]]=[v[i|tb],v[i]];return v}
+   if(x.g==='CZ'){v[3]=-v[3];return v}
+   const b=x.w===0?2:1;
+   for(let i=0;i<4;i++)if(!(i&b)){const a=v[i],c=v[i|b];v[i]=x.g==='H'?(a+c)*R:x.g==='X'?c:a;v[i|b]=x.g==='H'?(a-c)*R:x.g==='X'?a:-c}
+   return v;
+  }
+  const run=(circ,v)=>circ.reduce(apply,v),basis=i=>[0,1,2,3].map(j=>j===i?1:0),outputs=circ=>[0,1,2,3].map(i=>run(circ,basis(i)));
+  // The sign s with A = s·B on every input, or 0 if there is none. All gates here are real, so s is ±1.
+  function sign(A,B){const a=outputs(A).flat(),b=outputs(B).flat(),i=b.findIndex(x=>Math.abs(x)>1e-9),s=a[i]/b[i];return Math.abs(Math.abs(s)-1)<1e-9&&a.every((x,k)=>Math.abs(x-s*b[k])<1e-9)?s:0}
+  const same=(A,B)=>sign(A,B)!==0;
+  const qb=w=>`qubit ${w+1}`,name=x=>x.g==='CX'?`a CNOT from ${qb(x.c)} to ${qb(x.t)}`:x.g==='CZ'?'CZ':`\\(${x.g}\\) on ${qb(x.w)}`;
+  function at(c,test,make){const ks=c.map((x,k)=>test(x)?k:-1).filter(k=>k>=0);if(!ks.length)return null;const k=pick(ks),r=make(c[k]);return {circ:[...c.slice(0,k),...r.seq,...c.slice(k+1)],why:r.why}}
+  // Each rule lengthens a circuit without changing it; "why" describes the reverse simplification.
+  const pair=c=>{const k=rnd(c.length+1),x=pick(singles);return {circ:[...c.slice(0,k),x,x,...c.slice(k)],why:`Delete the adjacent pair ${name(x)}, ${name(x)}: the gate is its own inverse.`}};
+  const rules=[
+   c=>at(c,x=>x.g==='X'||x.g==='Z',x=>{const y=x.g==='X'?'Z':'X';return {seq:[G.H(x.w),G[y](x.w),G.H(x.w)],why:`Replace \\(H\\), \\(${y}\\), \\(H\\) on ${qb(x.w)} by \\(${x.g}\\), since \\(H${y}H=${x.g}\\).`}}),
+   c=>at(c,x=>x.g==='CX',x=>({seq:[G.H(x.t),G.CZ(),G.H(x.t)],why:`Replace \\(H\\) on ${qb(x.t)}, CZ, \\(H\\) on ${qb(x.t)} by ${name(x)}: Hadamards on the target turn the controlled sign into a controlled flip.`})),
+   c=>at(c,x=>x.g==='CZ',()=>{const t=rnd(2),y=G.CX(other(t),t);return {seq:[G.H(t),y,G.H(t)],why:`Replace \\(H\\) on ${qb(t)}, ${name(y)}, \\(H\\) on ${qb(t)} by CZ.`}}),
+   c=>at(c,x=>x.g==='CX',x=>({seq:[G.H(0),G.H(1),G.CX(x.t,x.c),G.H(0),G.H(1)],why:`Hadamards on both qubits before and after a CNOT reverse its direction, so these five gates are ${name(x)}.`})),
+   c=>at(c,x=>x.g==='X',x=>{const t=other(x.w),y=G.CX(x.w,t);return {seq:[y,G.X(x.w),G.X(t),y],why:`An \\(X\\) on the control passes through a CNOT as \\(X\\) on both qubits. So ${name(y)}, \\(X\\) on both qubits, and the same CNOT again equal \\(X\\) on ${qb(x.w)}.`}}),
+   c=>at(c,x=>x.g==='Z',x=>{const s=other(x.w),y=G.CX(s,x.w);return {seq:[y,G.Z(s),G.Z(x.w),y],why:`A \\(Z\\) on the target passes through a CNOT as \\(Z\\) on both qubits. So ${name(y)}, \\(Z\\) on both qubits, and the same CNOT again equal \\(Z\\) on ${qb(x.w)}.`}}),
+   c=>at(c,x=>x.g==='X',x=>({seq:[G.Z(x.w),G.X(x.w),G.Z(x.w)],why:`\\(ZXZ=-X\\) on ${qb(x.w)}. The sign is global, so the three gates equal \\(X\\).`})),
+   c=>at(c,x=>x.g==='X',x=>{const o=other(x.w);return {seq:[G.CZ(),G.X(x.w),G.Z(o),G.CZ()],why:`An \\(X\\) passes through CZ by leaving \\(Z\\) on the other qubit. So CZ, \\(X\\) on ${qb(x.w)}, \\(Z\\) on ${qb(o)}, CZ equal \\(X\\) on ${qb(x.w)}.`}})
+  ];
+  function target(){
+   for(;;){const t=Array.from({length:Math.random()<.5?1:2},()=>pick(singles));
+    if(same(t,[])||t.length===2&&singles.some(x=>same(t,[x])))continue;return t}
+  }
+  function make(){
+   for(;;){
+    const T=target(),want=2+rnd(2),steps=[];let c=T,paired=false;
+    for(let tries=0;tries<40&&steps.length<want;tries++){
+     const usePair=!paired&&Math.random()<.2,out=usePair?pair(c):pick(rules)(c);
+     if(!out||out.circ.length>9)continue;
+     if(!same(out.circ,c))throw Error('identity rule changed the circuit');
+     if(usePair)paired=true;c=out.circ;steps.push({circ:c,why:out.why});
+    }
+    if(steps.length<2||c.length<4)continue;
+    return {T,C:c,steps};
+   }
+  }
+  // Slips: a gate on the wrong qubit, the wrong gate, a reversed CNOT, a dropped gate, a stray Z, or the wrong order.
+  function choices(){
+   const {T,C}=p,cands=[];
+   T.forEach((x,k)=>{
+    const put=y=>cands.push([...T.slice(0,k),y,...T.slice(k+1)]);
+    if(x.g==='CX'){put(G.CX(x.t,x.c));put(G.CZ());put(G.X(x.t))}
+    else if(x.g==='CZ'){put(G.CX(0,1));put(G.CX(1,0));put(G.Z(rnd(2)))}
+    else{put(G[x.g](other(x.w)));['H','X','Z'].filter(g=>g!==x.g).forEach(g=>put(G[g](x.w)))}
+    cands.push([...T.slice(0,k),...T.slice(k+1)]);
+    cands.push([...T.slice(0,k+1),G.Z(rnd(2)),...T.slice(k+1)]);
+   });
+   if(T.length===2)cands.push([T[1],T[0]]);
+   for(let i=0;i<30;i++)cands.push(target());
+   const picked=[];
+   for(const d of [...shuffle(cands.slice(0,cands.length-30)),...cands.slice(-30)]){if(picked.length===3)break;if(!same(d,C)&&!picked.some(e=>same(e,d)))picked.push(d)}
+   return shuffle([{circ:T,right:true},...picked.map(circ=>({circ}))]);
+  }
+  function draw(circ,scale=1){
+   const W=Math.max(150,62+circ.length*44+16),ys=[24,70],svg=document.createElementNS(NS,'svg');
+   svg.setAttribute('viewBox',`0 0 ${W} 94`);svg.setAttribute('role','img');svg.style.cssText=`width:100%;max-width:${Math.round(W*scale)}px;height:auto`;
+   ys.forEach((y,w)=>{node(svg,'path',{d:`M38 ${y}H${W-8}`,class:'lf-thin'});label(svg,18,y+5,`q${w+1}`,{'data-tex':`q_${w+1}`})});
+   if(!circ.length)label(svg,(38+W)/2,52,'no gates',{class:'lf-caption'});
+   circ.forEach((x,k)=>{
+    const X=66+k*44;
+    if(x.g==='CX'||x.g==='CZ'){
+     node(svg,'path',{d:`M${X} ${ys[0]}V${ys[1]}`,class:'lf-thin',style:'stroke-width:1.8'});
+     if(x.g==='CZ')ys.forEach(y=>node(svg,'circle',{cx:X,cy:y,r:5,class:'lf-dot'}));
+     else{const ty=ys[x.t];node(svg,'circle',{cx:X,cy:ys[x.c],r:5,class:'lf-dot'});node(svg,'circle',{cx:X,cy:ty,r:11,class:'lf-node'});node(svg,'path',{d:`M${X-11} ${ty}H${X+11}M${X} ${ty-11}V${ty+11}`,class:'lf-thin',style:'stroke-width:1.6'})}
+    }else{const y=ys[x.w];node(svg,'rect',{x:X-15,y:y-15,width:30,height:30,rx:3,class:'lf-node'});label(svg,X,y+5,x.g,{'data-tex':x.g})}
+   });
+   svg.setAttribute('aria-label',circ.length?'Circuit: '+circ.map(x=>name(x).replace(/\\\(|\\\)/g,'')).join(', then ')+'.':'A circuit with no gates.');
+   return svg;
+  }
+  const show=(box,svg)=>{box.append(svg);typesetSvg(svg);return svg};
+  // A real two-qubit state as a common factor times a signed sum of kets.
+  function tex(v){
+   const on=[0,1,2,3].filter(i=>Math.abs(v[i])>1e-9),m=Math.abs(v[on[0]]),f=v[on[0]]<0?-1:1;
+   const factor=Math.abs(m-1)<1e-9?'':Math.abs(m-R)<1e-9?'\\tfrac{1}{\\sqrt2}':Math.abs(m-.5)<1e-9?'\\tfrac12':m.toFixed(3);
+   const sum=on.map((i,k)=>(f*v[i]<0?'-':k?'+':'')+`\\ket{${i.toString(2).padStart(2,'0')}}`).join('');
+   return (f<0?'-':'')+(on.length>1&&factor?`${factor}(${sum})`:factor+sum);
+  }
+  function explain(){
+   trace.replaceChildren();
+   const head=document.createElement('p');math(head,'One way to simplify it, undoing one identity at a time:');
+   const ol=document.createElement('ol');
+   for(let i=p.steps.length-1;i>=0;i--){const li=document.createElement('li'),t=document.createElement('p');math(t,p.steps[i].why);li.append(t);show(li,draw(i?p.steps[i-1].circ:p.T,.8));ol.append(li)}
+   trace.append(head,ol);trace.hidden=false;
+  }
+  let p,mode='identify',ans=[],tally={right:0,tries:0};
+  function score(ok){tally.tries++;if(ok)tally.right++;return ` ${tally.right} of ${tally.tries} right so far.`}
+  function renderAnswer(){answerBox.replaceChildren();show(answerBox,draw(ans));lab.dataset.answer=JSON.stringify(ans)}
+  function render(){
+   lab.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
+   q('[data-identify]').hidden=mode!=='identify';q('[data-simplify]').hidden=mode!=='simplify';
+   trace.hidden=true;trace.replaceChildren();
+   if(mode==='identify'){
+    math(prompt,'Which circuit below equals the circuit above, up to a global sign?');
+    options.replaceChildren();
+    p.choices.forEach((c,i)=>{const b=document.createElement('button');b.type='button';const tag=document.createElement('span');tag.className='quiz-letter';tag.textContent='ABCD'[i];b.append(tag);show(b,draw(c.circ));
+     b.onclick=()=>{options.querySelectorAll('button').forEach((o,j)=>{o.disabled=true;if(p.choices[j].right)o.classList.add('quiz-right')});
+      if(c.right)math(status,'Correct.'+score(true));
+      else{b.classList.add('quiz-wrong');const i=[0,1,2,3].find(k=>{const u=run(c.circ,basis(k)),v=run(p.C,basis(k)),s=sign(c.circ,p.C)||1;return u.some((x,m)=>Math.abs(x-s*v[m])>1e-9)})??0;
+       math(status,`Not this one. On \\(\\ket{${i.toString(2).padStart(2,'0')}}\\) it gives \\(${tex(run(c.circ,basis(i)))}\\), but the circuit above gives \\(${tex(run(p.C,basis(i)))}\\).`+score(false))}
+      explain()};
+     options.append(b)});
+    math(status,'Choose the short circuit. Check a candidate on the four basis states, or simplify the long circuit with identities.');
+   }else{
+    const k=p.T.length;
+    math(prompt,`Build a circuit equal to the one above, up to a global sign, with as few gates as you can. ${k===1?'One gate':'Two gates'} suffice${k===1?'s':''}.`);
+    renderAnswer();math(status,'Add gates in time order, left to right.');
+   }
+  }
+  function check(){
+   const k=p.T.length;
+   if(same(ans,p.C)){
+    if(ans.length<=k)math(status,`Correct: your circuit equals the one above${sign(ans,p.C)<0?', up to the global sign \\(-1\\)':''}, with ${ans.length} gate${ans.length===1?'':'s'}.`+score(true));
+    else math(status,`Your circuit is equal to the one above, but it can be shortened to ${k} gate${k===1?'':'s'}.`+score(false));
+   }else{
+    const s0=outputs(ans),s1=outputs(p.C);let s=0;
+    for(let i=0;i<4&&!s;i++){const m=s1[i].findIndex(x=>Math.abs(x)>1e-9);if(Math.abs(s0[i][m])>1e-9)s=Math.sign(s0[i][m]/s1[i][m])}
+    s=s||1;const i=[0,1,2,3].find(k=>s0[k].some((x,m)=>Math.abs(x-s*s1[k][m])>1e-9));
+    const rel=s0[i].every((x,m)=>Math.abs(x+s*s1[i][m])<1e-9)?' The two differ only by a sign on this input but not on the others, so the sign is relative, not global.':'';
+    math(status,`Not equal. On \\(\\ket{${i.toString(2).padStart(2,'0')}}\\) your circuit gives \\(${ans.length?tex(s0[i]):`\\ket{${i.toString(2).padStart(2,'0')}}`}\\), but the circuit above gives \\(${tex(s1[i])}\\).${rel}`+score(false));
+   }
+   lab.dataset.result=same(ans,p.C)&&ans.length<=k?'pass':'fail';
+   explain();
+  }
+  singles.forEach(x=>{const b=document.createElement('button');b.type='button';math(b,x.g==='CX'?`CNOT \\(${x.c+1}\\to${x.t+1}\\)`:x.g==='CZ'?'CZ':`\\(${x.g}\\) on \\(${x.w+1}\\)`);b.onclick=()=>{if(ans.length<9){ans.push(x);renderAnswer()}};palette.append(b)});
+  q('[data-undo]').onclick=()=>{ans.pop();renderAnswer()};
+  q('[data-clear]').onclick=()=>{ans=[];renderAnswer()};
+  q('[data-check]').onclick=check;
+  lab.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;ans=[];render()});
+  function fresh(){p=make();p.choices=choices();ans=[];stage.replaceChildren();show(stage,draw(p.C));lab.dataset.target=JSON.stringify(p.T);lab.dataset.result='';render()}
+  q('[data-random]').onclick=fresh;
+  fresh();
+ });
+ // Chapter 8 sandbox: build two circuits on two qubits and compare them on every basis input.
+ document.querySelectorAll('[data-lab="circuit-sandbox"]').forEach(lab=>{
+  lab.querySelector('.lab-fallback').hidden=true;lab.querySelectorAll('[data-live]').forEach(e=>e.hidden=false);
+  const NQ=2,NC=6,R=Math.SQRT1_2,result=lab.querySelector('[data-result]'),verdict=lab.querySelector('[data-verdict]'),preset=lab.querySelector('[data-preset]');
+  let tool='H';
+  const blank=()=>Array.from({length:NC},()=>Array(NQ).fill(null));
+  const eds={A:blank(),B:blank()};
+  // A column holds single-qubit gates, or controls with one target: a flip (⊕) or a Z.
+  function valid(col){const c=col.filter(v=>v==='C').length,rest=col.filter(v=>v&&v!=='C');return !c||rest.length===1&&(rest[0]==='T'||rest[0]==='Z')}
+  const bit=w=>w===0?2:1;
+  function apply(v,col){
+   v=[...v];
+   if(col.includes('C')){
+    const cs=[0,1].filter(w=>col[w]==='C'),t=col.findIndex(x=>x==='T'||x==='Z'),tb=bit(t),on=i=>cs.every(w=>i&bit(w));
+    for(let i=0;i<4;i++){if(!on(i))continue;if(col[t]==='Z'){if(i&tb)v[i]=-v[i]}else if(!(i&tb))[v[i],v[i|tb]]=[v[i|tb],v[i]]}
+    return v;
+   }
+   col.forEach((g,w)=>{if(!g)return;const b=bit(w);for(let i=0;i<4;i++)if(!(i&b)){const a=v[i],c=v[i|b];if(g==='H'){v[i]=(a+c)*R;v[i|b]=(a-c)*R}else if(g==='X'||g==='T'){v[i]=c;v[i|b]=a}else if(g==='Z')v[i|b]=-c}});
+   return v;
+  }
+  const run=(grid,i)=>grid.reduce(apply,[0,1,2,3].map(j=>j===i?1:0));
+  const mag=m=>Math.abs(m-1)<1e-9?'':Math.abs(m-R)<1e-9?'\\tfrac{1}{\\sqrt2}':Math.abs(m-.5)<1e-9?'\\tfrac12':Math.abs(m-R/2)<1e-9?'\\tfrac{1}{2\\sqrt2}':m.toFixed(3);
+  const ket=i=>`\\ket{${i.toString(2).padStart(2,'0')}}`;
+  // A real two-qubit state: a common factor when all amplitudes have one size, otherwise term by term.
+  function tex(v){
+   const on=[0,1,2,3].filter(i=>Math.abs(v[i])>1e-9),ms=on.map(i=>Math.abs(v[i]));
+   if(!ms.every(m=>Math.abs(m-ms[0])<1e-9))return on.map((i,j)=>(v[i]<0?'-':j?'+':'')+mag(Math.abs(v[i]))+ket(i)).join('');
+   const f=v[on[0]]<0?-1:1,factor=mag(ms[0]),sum=on.map((i,k)=>(f*v[i]<0?'-':k?'+':'')+ket(i)).join('');
+   return (f<0?'-':'')+(on.length>1&&factor?`${factor}(${sum})`:factor+sum);
+  }
+  // The chosen product input.
+  const one={'0':[1,0],'1':[0,1],'+':[R,R],'-':[R,-R]},pickers=[...lab.querySelectorAll('[data-input]')];
+  const inputs=()=>pickers.map(x=>x.value);
+  const inputState=()=>{const [a,b]=inputs().map(k=>one[k]);return [a[0]*b[0],a[0]*b[1],a[1]*b[0],a[1]*b[1]]};
+  const inKet=k=>`\\ket{${k==='-'?'-':k}}`;
+  function showStates(){
+   for(const k of ['A','B']){
+    const box=lab.querySelector(`[data-states="${k}"]`),rows=[];let v=inputState();
+    rows.push(`<li>Input: \\(${inKet(inputs()[0])}${inKet(inputs()[1])}=${tex(v)}\\)</li>`);
+    let broken=false;
+    eds[k].forEach((col,c)=>{if(broken||!col.some(Boolean))return;if(!valid(col)){broken=true;rows.push(`<li>Step ${c+1} is not a gate.</li>`);return}v=apply(v,col);rows.push(`<li>After step ${c+1}: \\(${tex(v)}\\)</li>`)});
+    if(!broken)rows.push(`<li><strong>Output:</strong> \\(${tex(v)}\\)</li>`);
+    math(box,`<ol class="sandbox-states">${rows.join('')}</ol>`);
+   }
+  }
+  pickers.forEach(x=>x.onchange=()=>{['A','B'].forEach(draw);showStates()});
+  const colX=c=>58+c*44,wy=w=>30+w*48,W=colX(NC-1)+40;
+  function draw(k){
+   const grid=eds[k],box=lab.querySelector(`[data-editor="${k}"]`),svg=document.createElementNS(NS,'svg');
+   svg.setAttribute('viewBox',`0 0 ${W} 104`);svg.setAttribute('role','group');svg.setAttribute('aria-label',`Circuit ${k} editor`);svg.style.cssText=`width:100%;max-width:${W}px;height:auto`;
+   grid.forEach((col,c)=>{if(!valid(col))node(svg,'rect',{x:colX(c)-20,y:6,width:40,height:92,class:'gq-invalid'})});
+   [0,1].forEach(w=>{node(svg,'path',{d:`M36 ${wy(w)}H${W-6}`,class:'lf-thin'});label(svg,16,wy(w)+5,`|${inputs()[w]}⟩`,{'data-tex':inKet(inputs()[w])})});
+   grid.forEach((col,c)=>{
+    const x=colX(c),link=[0,1].filter(w=>col[w]);
+    if(col.includes('C')&&link.length>1)node(svg,'path',{d:`M${x} ${wy(0)}V${wy(1)}`,class:'lf-thin',style:'stroke-width:1.8'});
+    col.forEach((g,w)=>{const y=wy(w);
+     if(g==='C')node(svg,'circle',{cx:x,cy:y,r:5,class:'lf-dot'});
+     else if(g==='T'){node(svg,'circle',{cx:x,cy:y,r:11,class:'lf-node'});node(svg,'path',{d:`M${x-11} ${y}H${x+11}M${x} ${y-11}V${y+11}`,class:'lf-thin',style:'stroke-width:1.6'})}
+     else if(g){node(svg,'rect',{x:x-14,y:y-14,width:28,height:28,rx:3,class:'lf-node'});label(svg,x,y+5,g,{'data-tex':g})}
+    });
+    [0,1].forEach(w=>{
+     const what={H:'H',X:'X',Z:'Z',C:'control',T:'target flip'}[col[w]]||'empty';
+     const cell=node(svg,'rect',{x:x-22,y:wy(w)-24,width:44,height:48,class:'gq-cell',tabindex:0,role:'button','aria-label':`Circuit ${k}, step ${c+1}, qubit ${w+1}: ${what}`,'data-cell':`${k}${c}${w}`});
+     const act=()=>{const v=grid[c][w];grid[c][w]=tool==='E'||v===tool?null:tool;draw(k);stale();box.querySelector(`[data-cell="${k}${c}${w}"]`)?.focus()};
+     cell.addEventListener('click',act);cell.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
+    });
+   });
+   box.replaceChildren(svg);typesetSvg(svg);
+  }
+  function compare(){
+   const bad=['A','B'].filter(k=>!eds[k].every(valid));
+   if(bad.length){result.replaceChildren();math(verdict,`Circuit ${bad.join(' and ')} has a shaded step that is not a gate. A step with controls needs exactly one target: \\(\\oplus\\) for a controlled flip, or \\(Z\\) for controlled-\\(Z\\). A controlled \\(H\\) is not available here.`);lab.dataset.verdict='invalid';return}
+   const a=[0,1,2,3].map(i=>run(eds.A,i)),b=[0,1,2,3].map(i=>run(eds.B,i));
+   const rowSign=i=>{const m=b[i].findIndex(x=>Math.abs(x)>1e-9),s=a[i][m]/b[i][m];return Math.abs(Math.abs(s)-1)<1e-9&&a[i].every((x,k)=>Math.abs(x-s*b[i][k])<1e-9)?Math.sign(s):0};
+   const signs=[0,1,2,3].map(rowSign);
+   const rows=[0,1,2,3].map(i=>{const l=i.toString(2).padStart(2,'0'),mark=signs[i]===1?'same':signs[i]===-1?'opposite sign':'different';return `<tr><td>\\(\\ket{${l}}\\)</td><td>\\(${tex(a[i])}\\)</td><td>\\(${tex(b[i])}\\)</td><td>${mark}</td></tr>`}).join('');
+   math(result,`<table><tr><th scope="col">Input</th><th scope="col">Circuit A</th><th scope="col">Circuit B</th><th scope="col">Outputs</th></tr>${rows}</table>`);
+   let v;
+   if(signs.every(s=>s===1)){v='equal';math(verdict,'<strong>A and B are equal.</strong> They agree on every basis input, so by linearity they agree on every state.')}
+   else if(signs.every(s=>s===-1)){v='global';math(verdict,'<strong>A and B are equal up to the global sign \\(-1\\).</strong> Every output differs by the same factor, which no measurement can detect unless the circuit is placed under a control.')}
+   else if(signs.every(s=>s!==0)){v='relative';math(verdict,'<strong>A and B differ by a relative sign.</strong> Each output matches up to a sign, but the signs are not the same on every input. Applied to a superposition of those inputs, the two circuits give different states.')}
+   else{v='different';const i=signs.indexOf(0);math(verdict,`<strong>A and B differ.</strong> On \\(\\ket{${i.toString(2).padStart(2,'0')}}\\) they give different states.`)}
+   lab.dataset.verdict=v;
+  }
+  const _=null;
+  const presets={
+   hzh:{A:[['H',_],['Z',_],['H',_]],B:[['X',_]],hint:'Three gates on one wire. Which single gate does the same?'},
+   cnot2:{A:[['C','T'],['C','T']],B:[],hint:'Two CNOTs in a row. What remains?'},
+   xc:{A:[['X',_],['C','T']],B:[['C','T'],['X','X']],hint:'Rebuild A with the CNOT first. Which gates must follow it?'},
+   zt:{A:[[_,'Z'],['C','T']],B:[['C','T'],['Z','Z']],hint:'Rebuild A with the CNOT first. Which gates must follow it?'},
+   xt:{A:[[_,'X'],['C','T']],B:[['C','T'],[_,'X']],hint:'Does an X on the target change when it moves past the CNOT?'},
+   cz:{A:[[_,'H'],['C','T'],[_,'H']],B:[['C','Z']],hint:'Hadamards around the target of a CNOT. Which two-qubit gate is this?'},
+   czsym:{A:[['C','Z']],B:[['Z','C']],hint:'Controlled-Z with the control on qubit 1. Build it with the control on qubit 2.'},
+   rev:{A:[['H','H'],['C','T'],['H','H']],B:[['T','C']],hint:'Hadamards on both qubits around a CNOT. Which single gate is this?'},
+   xcz:{A:[['X',_],['C','Z']],B:[['C','Z'],['X','Z']],hint:'Rebuild A with the controlled-Z first. Which gates must follow it?'},
+   zxz:{A:[['Z',_],['X',_],['Z',_]],B:[['X',_]],hint:'Three gates on one wire, equal to one gate up to a sign. Which gate, and which sign?'}
+  };
+  const load=(k,cols)=>{eds[k]=blank();cols.forEach((col,c)=>eds[k][c]=[...col]);draw(k)};
+  function stale(){showStates();result.replaceChildren();math(verdict,'Predict how A and B compare, then press Compare.');lab.dataset.verdict=''}
+  function choose(){const pr=presets[preset.value];load('A',pr.A);load('B',[]);math(lab.querySelector('[data-hint]'),pr.hint);stale()}
+  lab.querySelector('[data-compare]').onclick=compare;
+  preset.onchange=choose;
+  lab.querySelector('[data-reveal]').onclick=()=>{load('B',presets[preset.value].B);showStates();compare()};
+  lab.querySelector('[data-copy]').onclick=()=>{eds.B=eds.A.map(c=>[...c]);draw('B');stale()};
+  lab.querySelectorAll('[data-clear-editor]').forEach(b=>b.onclick=()=>{eds[b.dataset.clearEditor]=blank();draw(b.dataset.clearEditor);stale()});
+  lab.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;lab.querySelectorAll('[data-tool]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)))});
+  choose();
+ });
 })();

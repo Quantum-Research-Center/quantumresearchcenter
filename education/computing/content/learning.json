@@ -586,7 +586,7 @@
     ],
     "limits": "Deutsch\u2019s task here uses a one-bit Boolean function and an ideal reversible oracle. A single query does not reveal every function value.",
     "example": "The reversible target update of a function becomes a phase mark, and two-path interference becomes the readout.",
-    "next": "Chapter 8 constructs the oracle and other operations from elementary gates.",
+    "next": "Chapter 8 reduces the multi-controlled gates used in these oracles to CNOT and one-qubit gates, and asks which gate sets build every unitary.",
     "exercises": [
       {
         "kind": "Quick check",
@@ -805,35 +805,37 @@
     ]
   },
   "08-circuits-universality": {
-    "purpose": "Translate abstract operations into circuits and account for the work hidden inside a gate box.",
-    "before": "Use the query algorithm, phase marking, unitary evolution, and joint-state notation.",
+    "purpose": "Build every quantum operation from a few elementary gates, and count what that costs.",
+    "before": "Use CNOT and Toffoli gates, the Hadamard and phase gates, phase oracles, and multi-controlled flips built with workspace.",
     "outcomes": [
-      "Read circuit order and controlled operations.",
-      "Distinguish exact construction from approximation.",
-      "Count gates, depth, and workspace separately."
+      "Check circuit identities on basis states and use them to simplify circuits.",
+      "Use conjugation to make a gate act in another basis.",
+      "Reduce controlled and multi-controlled gates to CNOT and one-qubit gates.",
+      "Explain why CNOT with all one-qubit gates is universal, and why most unitaries still need exponentially many gates.",
+      "Bound the error of an approximate circuit, and say what a syndrome measurement reveals."
     ],
-    "limits": "A finite discrete gate set generally approximates arbitrary unitaries; universality does not imply every transformation has a short exact circuit.",
-    "example": "Decompose an oracle and a reflection into gates, then use these constructions in the search algorithm that follows.",
-    "next": "Chapter 9 uses phase oracles and reflections to increase the probability of a marked answer.",
+    "limits": "Exact universality needs arbitrary one-qubit gates; a finite gate set only approximates. Universality does not say which unitaries have short circuits.",
+    "example": "The doubly controlled \\(Z\\) built from controlled-\\(S\\) gates, and from it the Toffoli gate in CNOT, \\(H\\), and \\(T\\).",
+    "next": "Chapter 9 repeats the phase oracle and the reflection to raise the probability of a marked answer.",
     "exercises": [
       {
         "kind": "Quick check",
-        "question": "Do \\(H\\) followed by \\(Z\\), and \\(Z\\) followed by \\(H\\), have the same action on \\(\\ket0\\)?",
+        "question": "Which of CNOT, controlled-\\(Z\\), and controlled-\\(S\\) are unchanged when their two qubits are exchanged?",
         "hints": [
-          "Compute the first step in each order.",
-          "\\(Z\\ket0=\\ket0\\), but \\(Z\\ket+=\\ket-\\)."
+          "Find the basis states each gate changes.",
+          "A gate that depends on its two bits only through \\(ab\\) cannot tell them apart."
         ],
-        "answer": "No. \\(H\\) then \\(Z\\) gives \\(\\ket-\\); \\(Z\\) then \\(H\\) gives \\(\\ket+\\). The order of the matrices must follow the order in time.",
-        "review": "topic-8-1-1"
+        "answer": "Controlled-\\(Z\\) and controlled-\\(S\\) attach a phase depending on \\(ab\\) alone, so exchanging the qubits changes nothing. CNOT is not symmetric: it sends \\(\\ket{10}\\) to \\(\\ket{11}\\) but leaves \\(\\ket{01}\\) alone. Only after conjugating its target by \\(H\\) does it become the symmetric CZ.",
+        "review": "topic-8-1-2"
       },
       {
         "kind": "Quick check",
-        "question": "Compute \\(R_Y(\\pi/2)=\\cos\\frac\\pi4I-i\\sin\\frac\\pi4Y\\) as a matrix. Compare \\(R_Y(\\pi/2)\\ket0\\) with \\(H\\ket0\\), and \\(R_Y(\\pi/2)\\ket1\\) with \\(H\\ket1\\). Are the two gates the same? Express \\(R_Y(\\pi/2)\\) using \\(H\\) and one Pauli gate.",
+        "question": "Which phase gates does the controlled-phase circuit use to build controlled-\\(T\\)? Why is \\(T\\) itself not among them?",
         "hints": [
-          "\\(-iY=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\).",
-          "Compare the columns of the two matrices."
+          "The circuit uses \\(R_{\\phi/2}\\) twice and \\(R_{-\\phi/2}\\) once.",
+          "\\(T=R_{\\pi/4}\\)."
         ],
-        "answer": "\\(R_Y(\\pi/2)=\\frac{1}{\\sqrt2}\\begin{pmatrix}1&-1\\\\1&1\\end{pmatrix}\\). On \\(\\ket0\\) both gates give \\((\\ket0+\\ket1)/\\sqrt2\\). On \\(\\ket1\\), \\(R_Y(\\pi/2)\\) gives \\((-\\ket0+\\ket1)/\\sqrt2=-\\ket-\\), while \\(H\\) gives \\(\\ket-\\). The sign is relative to the \\(\\ket0\\) column, so the gates differ: on \\(\\ket+\\), for example, \\(R_Y(\\pi/2)\\) gives \\(\\ket1\\) and \\(H\\) gives \\(\\ket0\\). In fact \\(R_Y(\\pi/2)=HZ\\): apply \\(Z\\), then \\(H\\). Agreement on one input does not identify a gate; a unitary is fixed by its action on every basis state, including phases.",
+        "answer": "With \\(\\phi=\\pi/4\\), it uses \\(R_{\\pi/8}\\) on both wires and \\(R_{-\\pi/8}\\) on the second, between two CNOTs. The phase \\(\\phi ab\\) is assembled from \\(\\tfrac\\phi2(a+b-(a\\oplus b))\\), so every phase gate carries half the angle. Moving a phase under a control halves it.",
         "review": "topic-8-2-1"
       },
       {
@@ -843,8 +845,8 @@
           "Controlled-\\(V\\) applies \\(iU\\) only on the control-\\(1\\) branch.",
           "\\(S=\\mathrm{diag}(1,i)\\)."
         ],
-        "answer": "Controlled-\\(U\\) gives \\(\\frac{1}{\\sqrt2}(\\ket0\\ket\\psi+\\ket1U\\ket\\psi)\\). Controlled-\\(V\\) gives \\(\\frac{1}{\\sqrt2}(\\ket0\\ket\\psi+i\\ket1U\\ket\\psi)\\). The factor \\(i\\) appears only on the control-\\(1\\) branch, so it is now a relative phase between branches: controlled-\\(V\\) equals controlled-\\(U\\) followed by \\(S\\) on the control. A phase that is invisible when \\(U\\) is applied alone becomes observable once \\(U\\) is controlled, which is why approximations used inside controlled operations must fix the phase, as Section 8.3.3 warns.",
-        "review": "topic-8-3-3"
+        "answer": "Controlled-\\(U\\) gives \\(\\frac{1}{\\sqrt2}(\\ket0\\ket\\psi+\\ket1U\\ket\\psi)\\). Controlled-\\(V\\) gives \\(\\frac{1}{\\sqrt2}(\\ket0\\ket\\psi+i\\ket1U\\ket\\psi)\\). The factor \\(i\\) appears only on the control-\\(1\\) branch, so it is now a relative phase between branches: controlled-\\(V\\) equals controlled-\\(U\\) followed by \\(S\\) on the control. A phase that is invisible when \\(U\\) is applied alone becomes observable once \\(U\\) is controlled, which is why an approximation of a gate used under a control must match its phase too.",
+        "review": "topic-8-2-2"
       },
       {
         "kind": "Worked problem",
@@ -854,17 +856,7 @@
           "The reflection is \\(H^{\\otimes2}(X\\otimes X)\\,CZ\\,(X\\otimes X)H^{\\otimes2}\\)."
         ],
         "answer": "Oracle: \\(X\\) on qubit 2, controlled-\\(Z\\), \\(X\\) on qubit 2. It sends \\(\\ket{10}\\) to \\(\\ket{11}\\), applies the sign, and restores \\(\\ket{10}\\). Starting from \\(\\ket s=\\tfrac12(1,1,1,1)\\), the oracle gives \\(\\tfrac12(1,1,-1,1)\\). The reflection circuit implements \\(-D\\), and \\(D\\) maps this state to \\(\\ket{10}\\), so the result is \\(-\\ket{10}\\): the outcome is \\(10\\) with certainty.",
-        "review": "topic-8-2-3"
-      },
-      {
-        "kind": "Worked problem",
-        "question": "Show that the reflection \\(D=2\\ket s\\bra s-I\\) about the uniform state acts on amplitudes as \u201cinversion about the mean\u201d: if \\(\\ket\\psi=\\sum_xa_x\\ket x\\) and \\(\\bar a\\) is the average of the \\(a_x\\), then \\(D\\ket\\psi=\\sum_x(2\\bar a-a_x)\\ket x\\). Use it to redo one Grover iteration on two qubits with marked item \\(10\\).",
-        "hints": [
-          "\\(\\braket s\\psi=\\frac{1}{\\sqrt N}\\sum_xa_x=\\sqrt N\\,\\bar a\\).",
-          "After the oracle, the amplitudes are \\(\\frac12,\\frac12,-\\frac12,\\frac12\\)."
-        ],
-        "answer": "Since \\(\\braket s\\psi=\\sqrt N\\,\\bar a\\), we have \\(2\\ket s\\braket s\\psi=2\\sqrt N\\,\\bar a\\cdot\\frac{1}{\\sqrt N}\\sum_x\\ket x=\\sum_x2\\bar a\\ket x\\). Subtracting \\(\\ket\\psi\\) gives amplitudes \\(2\\bar a-a_x\\): each amplitude is reflected about the mean. For two qubits, \\(\\ket s\\) has all amplitudes \\(\\frac12\\). The oracle for \\(10\\) makes them \\(\\frac12,\\frac12,-\\frac12,\\frac12\\), with mean \\(\\frac14\\). Reflecting gives \\(2\\cdot\\frac14-\\frac12=0\\) for the three unmarked items and \\(2\\cdot\\frac14+\\frac12=1\\) for \\(10\\). One iteration finds the marked item with certainty. The negative amplitude lies far below the mean, so the reflection throws it far above.",
-        "review": "topic-8-2-3"
+        "review": "topic-8-1-4"
       },
       {
         "kind": "Worked problem",
@@ -874,6 +866,16 @@
           "Compare the sign patterns \\((-,+,+,+)\\) and \\((+,-,-,-)\\)."
         ],
         "answer": "(a) \\(X\\otimes X\\) sends \\(\\ket{00}\\) to \\(\\ket{11}\\), controlled-\\(Z\\) multiplies it by \\(-1\\), and \\(X\\otimes X\\) returns it to \\(\\ket{00}\\). Every other basis state is mapped away from \\(\\ket{11}\\) and back without a sign. So the circuit has signs \\((-,+,+,+)\\) on \\(00,01,10,11\\). (b) OR is \\(0\\) only on \\(00\\), so its phase oracle has signs \\((+,-,-,-)\\), exactly \\(-1\\) times the circuit. Used by itself, as in a search iteration, the factor \\(-1\\) multiplies the whole state and changes no probability. (c) If the oracle is controlled by another qubit, the \\(-1\\) acts only on the control-\\(1\\) branch and becomes a \\(Z\\) on the control, so the correct sign must be restored, for example by a \\(Z\\) on that control.",
+        "review": "topic-8-1-3"
+      },
+      {
+        "kind": "Worked problem",
+        "question": "Build the Toffoli gate from CNOT, \\(H\\), \\(T\\), and \\(T^\\dagger\\). List the gates in order and count them.",
+        "hints": [
+          "Build the doubly controlled \\(Z\\) with \\(V=S\\), then conjugate the target by \\(H\\).",
+          "Each controlled-\\(S\\) uses \\(T\\) on both wires, a CNOT, \\(T^\\dagger\\) on the target, and a CNOT."
+        ],
+        "answer": "Label the wires \\(a\\), \\(b\\), \\(t\\). Apply \\(H\\) to \\(t\\). Then controlled-\\(S\\) from \\(b\\) to \\(t\\); CNOT from \\(a\\) to \\(b\\); controlled-\\(S^\\dagger\\) from \\(b\\) to \\(t\\); CNOT from \\(a\\) to \\(b\\); controlled-\\(S\\) from \\(a\\) to \\(t\\). Finally \\(H\\) on \\(t\\). The middle five gates multiply \\(\\ket{abt}\\) by \\(i^{t(b-(a\\oplus b)+a)}=i^{2abt}=(-1)^{abt}\\): the doubly controlled \\(Z\\). The Hadamards turn its sign into a flip. Each controlled-\\(S\\) or \\(S^\\dagger\\) uses two CNOTs and three \\(T\\)-type gates, so the total is eight CNOTs, nine \\(T\\)-type gates, and two Hadamards.",
         "review": "topic-8-2-3"
       },
       {
@@ -883,28 +885,18 @@
           "\\((1-p)^G\\approx e^{-pG}\\) for small \\(p\\).",
           "\\(\\sqrt{2^{20}}=1024\\)."
         ],
-        "answer": "(a) About \\(\\frac\\pi4\\times1024\\approx804\\) iterations, so roughly \\(804\\times300\\approx2.4\\times10^5\\) gates. (b) \\(e^{-10^{-4}\\times2.4\\times10^5}=e^{-24}\\approx3\\times10^{-11}\\): essentially never. (c) We need \\(e^{-pG}\\ge0.9\\), so \\(p\\le0.105/(2.4\\times10^5)\\approx4\\times10^{-7}\\). An ideal algorithm whose circuit grows like \\(\\sqrt N\\) requires error rates that shrink like \\(1/\\sqrt N\\). Without error correction, a quadratic query advantage can be erased by noise long before \\(N\\) is large. This is the reliability requirement of Section 8.4.3 in numbers.",
-        "review": "topic-8-4-3"
+        "answer": "(a) About \\(\\frac\\pi4\\times1024\\approx804\\) iterations, so roughly \\(804\\times300\\approx2.4\\times10^5\\) gates. (b) \\(e^{-10^{-4}\\times2.4\\times10^5}=e^{-24}\\approx3\\times10^{-11}\\): essentially never. (c) We need \\(e^{-pG}\\ge0.9\\), so \\(p\\le0.105/(2.4\\times10^5)\\approx4\\times10^{-7}\\). An ideal algorithm whose circuit grows like \\(\\sqrt N\\) requires error rates that shrink like \\(1/\\sqrt N\\). Without error correction, a quadratic query advantage can be erased by noise long before \\(N\\) is large. Correcting errors during the computation, rather than only bounding them, is what makes long circuits possible.",
+        "review": "topic-8-4-2"
       },
       {
         "kind": "Misconception",
         "question": "A student says: \u201cCNOT and one-qubit gates are universal, so any unitary on \\(50\\) qubits can be compiled into a manageable circuit.\u201d Use a parameter count to estimate how many gates a generic \\(50\\)-qubit unitary needs, and say what universality does and does not promise.",
         "hints": [
-          "An \\(n\\)-qubit unitary is a \\(2^n\\times2^n\\) matrix with about \\(4^n\\) real parameters.",
-          "Each one- or two-qubit gate contributes only a bounded number of parameters."
+          "An \\(n\\)-qubit unitary has \\(4^n-1\\) real numbers that matter.",
+          "A one-qubit gate has \\(3\\) such numbers and a CNOT none."
         ],
-        "answer": "A unitary on \\(n\\) qubits has \\(4^n\\) real parameters (up to a constant), and each one- or two-qubit gate contributes at most \\(16\\). A circuit for a generic unitary therefore needs on the order of \\(4^n/16\\) gates. For \\(n=50\\), \\(4^{50}\\approx1.3\\times10^{30}\\), so roughly \\(10^{29}\\) gates, far beyond any device. Universality guarantees that every unitary can be built, or approximated, from the gate set. It does not promise that the circuit is short. Useful algorithms use unitaries with structure, such as oracles, reflections, and Fourier transforms, that admit polynomial-size circuits.",
-        "review": "topic-8-3-2"
-      },
-      {
-        "kind": "Extension",
-        "question": "A search over \\(N=2^n\\) items uses \\((\\pi/4)\\sqrt N\\) iterations. The oracle is compiled into \\(20n\\) gates and the reflection into \\(10n\\) gates. Give the total gate count as a function of \\(n\\), and evaluate it for \\(n=30\\).",
-        "hints": [
-          "Multiply the number of iterations by the gates per iteration.",
-          "\\(\\sqrt N=2^{n/2}\\)."
-        ],
-        "answer": "The total is about \\((\\pi/4)\\,2^{n/2}\\cdot30n\\). For \\(n=30\\): \\((\\pi/4)\\times32{,}768\\times900\\approx2.3\\times10^7\\) gates. The query count, about \\(2.6\\times10^4\\), hides a factor of \\(30n=900\\) gates per query.",
-        "review": "topic-8-4-1"
+        "answer": "A unitary on \\(n\\) qubits has \\(4^n-1\\) real numbers that matter, and a circuit of \\(L\\) CNOTs and one-qubit gates has at most \\(3L\\). Almost every unitary therefore needs \\(L\\ge(4^n-1)/3\\). For \\(n=50\\), \\(4^{50}\\approx1.3\\times10^{30}\\), so about \\(4\\times10^{29}\\) gates, far beyond any device. Universality guarantees that every unitary can be built or approximated. It does not promise a short circuit. Useful algorithms use structured operations, such as oracles and reflections, that have circuits with a number of gates polynomial in \\(n\\).",
+        "review": "topic-8-3-3"
       },
       {
         "kind": "Extension",
@@ -914,7 +906,17 @@
           "Require \\(k^g\\ge(1/\\epsilon)^3\\) and take logarithms."
         ],
         "answer": "(a) With \\(k\\) gates there are at most about \\(k^g\\) circuits of length \\(g\\) (a little more counting shorter ones, which does not change the estimate). Covering all unitaries within \\(\\epsilon\\) needs \\(k^g\\gtrsim(1/\\epsilon)^3\\), so \\(g\\gtrsim3\\ln(1/\\epsilon)/\\ln k\\). (b) \\(3\\ln10^{10}/\\ln3\\approx3\\times23.0/1.10\\approx63\\) gates. (c) The required length grows only logarithmically in \\(1/\\epsilon\\): each additional decimal digit of accuracy costs a few more gates. Good synthesis methods for Clifford+\\(T\\) achieve length proportional to \\(\\log(1/\\epsilon)\\), so this counting bound is attainable up to a constant factor, which is why rotation synthesis is cheap per gate but adds up over a long circuit.",
-        "review": "topic-8-3-3"
+        "review": "topic-8-1-4"
+      },
+      {
+        "kind": "Extension",
+        "question": "A search over \\(N=2^n\\) items uses \\((\\pi/4)\\sqrt N\\) iterations. The oracle is compiled into \\(20n\\) gates and the reflection into \\(10n\\) gates. Give the total gate count as a function of \\(n\\), and evaluate it for \\(n=30\\).",
+        "hints": [
+          "Multiply the number of iterations by the gates per iteration.",
+          "\\(\\sqrt N=2^{n/2}\\)."
+        ],
+        "answer": "The total is about \\((\\pi/4)\\,2^{n/2}\\cdot30n\\). For \\(n=30\\): \\((\\pi/4)\\times32{,}768\\times900\\approx2.3\\times10^7\\) gates. The query count, about \\(2.6\\times10^4\\), hides a factor of \\(30n=900\\) gates per query.",
+        "review": "topic-8-3-4"
       }
     ]
   },
