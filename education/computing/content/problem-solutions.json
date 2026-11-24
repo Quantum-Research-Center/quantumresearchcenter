@@ -320,9 +320,9 @@
     "challenge": "Before the final step the input is \\((s_0\\ket0+s_1\\ket1)/\\sqrt2\\) with \\(s_x=\\pm1\\), so each outcome has probability \\(1/2\\). \\(X\\) only swaps the two amplitudes, leaving both probabilities at \\(1/2\\). Only an operation that combines the two amplitudes, such as \\(H\\), turns the relative sign into a definite outcome."
   },
   "topic-7-3-3": {
-    "foundation": "One query to \\(U_f\\). Besides it: one \\(X\\) to prepare \\(\\ket1\\) (starting from \\(\\ket{00}\\)), two \\(H\\) gates to prepare \\(\\ket+\\ket-\\), one final \\(H\\), and one measurement.",
-    "application": "\\(\\ket0\\ket1\\to\\ket+\\ket-\\to-\\ket-\\ket-\\to-\\ket1\\ket-\\). The input gives \\(1\\): balanced.",
-    "challenge": "\\(H\\) on each qubit sends every \\(\\ket x\\) to a superposition in which \\(\\ket{0^n}\\) has amplitude \\(2^{-n/2}\\). Applied to \\(2^{-n/2}\\sum_x(-1)^{f(x)}\\ket x\\), it gives \\(\\ket{0^n}\\) the amplitude \\(2^{-n}\\sum_x(-1)^{f(x)}\\). For constant \\(f\\), this is \\(\\pm1\\), so the outcome is \\(0^n\\) with certainty; for balanced \\(f\\), the signs cancel exactly and the outcome is never \\(0^n\\). One query suffices, against \\(2^{n-1}+1\\) classically."
+    "foundation": "There are eight inputs. Constant zero gives \\(A(000)=8/8=1\\); constant one gives \\(-8/8=-1\\). Both probabilities are one. A balanced function has four signs of each kind, giving \\(A(000)=(4-4)/8=0\\) and probability zero.",
+    "application": "In order \\(00,01,10,11\\), the signs are \\((1,1,-1,-1)\\). The final amplitudes are \\(A(00)=(1+1-1-1)/4=0\\), \\(A(01)=(1-1-1+1)/4=0\\), \\(A(10)=(1+1+1+1)/4=1\\), and \\(A(11)=(1-1+1-1)/4=0\\). The outcome is \\(10\\) with certainty.",
+    "challenge": "Here \\(N_0=6\\) and \\(N_1=2\\), so \\(A(000)=(6-2)/8=1/2\\) and the probability is \\(1/4\\). The function violates the promise: it is neither constant nor balanced. The circuit still runs, but its two possible classifications do not describe this function."
   },
   "topic-9-1-1": {
     "foundation": "The marked labels are \\(011\\), \\(101\\), and \\(110\\): three of the eight. A random label is marked with probability \\(3/8\\).",
@@ -598,5 +598,10 @@
     "foundation": "The configurations are \\(\\ket{00}\\ket0\\), \\(\\ket{01}\\ket0\\), \\(\\ket{10}\\ket0\\), and \\(\\ket{11}\\ket1\\), each with amplitude \\(1/2\\), so the results \\((00,0)\\), \\((01,0)\\), \\((10,0)\\), and \\((11,1)\\) each occur with probability \\(1/4\\). After \\((10,0)\\), the register is in \\(\\ket{10}\\ket0\\). The other three pairs are no longer in the state; another value needs a fresh preparation.",
     "application": "The XOR state is \\(\\tfrac12(\\ket{00}\\ket0+\\ket{01}\\ket1+\\ket{10}\\ket1+\\ket{11}\\ket0)\\). The target gives \\(0\\) with probability \\(1/2\\), leaving \\((\\ket{00}+\\ket{11})/\\sqrt2\\), and \\(1\\) with probability \\(1/2\\), leaving \\((\\ket{01}+\\ket{10})/\\sqrt2\\). We learn that \\(f\\) takes the observed value and which inputs share it, but a later input measurement still returns only one of them.",
     "challenge": "After \\(k\\) distinct inputs have appeared, a run shows a new one with probability \\((4-k)/4\\), so the expected wait is \\(4/(4-k)\\) runs. Adding over \\(k=0,1,2,3\\) gives \\(4(1+\\tfrac12+\\tfrac13+\\tfrac14)=25/3\\approx8.3\\) runs. Evaluating \\(f\\) on each input in turn takes exactly four evaluations, so random sampling of the parallel state does worse."
+  },
+  "topic-7-3-4": {
+    "foundation": "Apply \\(X\\) to the second input, apply a Toffoli controlled by both inputs onto the target, then apply \\(X\\) to the second input again. Only original input \\(10\\) becomes \\(11\\) at the Toffoli, and both inputs are restored.",
+    "application": "The marked rows are \\(01,10,11\\). Use the three matching circuits in succession: mask the first input for \\(01\\), the second for \\(10\\), and neither for \\(11\\), undoing each mask immediately after its Toffoli. Starting with target \\(1\\), input \\(00\\) leaves it at \\(1\\); each other input flips it to \\(0\\), since the output is \\(1\\oplus f(x)\\).",
+    "challenge": "A query counts one use of an already supplied oracle. Reading a truth table requires examining \\(2^n\\) entries, and the row construction may use exponentially many gates. Those costs belong to constructing and executing the oracle, even though the surrounding Deutsch\u2013Jozsa circuit calls it only once."
   }
 }

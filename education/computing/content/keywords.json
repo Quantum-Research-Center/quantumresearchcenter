@@ -237,7 +237,7 @@
     "which-path"
   ],
   "topic-7-3-2": [
-    "Deutsch’s algorithm"
+    "Deutsch\u2019s algorithm"
   ],
   "topic-7-3-3": [
     "query separation"
@@ -401,5 +401,11 @@
   ],
   "topic-6-5-1": [
     "quantum parallelism"
+  ],
+  "topic-7-3-4": [
+    "Boolean oracle",
+    "truth table",
+    "Toffoli",
+    "workspace"
   ]
 }

@@ -320,9 +320,9 @@
     "challenge": "Show that if the final \\(H\\) is omitted, or replaced by \\(X\\), the measurement gives \\(0\\) and \\(1\\) with probability \\(1/2\\) each, for every function."
   },
   "topic-7-3-3": {
-    "foundation": "Count the queries and the other operations in Deutsch\u2019s algorithm, starting from \\(\\ket{01}\\).",
-    "application": "Run Deutsch\u2019s algorithm for \\(f=(1,0)\\), giving the state after each step.",
-    "challenge": "With \\(n\\) input qubits, after the query and \\(H\\) applied to each input qubit, show that the amplitude of the input configuration \\(0^n\\) is \\(2^{-n}\\sum_x(-1)^{f(x)}\\). Deduce that one query distinguishes constant from balanced functions with certainty."
+    "foundation": "For \\(n=3\\), calculate \\(A(000)\\) and its measurement probability for a constant-zero function, a constant-one function, and a balanced function.",
+    "application": "Calculate all final input amplitudes for \\(f(x_1,x_2)=x_1\\). Which input string is measured?",
+    "challenge": "A three-bit function equals one on exactly two inputs. Calculate the probability of the all-zero outcome. Explain why the Deutsch\u2013Jozsa decision rule cannot classify this function as constant or balanced."
   },
   "topic-9-1-1": {
     "foundation": "A predicate on three-bit labels marks the labels whose bits add to \\(2\\). How many labels are marked, and what is the probability that a uniformly random label is marked?",
@@ -598,5 +598,10 @@
     "foundation": "After the parallel evaluation of AND, every qubit is measured. List the possible results with their probabilities. What is the state of the register after the result \\((10,0)\\)?",
     "application": "Measure only the target after the parallel evaluation of XOR. Give both outcome probabilities and the conditional state of the inputs in each case. What have you learned about \\(f\\)?",
     "challenge": "Each run of the parallel evaluation of a two-input function, followed by measuring every qubit, reveals one random pair \\((x,f(x))\\). What is the expected number of runs before all four values are known? Compare with evaluating \\(f\\) on each input in turn."
+  },
+  "topic-7-3-4": {
+    "foundation": "Construct the row circuit that flips the target only on input \\(10\\). Which input wire receives the two \\(X\\) gates?",
+    "application": "Construct an oracle for \\(f(x_1,x_2)=x_1\\lor x_2\\) from its marked rows. What happens when the target starts in \\(\\ket{1}\\)?",
+    "challenge": "Explain why a truth-table oracle construction does not turn the one-query Deutsch\u2013Jozsa result into a guarantee of an efficient total computation."
   }
 }

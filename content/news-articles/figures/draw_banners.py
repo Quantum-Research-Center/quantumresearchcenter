@@ -591,7 +591,48 @@ def femoco():
     return svg(''.join(out))
 
 
+def hybrid_link():
+    """Two pairs of nearby nodes joined by short wavy quantum links, connected through a middle node by long arcs."""
+    out = [grid(0, 0, W, H, 40)]
+    sites = {'chi': [(150, 230), (215, 290)], 'ams': [(640, 120)], 'bio': [(1000, 230), (1080, 300)]}
+    for (x, y), r in (((180, 260), 120), ((640, 120), 80), ((1040, 265), 120)):
+        out.append(circle(x, y, r, 'fig-wash-1'))
+    # long classical arcs carrying post-quantum key exchange, drawn as chains of short segments
+    def arc(p, q, lift):
+        pts = []
+        for i in range(41):
+            t = i / 40
+            x = p[0] + (q[0] - p[0]) * t
+            y = p[1] + (q[1] - p[1]) * t - lift * 4 * t * (1 - t)
+            pts.append((x, y))
+        return ''.join(line(*pts[i], *pts[i + 1], 'fig-line-2') for i in range(0, 40, 2))
+    out.append(arc(sites['chi'][0], sites['ams'][0], 90))
+    out.append(arc(sites['ams'][0], sites['bio'][0], 60))
+    # short wavy quantum links inside each metro pair
+    for a, b in (sites['chi'], sites['bio']):
+        n = 24
+        pts = []
+        for i in range(n + 1):
+            t = i / n
+            x = a[0] + (b[0] - a[0]) * t
+            y = a[1] + (b[1] - a[1]) * t
+            dx, dy = b[0] - a[0], b[1] - a[1]
+            L = math.hypot(dx, dy)
+            off = 7 * math.sin(t * 6 * math.pi)
+            pts.append((x - dy / L * off, y + dx / L * off))
+        out.append(path(pts, 'fig-line-1'))
+    for group in sites.values():
+        for x, y in group:
+            out.append(rect(x - 26, y - 20, 52, 40, 'fig-box', 6))
+            out.append(circle(x, y, 9, 'fig-fill-1'))
+    # a key passed along the relay, drawn as small squares near the middle node
+    for k, (x, y) in enumerate(((560, 128), (600, 116), (680, 116), (720, 128))):
+        out.append(rect(x - 6, y - 6, 12, 12, 'fig-fill-2' if k % 3 else 'fig-fill-muted', 2))
+    return svg(''.join(out))
+
+
 BANNERS = {
+    'qkd-pqc-8000-km-sc26-demo': hybrid_link,
     'gordon-bell-femoco-exascale-classical': femoco,
     'google-contextuality-willow-science': contextuality,
     'ibm-fermilab-nvidia-modular-codesign-slurm': qpu_scheduler,
