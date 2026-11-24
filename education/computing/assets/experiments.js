@@ -1650,4 +1650,148 @@
   lab.querySelector('[data-random]').onclick=fresh;
   fresh();
  });
+ // Chapter 7 practice: draw an oracle for a random function and a one-query circuit that reveals its global property.
+ document.querySelectorAll('[data-lab="oracle-builder"]').forEach(lab=>{
+  lab.querySelector('.lab-fallback').hidden=true;lab.querySelectorAll('[data-live]').forEach(e=>e.hidden=false);
+  const int=(lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1)),pick=a=>a[int(0,a.length-1)],shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=int(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+  const pop=v=>{let c=0;for(;v;v>>=1)c+=v&1;return c},dot=(a,b)=>pop(a&b)&1,bits=(v,n)=>v.toString(2).padStart(n,'0'),range=k=>[...Array(k).keys()];
+  const holder=lab.querySelector('[data-stage]'),task=lab.querySelector('[data-task]'),table=lab.querySelector('[data-table]'),report=lab.querySelector('[data-report]'),bars=lab.querySelector('[data-bars]');
+  let tool='H',p,grid,regions;
+  // f(x)=s·x⊕b for some s and b, or null.
+  function affine(f){const b=f[0];for(let s=0;s<f.length;s++)if(f.every((v,x)=>v===(dot(s,x)^b)))return {s,b};return null}
+  // Reference oracle as grid columns. Wires 0..n-1 are x_1..x_n; wire n is the target.
+  function reference(g,n){
+   const aff=affine(g),cols=[],col=()=>Array(n+1).fill(null),flip=ctrl=>{const c=col();ctrl.forEach(j=>c[j]='C');c[n]='T';return c},xs=ws=>{const c=col();ws.forEach(j=>c[j]='X');return c};
+   if(aff){range(n).forEach(j=>{if(aff.s>>(n-1-j)&1)cols.push(flip([j]))});if(aff.b)cols.push(xs([n]));return cols}
+   g.forEach((v,a)=>{if(!v)return;const m=range(n).filter(j=>!(a>>(n-1-j)&1));if(m.length)cols.push(xs(m));cols.push(flip(range(n)));if(m.length)cols.push(xs(m))});
+   return cols;
+  }
+  function make(){
+   const n=pick([2,3]),N=2**n,kind=pick(['dj','bv']);let f,s=0;
+   if(kind==='bv'){s=int(1,N-1);f=range(N).map(x=>dot(s,x))}
+   else if(Math.random()<.3)f=Array(N).fill(int(0,1));
+   else{const on=new Set(shuffle(range(N)).slice(0,N/2));f=range(N).map(x=>on.has(x)?1:0)}
+   return {n,N,kind,f,s};
+  }
+  // Simulation on n+1 qubits; the target is the least significant bit of the index.
+  const bit=(i,w,n)=>i>>(n-w)&1;
+  function valid(col){const t=col.filter(v=>v==='T').length,c=col.filter(v=>v==='C').length,g=col.filter(v=>v==='H'||v==='X').length;return !t&&!c||t===1&&!g}
+  function apply(v,col,n){
+   v=[...v];const D=v.length;
+   if(col.includes('T')){const tb=1<<(n-col.indexOf('T')),cs=range(n+1).filter(w=>col[w]==='C');for(let i=0;i<D;i++)if(!(i&tb)&&cs.every(w=>bit(i,w,n)))[v[i],v[i|tb]]=[v[i|tb],v[i]];return v}
+   col.forEach((g,w)=>{if(g!=='H'&&g!=='X')return;const b=1<<(n-w);for(let i=0;i<D;i++)if(!(i&b)){const a=v[i],c=v[i|b];v[i]=g==='H'?(a+c)*Math.SQRT1_2:c;v[i|b]=g==='H'?(a-c)*Math.SQRT1_2:a}});
+   return v;
+  }
+  const runCols=(v,cols,n)=>cols.reduce((u,col)=>apply(u,col,n),v);
+  const query=(v,g)=>{const u=Array(v.length).fill(0);v.forEach((a,i)=>{u[(i>>1)*2+((i&1)^g[i>>1])]+=a});return u};
+  const basis=(i,D)=>{const v=Array(D).fill(0);v[i]=1;return v};
+  const probs=v=>{const P=Array(v.length/2).fill(0);v.forEach((a,i)=>P[i>>1]+=a*a);return P};
+  const tuple=g=>`(${g.join(',')})`;
+  // Drawing
+  const colW=36,gap=18,left=72,top=40,rowH=44;
+  const cx=c=>left+18+c*colW+gap*regions.findIndex(r=>c>=r.from&&c<r.to);
+  const wy=w=>top+24+w*rowH;
+  function draw(focus){
+   const {n}=p,C=grid.length,W=cx(C-1)+18+64,H=wy(n)+30;
+   const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('role','group');svg.setAttribute('aria-label','Circuit editor: choose a gate, then a place on a wire');svg.style.cssText='width:100%;height:auto';
+   regions.forEach(r=>{const x0=cx(r.from)-22,x1=cx(r.to-1)+22;node(svg,'rect',{x:x0,y:top,width:x1-x0,height:H-top-6,rx:6,class:'gq-region'+(r.name==='Oracle'?' oracle':'')});label(svg,(x0+x1)/2,top-10,r.name,{class:'lf-caption'})});
+   grid.forEach((col,c)=>{if(!valid(col))node(svg,'rect',{x:cx(c)-17,y:top+2,width:34,height:H-top-10,class:'gq-invalid'})});
+   range(n+1).forEach(w=>{node(svg,'path',{d:`M${left-6} ${wy(w)}H${w<n?W-46:W-20}`,class:'lf-thin'});label(svg,14,wy(w)+5,w<n?`x${w+1}`:'y',{'data-tex':w<n?`x_${w+1}`:'y','text-anchor':'start'});label(svg,left-12,wy(w)+5,'|0⟩',{'data-tex':'\\ket{0}','text-anchor':'end'})});
+   range(n).forEach(w=>{const x=W-44,y=wy(w);node(svg,'rect',{x,y:y-13,width:32,height:26,rx:3,class:'lf-node'});node(svg,'path',{d:`M${x+7} ${y+7}A9 9 0 0 1 ${x+25} ${y+7}M${x+16} ${y+7}l6 -12`,class:'lf-thin'})});
+   grid.forEach((col,c)=>{
+    const x=cx(c),link=range(n+1).filter(w=>col[w]==='C'||col[w]==='T');
+    if(link.length>1)node(svg,'path',{d:`M${x} ${wy(Math.min(...link))}V${wy(Math.max(...link))}`,class:'lf-thin',style:'stroke-width:1.8'});
+    col.forEach((g,w)=>{const y=wy(w);
+     if(g==='C')node(svg,'circle',{cx:x,cy:y,r:5,class:'lf-dot'});
+     else if(g==='T'){node(svg,'circle',{cx:x,cy:y,r:10,class:'lf-node'});node(svg,'path',{d:`M${x-10} ${y}H${x+10}M${x} ${y-10}V${y+10}`,class:'lf-thin',style:'stroke-width:1.6'})}
+     else if(g){node(svg,'rect',{x:x-13,y:y-13,width:26,height:26,rx:3,class:'lf-node'});label(svg,x,y+5,g,{'data-tex':g})}
+    });
+   });
+   grid.forEach((col,c)=>range(n+1).forEach(w=>{
+    const r=regions.find(r=>c>=r.from&&c<r.to),name=w<n?`x${w+1}`:'target y',what={H:'H',X:'X',C:'control',T:'target flip'}[col[w]]||'empty';
+    const cell=node(svg,'rect',{x:cx(c)-18,y:wy(w)-21,width:36,height:42,class:'gq-cell',tabindex:0,role:'button','aria-label':`${r.name} step ${c-r.from+1}, wire ${name}: ${what}`,'data-cell':`${c},${w}`});
+    const act=()=>place(c,w);cell.addEventListener('click',act);cell.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
+   }));
+   holder.replaceChildren(svg);typesetSvg(svg);
+   if(focus)svg.querySelector(`[data-cell="${focus}"]`)?.focus();
+  }
+  function place(c,w){const v=grid[c][w];grid[c][w]=tool==='E'||v===tool?null:tool;stale();draw(`${c},${w}`)}
+  function stale(){report.replaceChildren();bars.hidden=true;bars.replaceChildren();lab.dataset.result=''}
+  lab.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;lab.querySelectorAll('[data-tool]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)))});
+  // Checking
+  function oracleProblems(cols){
+   const {n,N,f}=p,D=2*N,out=[];
+   for(const x of range(N)){
+    let msg=null;
+    for(const y of [0,1]){
+     const i=2*x+y,v=runCols(basis(i,D),cols,n),j=v.findIndex(a=>Math.abs(Math.abs(a)-1)<1e-9),a=bits(x,n);
+     if(j<0)msg=`it turns \\(\\ket{${a}}\\ket{${y}}\\) into a superposition, but an oracle sends each basis state to a basis state`;
+     else if(j>>1!==x)msg=`it changes the input \\(${a}\\) into \\(${bits(j>>1,n)}\\); the oracle must leave the input unchanged`;
+     else if((j&1)!==(y^f[x]))msg=f[x]?`it does not flip the target on input \\(${a}\\), where \\(f=1\\)`:`it flips the target on input \\(${a}\\), where \\(f=0\\)`;
+     else if(v[j]<0)msg=`it gives \\(\\ket{${a}}\\ket{${y}}\\) a minus sign`;
+     if(msg)break;
+    }
+    if(msg)out.push(msg);
+   }
+   return out;
+  }
+  function detection(pre,post){
+   const {n,N,kind}=p,D=2*N,start=runCols(basis(0,D),pre,n),dist=g=>probs(runCols(query(start,g),post,n));
+   if(kind==='bv'){
+    const seen=new Map;
+    for(let s=0;s<N;s++){
+     const P=dist(range(N).map(x=>dot(s,x))),z=P.findIndex(q=>q>1-1e-9);
+     if(z<0)return {ok:false,msg:`For the hidden string \\(s=${bits(s,n)}\\), the measurement has no certain outcome, so one run cannot name \\(s\\).`};
+     if(seen.has(z))return {ok:false,msg:`The hidden strings \\(s=${bits(seen.get(z),n)}\\) and \\(s=${bits(s,n)}\\) both give outcome \\(${bits(z,n)}\\), so that outcome cannot name \\(s\\).`};
+     seen.set(z,s);
+    }
+    const plain=[...seen].every(([z,s])=>z===s);
+    return {ok:true,msg:plain?'Every hidden string \\(s\\) gives a certain outcome, and that outcome is \\(s\\) itself.':'Every hidden string \\(s\\) gives its own certain outcome, so one run names \\(s\\).'};
+   }
+   const fns=range(2**N).map(m=>range(N).map(x=>m>>x&1)).filter(g=>{const w=g.reduce((a,b)=>a+b,0);return w===0||w===N||w===N/2});
+   const cons=fns.filter(g=>g.every(v=>v===g[0])),bal=fns.filter(g=>!g.every(v=>v===g[0]));
+   const sup=g=>new Set(dist(g).map((q,z)=>q>1e-9?z:-1).filter(z=>z>=0));
+   const cs=cons.map(g=>[g,sup(g)]),constOut=new Set(cs.flatMap(([,S])=>[...S]));
+   for(const h of bal){const S=sup(h);for(const z of S)if(constOut.has(z)){const g=cs.find(([,T])=>T.has(z))[0];return {ok:false,msg:`The constant function \\(${tuple(g)}\\) and the balanced function \\(${tuple(h)}\\) can both give outcome \\(${bits(z,n)}\\), so that outcome cannot tell them apart.`}}}
+   const list=[...constOut].sort((a,b)=>a-b).map(z=>bits(z,n));
+   return {ok:true,msg:`Outcome ${list.map(z=>`\\(${z}\\)`).join(' or ')} means constant; every other outcome means balanced. This holds for all ${cons.length+bal.length} functions the promise allows, not only this one.`};
+  }
+  function check(){
+   const {n,N,f,kind,s}=p,[pre,ora,post]=regions.map(r=>grid.slice(r.from,r.to));
+   const bad=grid.findIndex(col=>!valid(col));
+   if(bad>=0){const r=regions.find(r=>bad>=r.from&&bad<r.to);math(report,`<p>${r.name} step ${bad-r.from+1} (shaded) is not a gate. A column holds either single-qubit gates or one controlled flip: exactly one target \\(\\oplus\\) and any number of controls.</p>`);lab.dataset.result='invalid';return}
+   const op=oracleProblems(ora),allWrong=op.length===N&&op.every(m=>m.includes('target on input'));
+   const det=detection(pre,post);
+   const parts=[];
+   parts.push(op.length?`<p><strong>Oracle: not yet.</strong> ${allWrong?'It computes \\(1\\oplus f(x)\\) instead of \\(f(x)\\): every target flip is reversed.':`On ${op.length} input${op.length>1?'s':''}, ${op.slice(0,3).join('; ')}${op.length>3?'; …':''}.`}</p>`:`<p><strong>Oracle: correct.</strong> It sends every \\(\\ket{x}\\ket{y}\\) to \\(\\ket{x}\\ket{y\\oplus f(x)}\\).</p>`);
+   parts.push(det.ok?`<p><strong>Detection: correct.</strong> ${det.msg}</p>`:`<p><strong>Detection: not yet.</strong> ${det.msg} Check that the target enters the oracle as \\(\\ket{-}\\) and that each input passes through \\(H\\) before and after the query.</p>`);
+   const P=probs(runCols(basis(0,2*N),grid,n));
+   if(!op.length&&det.ok){const z=P.findIndex(q=>q>1e-9),C=f.every(v=>v===f[0]);parts.push(`<p>For this \\(f\\) your circuit gives ${P.filter(q=>q>1e-9).length===1?`\\(${bits(z,n)}\\) with certainty`:'the outcomes shown below'}, so ${kind==='bv'?`\\(s=${bits(s,n)}\\)`:`\\(f\\) is ${C?'constant':'balanced'}`}, after a single query.</p>`)}
+   math(report,parts.join(''));
+   bars.replaceChildren();bars.hidden=false;chart(lab,range(N).map(z=>bits(z,n)))(P.map(Math.sqrt));
+   lab.dataset.result=!op.length&&det.ok?'pass':'fail';
+  }
+  function blank(){grid=range(regions.at(-1).to).map(()=>Array(p.n+1).fill(null))}
+  function solution(){
+   blank();const {n,f}=p,o=regions[1];
+   grid[0][n]='X';range(n+1).forEach(w=>grid[1][w]='H');
+   reference(f,n).forEach((col,k)=>grid[o.from+k]=col);
+   range(n).forEach(w=>grid[regions[2].from][w]='H');
+   draw();check();
+  }
+  function fresh(){
+   p=make();const {n,N,f,kind}=p,k=n===2?9:12;
+   regions=[{name:'Prepare',from:0,to:2},{name:'Oracle',from:2,to:2+k},{name:'Interfere',from:2+k,to:4+k}];
+   blank();stale();
+   math(task,kind==='bv'?`\\(f(x)=s\\cdot x\\) for a hidden string \\(s\\in\\{0,1\\}^{${n}}\\). Draw a circuit for its oracle \\(U_f\\) in the Oracle region, then add gates in the other two regions so that measuring the inputs after one query reveals \\(s\\).`:`\\(f:\\{0,1\\}^{${n}}\\to\\{0,1\\}\\) is promised to be constant or balanced. Draw a circuit for its oracle \\(U_f\\) in the Oracle region, then add gates in the other two regions so that measuring the inputs after one query decides which it is.`);
+   math(table,`<table><tr><th scope="row">\\(x\\)</th>${f.map((_,x)=>`<td>${bits(x,n)}</td>`).join('')}</tr><tr><th scope="row">\\(f(x)\\)</th>${f.map(v=>`<td>${v}</td>`).join('')}</tr></table>`);
+   lab.dataset.kind=kind;lab.dataset.table=f.join('');
+   draw();
+  }
+  lab.querySelector('[data-check]').onclick=check;
+  lab.querySelector('[data-clear]').onclick=()=>{blank();stale();draw()};
+  lab.querySelector('[data-solution]').onclick=solution;
+  lab.querySelector('[data-random]').onclick=fresh;
+  fresh();
+ });
 })();
