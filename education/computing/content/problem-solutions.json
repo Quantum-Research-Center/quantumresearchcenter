@@ -385,21 +385,11 @@
     "challenge": "Amplification needs about \\(\\sqrt N\\) iterations, and each uses the preparation, costing about \\(N\\), so the total is about \\(N\\sqrt N\\). A classical scan of the list costs about \\(N\\). If the data must be loaded this way, amplification is slower: the advantage depends on the preparation being cheap."
   },
   "topic-8-1-1": {
-    "foundation": "\\(\\ket a\\ket b\\to\\ket a\\ket{a\\oplus b}\\to\\ket a\\ket{a\\oplus a\\oplus b}=\\ket a\\ket b\\), since \\(a\\oplus a=0\\). Every basis state returns unchanged, so the pair is the identity.",
+    "foundation": "\\(\\ket0\\to\\ket+\\to\\ket+\\to\\ket0\\) and \\(\\ket1\\to\\ket-\\to-\\ket-\\to-\\ket1\\). The result keeps \\(\\ket0\\) and negates \\(\\ket1\\), which is what \\(Z\\) does.",
     "application": "Move the first \\(Z\\) through the CNOT: \\(Z\\) on the target before a CNOT equals the CNOT followed by \\(Z\\) on both wires. The circuit becomes the CNOT, then \\(Z\\otimes Z\\), then \\(Z\\otimes Z\\). The two \\(Z\\otimes Z\\) layers cancel, leaving the CNOT alone.",
     "challenge": "No. Since \\(ZX=-XZ\\), controlled-\\((ZX)\\) applies \\(-XZ\\) on the control-\\(1\\) branch and nothing on the control-\\(0\\) branch. The \\(-1\\) multiplies one branch only, so it is a relative sign: controlled-\\((ZX)\\) equals controlled-\\((XZ)\\) followed by \\(Z\\) on the control. A global sign of a gate becomes observable once the gate is controlled."
   },
   "topic-8-1-2": {
-    "foundation": "\\(\\ket0\\to\\ket+\\to\\ket+\\to\\ket0\\) and \\(\\ket1\\to\\ket-\\to-\\ket-\\to-\\ket1\\). The result keeps \\(\\ket0\\) and negates \\(\\ket1\\), which is what \\(Z\\) does.",
-    "application": "\\(\\ket+\\ket+=\\tfrac12(\\ket{00}+\\ket{01}+\\ket{10}+\\ket{11})\\), and CZ negates only \\(\\ket{11}\\), giving \\(\\tfrac12(\\ket{00}+\\ket{01}+\\ket{10}-\\ket{11})=\\tfrac1{\\sqrt2}(\\ket0\\ket++\\ket1\\ket-)\\). A product state with amplitudes \\(c_{ab}\\) satisfies \\(c_{00}c_{11}=c_{01}c_{10}\\). Here \\(\\tfrac12\\cdot(-\\tfrac12)\\neq\\tfrac12\\cdot\\tfrac12\\), so the state is entangled. CZ entangles, just as CNOT does.",
-    "challenge": "Move the \\(X\\) on qubit 1 through CZ: it becomes \\(X\\) on qubit 1 and \\(Z\\) on qubit 2 after the CZ. Then move the \\(X\\) on qubit 2: it becomes \\(X\\) on qubit 2 and \\(Z\\) on qubit 1. After the CZ, qubit 1 now receives \\(Z\\) then \\(X\\), as required, but qubit 2 receives \\(X\\) then \\(Z\\). Exchanging these on qubit 2 costs \\(ZX=-XZ\\), so the sign is \\(-1\\). It is global, so the two circuits are equal up to global phase."
-  },
-  "topic-8-1-3": {
-    "foundation": "\\(w_2=0\\), so the mask is \\(X\\) on the second wire: \\(X\\) on wire 2, then CZ, then \\(X\\) on wire 2. \\(\\ket{10}\\to\\ket{11}\\to-\\ket{11}\\to-\\ket{10}\\), while \\(\\ket{00}\\to\\ket{01}\\to\\ket{01}\\to\\ket{00}\\) keeps its sign.",
-    "application": "The bits of \\(010\\) are zero on wires 1 and 3, so apply \\(X\\) to wires 1 and 3, then \\(C^2Z\\), then \\(X\\) to wires 1 and 3 again: four \\(X\\) gates. \\(C^2Z\\) is a Toffoli with \\(H\\) on its target before and after.",
-    "challenge": "\\(O_{01}O_{10}\\) uses two CZ gates and four \\(X\\) gates. But \\((-1)^{x_1\\oplus x_2}=(-1)^{x_1}(-1)^{x_2}\\), and \\(Z\\) on wire \\(j\\) attaches \\((-1)^{x_j}\\). So \\(Z\\otimes Z=\\operatorname{diag}(1,-1,-1,1)\\) is the same oracle with two one-qubit gates. A short formula for \\(f\\) gives a short oracle; marking string by string ignores that structure."
-  },
-  "topic-8-1-4": {
     "foundation": "\\(R_0=\\operatorname{diag}(1,-1,-1,-1)\\). The masked CZ marks \\(00\\): it is \\(\\operatorname{diag}(-1,1,1,1)=-R_0\\).",
     "application": "\\(\\braket s{00}=\\tfrac12\\), so \\(D\\ket{00}=2\\cdot\\tfrac12\\ket s-\\ket{00}=\\ket s-\\ket{00}\\). The amplitudes on \\(00,01,10,11\\) are \\(-\\tfrac12,\\tfrac12,\\tfrac12,\\tfrac12\\). A single basis state is spread over all four strings, so \\(D\\) is not a sign gate.",
     "challenge": "\\(AR_0A^\\dagger\\ket\\psi=AR_0\\ket{0^n}=A\\ket{0^n}=\\ket\\psi\\). If \\(\\braket\\psi\\phi=0\\), then \\(A^\\dagger\\ket\\phi\\) is orthogonal to \\(A^\\dagger\\ket\\psi=\\ket{0^n}\\), because unitaries preserve overlaps. \\(R_0\\) negates every state orthogonal to \\(\\ket{0^n}\\), so \\(AR_0A^\\dagger\\ket\\phi=A(-A^\\dagger\\ket\\phi)=-\\ket\\phi\\)."

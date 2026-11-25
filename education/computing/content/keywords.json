@@ -275,19 +275,18 @@
     "amplitude amplification"
   ],
   "topic-8-1-1": [
-    "circuit identity"
-  ],
-  "topic-8-1-2": [
+    "circuit identity",
     "controlled-\\(Z\\)",
     "conjugation"
   ],
-  "topic-8-1-4": [
+  "topic-8-1-2": [
     "reflection"
   ],
   "topic-8-2-1": [
-    "controlled phase gate"
+    "controlled version"
   ],
   "topic-8-2-2": [
+    "controlled phase gate",
     "eigenvectors"
   ],
   "topic-8-3-1": [

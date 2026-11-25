@@ -826,7 +826,7 @@
           "A gate that depends on its two bits only through \\(ab\\) cannot tell them apart."
         ],
         "answer": "Controlled-\\(Z\\) and controlled-\\(S\\) attach a phase depending on \\(ab\\) alone, so exchanging the qubits changes nothing. CNOT is not symmetric: it sends \\(\\ket{10}\\) to \\(\\ket{11}\\) but leaves \\(\\ket{01}\\) alone. Only after conjugating its target by \\(H\\) does it become the symmetric CZ.",
-        "review": "topic-8-1-2"
+        "review": "topic-8-1-1"
       },
       {
         "kind": "Quick check",
@@ -856,7 +856,7 @@
           "The reflection is \\(H^{\\otimes2}(X\\otimes X)\\,CZ\\,(X\\otimes X)H^{\\otimes2}\\)."
         ],
         "answer": "Oracle: \\(X\\) on qubit 2, controlled-\\(Z\\), \\(X\\) on qubit 2. It sends \\(\\ket{10}\\) to \\(\\ket{11}\\), applies the sign, and restores \\(\\ket{10}\\). Starting from \\(\\ket s=\\tfrac12(1,1,1,1)\\), the oracle gives \\(\\tfrac12(1,1,-1,1)\\). The reflection circuit implements \\(-D\\), and \\(D\\) maps this state to \\(\\ket{10}\\), so the result is \\(-\\ket{10}\\): the outcome is \\(10\\) with certainty.",
-        "review": "topic-8-1-4"
+        "review": "topic-8-1-2"
       },
       {
         "kind": "Worked problem",
@@ -866,7 +866,7 @@
           "Compare the sign patterns \\((-,+,+,+)\\) and \\((+,-,-,-)\\)."
         ],
         "answer": "(a) \\(X\\otimes X\\) sends \\(\\ket{00}\\) to \\(\\ket{11}\\), controlled-\\(Z\\) multiplies it by \\(-1\\), and \\(X\\otimes X\\) returns it to \\(\\ket{00}\\). Every other basis state is mapped away from \\(\\ket{11}\\) and back without a sign. So the circuit has signs \\((-,+,+,+)\\) on \\(00,01,10,11\\). (b) OR is \\(0\\) only on \\(00\\), so its phase oracle has signs \\((+,-,-,-)\\), exactly \\(-1\\) times the circuit. Used by itself, as in a search iteration, the factor \\(-1\\) multiplies the whole state and changes no probability. (c) If the oracle is controlled by another qubit, the \\(-1\\) acts only on the control-\\(1\\) branch and becomes a \\(Z\\) on the control, so the correct sign must be restored, for example by a \\(Z\\) on that control.",
-        "review": "topic-8-1-3"
+        "review": "topic-8-1-2"
       },
       {
         "kind": "Worked problem",
@@ -906,7 +906,7 @@
           "Require \\(k^g\\ge(1/\\epsilon)^3\\) and take logarithms."
         ],
         "answer": "(a) With \\(k\\) gates there are at most about \\(k^g\\) circuits of length \\(g\\) (a little more counting shorter ones, which does not change the estimate). Covering all unitaries within \\(\\epsilon\\) needs \\(k^g\\gtrsim(1/\\epsilon)^3\\), so \\(g\\gtrsim3\\ln(1/\\epsilon)/\\ln k\\). (b) \\(3\\ln10^{10}/\\ln3\\approx3\\times23.0/1.10\\approx63\\) gates. (c) The required length grows only logarithmically in \\(1/\\epsilon\\): each additional decimal digit of accuracy costs a few more gates. Good synthesis methods for Clifford+\\(T\\) achieve length proportional to \\(\\log(1/\\epsilon)\\), so this counting bound is attainable up to a constant factor, which is why rotation synthesis is cheap per gate but adds up over a long circuit.",
-        "review": "topic-8-1-4"
+        "review": "topic-8-1-2"
       },
       {
         "kind": "Extension",

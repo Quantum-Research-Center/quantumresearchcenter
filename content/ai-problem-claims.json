@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-08",
+  "reviewed_on": "2026-11-25",
   "problems": [
     {
       "id": "yang-mills",
@@ -80,22 +80,23 @@
       "category": "claimed"
     },
     {
+      "id": "riemann",
+      "field": "Mathematics",
+      "problem": "Riemann hypothesis",
+      "question": "Do all nontrivial zeros of the Riemann zeta function lie on the critical line?",
+      "scope": "The Lean FRO and Mathlib Initiative certified on 21 November that a 17-million-line Lean library proves Mathlib’s statement of the hypothesis. No human-readable proof has been released, and the claimed extension to the generalized Riemann hypothesis is not covered by that certification.",
+      "category": "claimed",
+      "status": "Proof claimed; Lean proof certified",
+      "source": "https://alpo.ge/remark.pdf",
+      "claimant": "Levent Alpöge (Anthropic), with Claude",
+      "announced": "2026-11-20"
+    },
+    {
       "id": "p-vs-np",
       "field": "Computer science",
       "problem": "P versus NP",
       "question": "Can every problem whose solutions can be checked efficiently also be solved efficiently?",
       "scope": "A refutation of ETH would not answer this question.",
-      "category": "open",
-      "status": "Still open",
-      "source": "https://www.claymath.org/millennium-problems/",
-      "source_label": "Clay Mathematics Institute"
-    },
-    {
-      "id": "riemann",
-      "field": "Mathematics",
-      "problem": "Riemann hypothesis",
-      "question": "Do all nontrivial zeros of the Riemann zeta function lie on the critical line?",
-      "scope": "A central question about the distribution of prime numbers.",
       "category": "open",
       "status": "Still open",
       "source": "https://www.claymath.org/millennium-problems/",

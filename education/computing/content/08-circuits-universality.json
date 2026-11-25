@@ -7,42 +7,28 @@
   "sections": [
     {
       "id": "topic-8-1-1",
-      "title": "When two circuits agree",
+      "title": "Rewriting circuits",
       "number": "8.1.1",
       "group": "8.1 · Circuit Identities",
       "part_id": "section-8-1"
     },
     {
       "id": "topic-8-1-2",
-      "title": "Turning flips into signs",
+      "title": "Reflections",
       "number": "8.1.2",
       "group": "8.1 · Circuit Identities",
       "part_id": "section-8-1"
     },
     {
-      "id": "topic-8-1-3",
-      "title": "Marking a string with a phase",
-      "number": "8.1.3",
-      "group": "8.1 · Circuit Identities",
-      "part_id": "section-8-1"
-    },
-    {
-      "id": "topic-8-1-4",
-      "title": "Reflection about the uniform state",
-      "number": "8.1.4",
-      "group": "8.1 · Circuit Identities",
-      "part_id": "section-8-1"
-    },
-    {
       "id": "topic-8-2-1",
-      "title": "Controlled phase gates",
+      "title": "What is a controlled gate?",
       "number": "8.2.1",
       "group": "8.2 · Controlled Gates",
       "part_id": "section-8-2"
     },
     {
       "id": "topic-8-2-2",
-      "title": "Controlled one-qubit gates",
+      "title": "Controlled one-qubit gates from first principles",
       "number": "8.2.2",
       "group": "8.2 · Controlled Gates",
       "part_id": "section-8-2"
@@ -119,7 +105,7 @@
       "number": "8.4"
     }
   ],
-  "opening": "In Chapter 7, every oracle was built from bit flips and Toffoli gates, and phase kickback with a few Hadamards turned those flips into signs and interference. Those gates move basis strings around and attach signs to them. A quantum step, however, may be any unitary transformation of the register, and a device applies only a few kinds of gate, each to one or two qubits.",
-  "opening_continuation": "We start with identities between circuits, which let us shorten a circuit and change the basis in which a gate acts. That turns flips into phases and gives a reflection that mixes every amplitude at once. Building those gates requires multi-controlled operations, so we reduce them to CNOT and one-qubit gates. With that reduction every unitary can be assembled, and counting the gates shows that most unitaries are nevertheless expensive. A finite set of gates can only approximate, and real devices add their own costs of moving qubits and correcting errors. The reflection built here is the step that quantum search repeats.",
+  "opening": "Chapter 7 turned reversible function evaluation into phase oracles. We now ask how to construct such operations from gates acting on one or two qubits.",
+  "opening_continuation": "Circuit identities lead to phase markings and reflections. Controlled-gate constructions then establish universality, while parameter counting, approximation, and physical constraints show what implementation costs.",
   "intro_continuation": "Classical reversible circuits are complete once we have the Toffoli gate. Can a fixed set of one- and two-qubit gates similarly build every unitary on \\(n\\) qubits, and how many gates does that take?"
 }

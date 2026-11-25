@@ -18,7 +18,7 @@ for name,s in pages.items():
    doc=pages.get(target.name)
    if doc and not doc.find(id=unquote(u.fragment)):errors.append(f'{name}: missing anchor {value}')
  for section in s.select('.reading-topic'):
-  if not section.select('figure,svg,img'):errors.append(f'{name}: missing illustration for {section["id"]}')
+  if section.get('data-illustration') != 'none' and not section.select('figure,svg,img'):errors.append(f'{name}: missing illustration for {section["id"]}')
   questions=section.select('.probing-question')
   if len(questions)!=1 or len(questions[0].select(':scope > ol > li'))!=3:
    errors.append(f'{name}: expected three questions for {section["id"]}')

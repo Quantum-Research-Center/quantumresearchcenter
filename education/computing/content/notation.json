@@ -225,13 +225,13 @@
         "tex": "S,\\ T",
         "read": "S, T",
         "meaning": "The phase gates \\(S=\\operatorname{diag}(1,i)\\) and \\(T=\\operatorname{diag}(1,e^{i\\pi/4})\\), with \\(T^2=S\\) and \\(S^2=Z\\).",
-        "section": "topic-8-2-1"
+        "section": "topic-8-2-2"
       },
       {
         "tex": "C^{n-1}Z",
         "read": "C n minus one Z",
         "meaning": "The \\(n\\)-qubit controlled-\\(Z\\): it multiplies \\(\\ket{1\\cdots1}\\) by \\(-1\\) and leaves every other basis string unchanged.",
-        "section": "topic-8-1-3"
+        "section": "topic-8-2-3"
       },
       {
         "tex": "\\|U-V\\|",

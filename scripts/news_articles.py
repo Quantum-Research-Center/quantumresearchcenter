@@ -15,6 +15,7 @@ from site_navigation import site_navigation
 from tools import render_tools
 from games import render_games
 from ai_problem_claims import render_claims_home, render_claims_page
+from ai_claims import render_feed_page, render_feed_preview
 
 TOPICS = {'discoveries': 'Discoveries', 'companies': 'Companies',
           'government': 'Government & Policy', 'projects': 'Projects & Infrastructure'}
@@ -188,7 +189,7 @@ def signal_art():
 def stream_nav(source, active=''):
     return '<nav class="stream-nav" aria-label="News streams">' + ''.join(
         f'<a href="{relative(path, source)}"'+(' aria-current="page"' if key == active else '')+f'>{label}</a>'
-        for key, path, label in [('all', 'news/index.html', 'Overview'), ('articles', 'news/articles/index.html', 'Quantum News'), ('papers', 'news/papers/index.html', 'Research Papers')]) + '</nav>'
+        for key, path, label in [('all', 'news/index.html', 'Overview'), ('articles', 'news/articles/index.html', 'Quantum News'), ('papers', 'news/papers/index.html', 'Research Papers'), ('ai-claims', 'news/ai-claims/index.html', 'AI Claims')]) + '</nav>'
 
 
 def paper_preview(papers, source):
@@ -231,6 +232,7 @@ def render_editorial(root, outputs, book, site_logo, social_meta, json_ld):
     render_tools(root, shell)
     render_games(root, shell)
     render_claims_page(root, articles, shell)
+    render_feed_page(root, articles, papers, shell, stream_nav)
 
     for source in ('index.html', 'news/index.html'):
         home = source == 'index.html'
@@ -260,6 +262,8 @@ def render_editorial(root, outputs, book, site_logo, social_meta, json_ld):
                      + '<div class="story-grid">' + ''.join(card(a, source, thumbnail=first_figure(root, a)) for a in selection) + '</div></section>')
         if home:
             body += render_claims_home(root, articles)
+        else:
+            body += render_feed_preview(root, articles, papers, source)
         if home:
             body += ('<nav class="home-reference" aria-label="Reference and community"><span>Keep exploring</span>'
                      '<a href="map/index.html">Topic maps ↗</a><a href="references/index.html">Bibliography ↗</a>'

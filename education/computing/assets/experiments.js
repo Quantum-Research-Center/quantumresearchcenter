@@ -141,6 +141,318 @@
   document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});
   draw();
 });
+ document.querySelectorAll('[data-lab="reflection"]').forEach(lab=>{
+  const preset=lab.querySelector('[data-preset]'),slider=lab.querySelector('[data-angle]'),angOut=lab.querySelector('[data-angle-val]'),next=lab.querySelector('[data-next]'),play=lab.querySelector('[data-play]'),reset=lab.querySelector('[data-reset]');
+  const proj=lab.querySelector('[data-proj]'),perp=lab.querySelector('[data-perp]'),ghostVec=lab.querySelector('[data-ghost-vec]'),liveVec=lab.querySelector('[data-live-vec]'),liveTip=lab.querySelector('[data-live-tip]'),arc=lab.querySelector('[data-arc]');
+  const lblCurr=lab.querySelector('[data-lbl-curr]'),lblTheta=lab.querySelector('[data-lbl-theta]'),meanLine=lab.querySelector('[data-mean-line]'),lblMean=lab.querySelector('[data-lbl-mean]');
+  const mirH=lab.querySelector('[data-mirror-h]'),mirR0=lab.querySelector('[data-mirror-r0]'),mirD=lab.querySelector('[data-mirror-d]');
+  const ox=110,oy=140,R=95,baseY=155,scaleY=88;
+  let stage=0,pos=0,timer=null,stopAnim=null;
+  const h2=a=>[(a[0]+a[1]+a[2]+a[3])/2,(a[0]-a[1]+a[2]-a[3])/2,(a[0]+a[1]-a[2]-a[3])/2,(a[0]-a[1]-a[2]+a[3])/2];
+  const r0=a=>[a[0],-a[1],-a[2],-a[3]];
+  function initAmps(deg){
+   if(preset.value==='marked')return [0.5,-0.5,0.5,0.5];
+   const rad=deg*DEG,c=Math.cos(rad),s=Math.sin(rad);
+   const a0=0.5*c+(Math.sqrt(3)/2)*s,other=0.5*c-(1/(2*Math.sqrt(3)))*s;
+   return [a0,other,other,other];
+  }
+  function stageAmps(deg,p){
+   const s0=initAmps(deg),s1=h2(s0),s2=r0(s1),s3=h2(s2),seq=[s0,s1,s2,s3];
+   const idx=Math.min(2,Math.floor(p)),fracP=p-idx;
+   return seq[idx].map((v,i)=>v+fracP*(seq[idx+1][i]-v));
+  }
+  function planeCoords(deg,p){
+   const angles=[deg,60-deg,60+deg,-deg];
+   const idx=Math.min(2,Math.floor(p)),fracP=p-idx;
+   const curDeg=angles[idx]+fracP*(angles[idx+1]-angles[idx]);
+   return {curDeg,rad:curDeg*DEG};
+  }
+  function pause(){clearInterval(timer);timer=null;if(play){play.textContent='Play';play.setAttribute('aria-pressed','false')}}
+  function draw(p=pos){
+   const deg=preset.value==='00'?60:preset.value==='marked'?60:Number(slider.value);
+   if(preset.value!=='custom')slider.value=deg;
+   angOut.textContent=`${deg}°`;
+   const curStage=Math.round(p);
+   lab.querySelectorAll('[data-stage-pill]').forEach(el=>el.classList.toggle('active',Number(el.dataset.stagePill)===curStage));
+   const rad0=deg*DEG,{curDeg,rad:curRad}=planeCoords(deg,p);
+   const gx=ox+R*Math.cos(rad0),gy=oy-R*Math.sin(rad0);
+   const cx=ox+R*Math.cos(curRad),cy=oy-R*Math.sin(curRad);
+   ghostVec.setAttribute('x2',gx);ghostVec.setAttribute('y2',gy);
+   liveVec.setAttribute('x2',cx);liveVec.setAttribute('y2',cy);
+   liveTip.setAttribute('cx',cx);liveTip.setAttribute('cy',cy);
+   proj.setAttribute('x2',cx);
+   perp.setAttribute('x1',cx);perp.setAttribute('x2',cx);perp.setAttribute('y2',cy);
+   if(mirH){mirH.setAttribute('stroke',(curStage===1||curStage===3)?'#246593':'#c4d1dc');mirH.setAttribute('stroke-width',(curStage===1||curStage===3)?'2.6':'1.2')}
+   if(mirR0){mirR0.setAttribute('stroke',curStage===2?'#b27142':'#c4d1dc');mirR0.setAttribute('stroke-width',curStage===2?'2.6':'1.2')}
+   if(mirD){mirD.setAttribute('stroke',curStage===3?'#246593':'#377e80');mirD.setAttribute('stroke-width',curStage===3?'3':'2')}
+   const ar=34,ax1=ox+ar,ay1=oy,ax2=ox+ar*Math.cos(curRad),ay2=oy-ar*Math.sin(curRad),sweep=curRad>=0?0:1;
+   arc.setAttribute('d',Math.abs(curRad)<0.03?'':`M${ax1} ${ay1} A${ar} ${ar} 0 0 ${sweep} ${ax2} ${ay2}`);
+   const vecTex=curStage===0?'\\ket{\\psi}':curStage===1?'H^{\\otimes 2}\\ket{\\psi}':curStage===2?'R_0 H^{\\otimes 2}\\ket{\\psi}':'D\\ket{\\psi}';
+   svgMath(lblCurr,vecTex,{x:cx+8,y:cy+(curRad>=0?-6:16),'text-anchor':'start'},'|ψ⟩');
+   svgMath(lblTheta,`${Math.round(curDeg)}^\\circ`,{x:ox+42,y:oy+(curRad>=0?-10:18),'text-anchor':'start'},`${Math.round(curDeg)}°`);
+   const s0=initAmps(deg),curAmps=stageAmps(deg,p),mu=(s0[0]+s0[1]+s0[2]+s0[3])/4,muY=baseY-mu*scaleY;
+   meanLine.setAttribute('y1',muY);meanLine.setAttribute('y2',muY);
+   const inZeroBasis=p>=0.5&&p<2.5;
+   meanLine.style.opacity=inZeroBasis?'0.28':'1';
+   svgMath(lblMean,inZeroBasis?'0':`\\mu=${fmt(mu)}`,{x:645,y:(inZeroBasis?baseY:muY)-8,'text-anchor':'end'},inZeroBasis?'0':`μ=${fmt(mu)}`);
+   for(let i=0;i<4;i++){
+    const g=lab.querySelector(`[data-bar-ghost="${i}"]`),r=lab.querySelector(`[data-bar="${i}"]`),iv=s0[i],cv=curAmps[i];
+    g.setAttribute('y',iv>=0?baseY-Math.abs(iv)*scaleY:baseY);g.setAttribute('height',Math.abs(iv)*scaleY);
+    r.setAttribute('y',cv>=0?baseY-Math.abs(cv)*scaleY:baseY);r.setAttribute('height',Math.abs(cv)*scaleY);
+    r.setAttribute('fill',cv<0?'#b27142':'#377e80');
+   }
+   const aStr=curAmps.map(fmt).join(',\\;');
+   math(lab.querySelector('[data-state]'),[
+    `Initial: \\(${fmt(Math.cos(rad0))}\\ket{s} ${Math.sin(rad0)<0?'-':'+'} ${fmt(Math.abs(Math.sin(rad0)))}\\ket{s_\\perp}\\), amplitudes \\((${aStr})\\), mean \\(\\mu = ${fmt(mu)}\\).`,
+    `After \\(H^{\\otimes 2}\\): angle \\(${deg}^\\circ\\mapsto ${60-deg}^\\circ\\); \\(\\ket{00}\\) now holds \\(\\braket{s}{\\psi}=${fmt(curAmps[0])}\\). Amplitudes: \\((${aStr})\\).`,
+    `After \\(R_0\\): angle \\(${60-deg}^\\circ\\mapsto ${60+deg}^\\circ\\); \\(\\ket{00}\\) stays \\(${fmt(curAmps[0])}\\) while \\(\\ket{01},\\ket{10},\\ket{11}\\) negate. Amplitudes: \\((${aStr})\\).`,
+    `After \\(H^{\\otimes 2}\\): \\(D\\ket{\\psi} = ${fmt(Math.cos(curRad))}\\ket{s} ${Math.sin(curRad)<0?'-':'+'} ${fmt(Math.abs(Math.sin(curRad)))}\\ket{s_\\perp}\\) (\\(-${deg}^\\circ\\)), amplitudes \\((${aStr})\\).`
+   ][curStage]);
+   math(lab.querySelector('[data-status]'),[
+    'Axes \\(\\ket{s}\\) and \\(\\ket{s_\\perp}\\) stay fixed. Step or play to watch \\(H^{\\otimes 2}\\), \\(R_0\\), and \\(H^{\\otimes 2}\\) compose as three reflections.',
+    'Operation 1 (\\(H^{\\otimes 2}\\)): fixes the \\(30^\\circ\\) bisector \\(\\ket{s}+\\ket{00}\\) and flips \\(\\ket{00}-\\ket{s}\\), reflecting \\(\\theta\\mapsto 60^\\circ-\\theta\\) (swapping \\(\\ket{00}\\) and \\(\\ket{s}\\)).',
+    'Operation 2 (\\(R_0\\)): reflects across the \\(60^\\circ\\) (\\(\\ket{00}\\)) direction (\\(\\alpha\\mapsto 120^\\circ-\\alpha\\)), keeping \\(\\ket{00}\\) and negating \\(\\ket{01},\\ket{10},\\ket{11}\\).',
+    'Operation 1 again (\\(H^{\\otimes 2}\\)): reflects across the \\(30^\\circ\\) bisector (\\(60^\\circ+\\theta\\mapsto -\\theta\\)), landing at \\(D\\ket{\\psi}\\) and \\(a_x\\mapsto 2\\mu-a_x\\).'
+   ][curStage]);
+   math(next,['1. Apply \\(H^{\\otimes 2}\\)','2. Apply \\(R_0\\)','3. Apply \\(H^{\\otimes 2}\\)','Done'][curStage]);
+   next.disabled=curStage===3;
+   if(curStage===3)pause();
+  }
+  function goTo(target){
+   if(stopAnim){stopAnim();stopAnim=null}
+   const from=pos;
+   stage=target;
+   stopAnim=tween(550,u=>{pos=from+(target-from)*u;draw(pos)},()=>{pos=target;stopAnim=null;draw(pos)});
+  }
+  next.onclick=()=>{pause();if(stage<3)goTo(stage+1)};
+  if(play)play.onclick=()=>{
+   if(timer){pause();return}
+   if(stage===3){stage=0;pos=0;draw(0)}
+   play.textContent='Pause';play.setAttribute('aria-pressed','true');
+   goTo(stage+1);
+   timer=setInterval(()=>{if(stage<3)goTo(stage+1);else pause()},still()?1800:1100);
+  };
+  preset.onchange=slider.oninput=reset.onclick=e=>{
+   pause();if(stopAnim){stopAnim();stopAnim=null}
+   if(e.target===slider)preset.value='custom';
+   stage=0;pos=0;draw(0);
+  };
+  lab.closest('.book-section')?.addEventListener('slideleave',pause);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});
+  draw(0);
+ });
+ document.querySelectorAll('[data-lab="gate-reflections"]').forEach(lab=>{
+  const gateSel=lab.querySelector('[data-gate]'),slider=lab.querySelector('[data-angle]'),angOut=lab.querySelector('[data-angle-val]'),btn=lab.querySelector('[data-reflect]'),reset=lab.querySelector('[data-reset]');
+  const mirLine=lab.querySelector('[data-mirror]'),perp=lab.querySelector('[data-perp]'),ghostVec=lab.querySelector('[data-ghost-vec]'),liveVec=lab.querySelector('[data-live-vec]'),liveTip=lab.querySelector('[data-live-tip]');
+  const lblVert=lab.querySelector('[data-lbl-vert]'),lblMir=lab.querySelector('[data-lbl-mir]'),lblCurr=lab.querySelector('[data-lbl-curr]');
+  const infoOp=lab.querySelector('[data-info-op]'),infoVec=lab.querySelector('[data-info-vec]'),infoRule=lab.querySelector('[data-info-rule]');
+  const ox=165,oy=140,R=95;
+  const gates={
+   Z:{mir:0,vert:'\\ket{1}',op:'Z = 2\\ketbra{0}{0}-I',vec:'\\ket{u_+}=\\ket{0}',rule:'\\theta \\;\\longmapsto\\; -\\theta'},
+   X:{mir:45,vert:'\\ket{1}',op:'X = 2\\ketbra{+}{+}-I',vec:'\\ket{u_+}=\\ket{+}=\\tfrac{\\ket{0}+\\ket{1}}{\\sqrt{2}}',rule:'\\theta \\;\\longmapsto\\; 90^\\circ - \\theta'},
+   Y:{mir:45,vert:'i\\ket{1}',op:'Y = 2\\ketbra{+i}{+i}-I',vec:'\\ket{u_+}=\\ket{+i}=\\tfrac{\\ket{0}+i\\ket{1}}{\\sqrt{2}}',rule:'\\theta \\;\\longmapsto\\; 90^\\circ - \\theta'},
+   H:{mir:22.5,vert:'\\ket{1}',op:'H = 2\\ketbra{u_H}{u_H}-I',vec:'\\ket{u_H}=\\cos\\tfrac{\\pi}{8}\\ket{0}+\\sin\\tfrac{\\pi}{8}\\ket{1}',rule:'\\theta \\;\\longmapsto\\; 45^\\circ - \\theta'}
+  };
+  let reflected=false,t=0,stopAnim=null;
+  function draw(progress=t){
+   const g=gateSel.value,cfg=gates[g],deg=Number(slider.value),mirRad=cfg.mir*DEG;
+   angOut.textContent=`${deg}°`;
+   const targetDeg=2*cfg.mir-deg,curDeg=deg+progress*(targetDeg-deg),curRad=curDeg*DEG,rad0=deg*DEG;
+   const mx=102*Math.cos(mirRad),my=102*Math.sin(mirRad);
+   mirLine.setAttribute('x1',ox-mx);mirLine.setAttribute('y1',oy+my);mirLine.setAttribute('x2',ox+mx);mirLine.setAttribute('y2',oy-my);
+   const gx=ox+R*Math.cos(rad0),gy=oy-R*Math.sin(rad0),cx=ox+R*Math.cos(curRad),cy=oy-R*Math.sin(curRad);
+   ghostVec.setAttribute('x2',gx);ghostVec.setAttribute('y2',gy);
+   liveVec.setAttribute('x2',cx);liveVec.setAttribute('y2',cy);
+   liveTip.setAttribute('cx',cx);liveTip.setAttribute('cy',cy);
+   const px=ox+R*Math.cos(rad0-mirRad)*Math.cos(mirRad),py=oy-R*Math.cos(rad0-mirRad)*Math.sin(mirRad);
+   perp.setAttribute('x1',px);perp.setAttribute('y1',py);perp.setAttribute('x2',cx);perp.setAttribute('y2',cy);
+   svgMath(lblVert,cfg.vert,{x:165,y:24,'text-anchor':'middle'},'|1⟩');
+   svgMath(lblMir,'\\ket{u_+}',{x:ox+mx+6,y:oy-my+4,'text-anchor':'start'},'|u+⟩');
+   svgMath(lblCurr,progress>0.5?`${g}\\ket{\\psi}`:'\\ket{\\psi}',{x:cx+(cx>=ox?8:-8),y:cy+(cy<=oy?-6:16),'text-anchor':cx>=ox?'start':'end'},progress>0.5?`${g}|ψ⟩`:'|ψ⟩');
+   svgMath(infoOp,cfg.op,{x:345,y:75,'text-anchor':'start'},cfg.op);
+   svgMath(infoVec,cfg.vec,{x:345,y:118,'text-anchor':'start','data-max-width':'280'},cfg.vec);
+   svgMath(infoRule,cfg.rule,{x:345,y:160,'text-anchor':'start'},cfg.rule);
+   math(lab.querySelector('[data-state]'),progress<0.5?`Initial \\(\\ket{\\psi}\\) at \\(\\theta=${deg}^\\circ\\); \\(${g}\\) reflects across \\(\\ket{u_+}\\) at \\(${cfg.mir}^\\circ\\).`:`Reflected state \\(${g}\\ket{\\psi}\\) at \\(${targetDeg}^\\circ = 2(${cfg.mir}^\\circ)-(${deg}^\\circ)\\).`);
+   math(lab.querySelector('[data-status]'),`\\(\\ket{u_+} \\propto (I+${g})\\ket{0}\\) is fixed by \\(${g}\\), while the direction perpendicular to \\(\\ket{u_+}\\) reverses sign.`);
+   math(btn,reflected?`Reflect back (\\(${g}\\))`:`Apply \\(${g}\\)`);
+  }
+  btn.onclick=()=>{
+   if(stopAnim){stopAnim();stopAnim=null}
+   const from=t,to=reflected?0:1;
+   reflected=!reflected;
+   stopAnim=tween(550,u=>{t=from+(to-from)*u;draw(t)},()=>{t=to;stopAnim=null;draw(t)});
+  };
+  gateSel.onchange=slider.oninput=reset.onclick=()=>{if(stopAnim){stopAnim();stopAnim=null}reflected=false;t=0;draw(0)};
+  draw(0);
+ });
+ document.querySelectorAll('[data-lab="cphase"]').forEach(lab=>{
+  let stage=0,timer=null;
+  const phiSel=lab.querySelector('[data-phi]'),inpSel=lab.querySelector('[data-input]'),next=lab.querySelector('[data-next]'),play=lab.querySelector('[data-play]'),reset=lab.querySelector('[data-reset]');
+  const pulseX=[85,160,265,350,425,555];
+  const phis={
+   pi:{half:'S',halfNeg:'S^\\dagger',label:'\\pi',halfTex:'\\pi/2'},
+   pi2:{half:'T',halfNeg:'T^\\dagger',label:'\\pi/2',halfTex:'\\pi/4'},
+   pi4:{half:'R_{\\pi/8}',halfNeg:'R_{-\\pi/8}',label:'\\pi/4',halfTex:'\\pi/8'},
+   '-pi2':{half:'T^\\dagger',halfNeg:'T',label:'-\\pi/2',halfTex:'-\\pi/4'}
+  };
+  function pause(){clearInterval(timer);timer=null;if(play){play.textContent='Play';play.setAttribute('aria-pressed','false')}}
+  function draw(){
+   const cfg=phis[phiSel.value],[a,b]=inpSel.value.split(',').map(Number),par=a^b;
+   const w2=stage>=2&&stage<4?par:b;
+   const angNum=stage===0?0:stage===1?0.5*(a+b):stage<3?0.5*(a+b):0.5*(a+b-par);
+   svgMath(lab.querySelector('[data-in-a]'),`\\ket{${a}}`,{x:58,y:55,'text-anchor':'end'},`|${a}⟩`);
+   svgMath(lab.querySelector('[data-in-b]'),`\\ket{${b}}`,{x:58,y:125,'text-anchor':'end'},`|${b}⟩`);
+   svgMath(lab.querySelector('[data-g1a]'),cfg.half,{x:160,y:55,'text-anchor':'middle'},'R');
+   svgMath(lab.querySelector('[data-g1b]'),cfg.half,{x:160,y:125,'text-anchor':'middle'},'R');
+   svgMath(lab.querySelector('[data-g3]'),cfg.halfNeg,{x:350,y:125,'text-anchor':'middle'},'R†');
+   lab.querySelectorAll('[data-gate-stage]').forEach(g=>g.classList.toggle('active',Number(g.dataset.gateStage)===stage));
+   const pt=lab.querySelector('[data-pulse-top]'),pb=lab.querySelector('[data-pulse-bot]');
+   if(pt)pt.setAttribute('cx',pulseX[stage]);
+   if(pb){pb.setAttribute('cx',pulseX[stage]);pb.classList.toggle('neg',w2!==b)}
+   const netOut=a&&b?(phiSel.value==='pi'?'-':`e^{i${cfg.label}}`):'';
+   svgMath(lab.querySelector('[data-out-a]'),stage===5?`${netOut}\\ket{${a}}`:'\\cdots',{x:585,y:55,'text-anchor':'start'},`|${a}⟩`);
+   svgMath(lab.querySelector('[data-out-b]'),stage>=4?`\\ket{${b}}`:(stage>=2?`\\ket{${par}}`:'\\cdots'),{x:585,y:125,'text-anchor':'start'},`|${w2}⟩`);
+   const angStr=angNum===0?'0':angNum===1?cfg.label:angNum===0.5?cfg.halfTex:`(${angNum})(${cfg.label})`;
+   math(lab.querySelector('[data-state]'),`Input: \\(\\ket{${a}}\\ket{${b}}\\), wire 2 holds \\(\\ket{${w2}}\\), accumulated phase \\(\\Theta = ${angStr}\\).`);
+   math(lab.querySelector('[data-status]'),[
+    'Step or play to trace the phase contributions on each wire.',
+    `Stage 1: \\(${cfg.half}\\otimes ${cfg.half}\\) adds \\(\\tfrac{${cfg.label}}{2}(${a}+${b})\\).`,
+    `Stage 2: first CNOT flips wire 2 to \\(a\\oplus b = ${a}\\oplus ${b} = ${par}\\).`,
+    `Stage 3: \\(${cfg.halfNeg}\\) on wire 2 subtracts \\(\\tfrac{${cfg.label}}{2}(a\\oplus b) = ${par===0?'0':cfg.halfTex}\\).`,
+    `Stage 4: second CNOT restores wire 2 back to \\(\\ket{${b}}\\).`,
+    `Done: total phase is \\(\\Theta = (${cfg.label})(${a}\\cdot ${b}) = ${a&&b?cfg.label:'0'}\\).`
+   ][stage]);
+   math(next,[`1. Apply \\(${cfg.half}\\otimes ${cfg.half}\\)`,'2. Apply CNOT','3. Apply \\('+cfg.halfNeg+'\\)','4. Restore CNOT','Complete','Done'][stage]);
+   next.disabled=stage===5;
+   if(stage===5)pause();
+  }
+  next.onclick=()=>{pause();stage=Math.min(5,stage+1);draw()};
+  if(play)play.onclick=()=>{if(timer){pause();return}if(stage===5)stage=0;play.textContent='Pause';play.setAttribute('aria-pressed','true');draw();timer=setInterval(()=>{stage=Math.min(5,stage+1);draw()},still()?1800:950)};
+  phiSel.onchange=inpSel.onchange=reset.onclick=()=>{pause();stage=0;draw()};
+  lab.closest('.book-section')?.addEventListener('slideleave',pause);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});
+  draw();
+ });
+ document.querySelectorAll('[data-lab="ccu"]').forEach(lab=>{
+  let stage=0,timer=null;
+  const uSel=lab.querySelector('[data-u]'),abSel=lab.querySelector('[data-ab]'),next=lab.querySelector('[data-next]'),play=lab.querySelector('[data-play]'),reset=lab.querySelector('[data-reset]');
+  const pulseX=[85,180,250,340,430,500,590];
+  const uCfg={Z:{u:'Z',v:'S',vd:'S^\\dagger'},X:{u:'X',v:'\\sqrt{X}',vd:'\\sqrt{X}^\\dagger'},S:{u:'S',v:'T',vd:'T^\\dagger'}};
+  function pause(){clearInterval(timer);timer=null;if(play){play.textContent='Play';play.setAttribute('aria-pressed','false')}}
+  function draw(){
+   const cfg=uCfg[uSel.value],[a,b]=abSel.value.split(',').map(Number),par=a^b;
+   const w2=stage>=2&&stage<4?par:b;
+   let exp=0;
+   if(stage>=1&&b===1)exp+=1;
+   if(stage>=3&&par===1)exp-=1;
+   if(stage>=5&&a===1)exp+=1;
+   const opTex=exp===0?'I':exp===1?cfg.v:exp===-1?cfg.vd:cfg.u;
+   svgMath(lab.querySelector('[data-lbl-a]'),`\\ket{${a}}`,{x:58,y:50,'text-anchor':'end'},`|${a}⟩`);
+   svgMath(lab.querySelector('[data-lbl-b]'),`\\ket{${b}}`,{x:58,y:110,'text-anchor':'end'},`|${b}⟩`);
+   svgMath(lab.querySelector('[data-gv1]'),cfg.v,{x:180,y:170,'text-anchor':'middle'},'V');
+   svgMath(lab.querySelector('[data-gv2]'),cfg.vd,{x:340,y:170,'text-anchor':'middle'},'V†');
+   svgMath(lab.querySelector('[data-gv3]'),cfg.v,{x:500,y:170,'text-anchor':'middle'},'V');
+   lab.querySelectorAll('[data-gate-stage]').forEach(g=>g.classList.toggle('active',Number(g.dataset.gateStage)===stage));
+   [lab.querySelector('[data-p1]'),lab.querySelector('[data-p2]'),lab.querySelector('[data-p3]')].forEach(p=>{if(p)p.setAttribute('cx',pulseX[stage])});
+   svgMath(lab.querySelector('[data-out-t]'),opTex==='I'?'\\ket{t}':`${opTex}\\ket{t}`,{x:620,y:170,'text-anchor':'start'},`${opTex}|t⟩`);
+   math(lab.querySelector('[data-state]'),`Controls \\((a,b)=(${a},${b})\\), wire 2 holds \\(\\ket{${w2}}\\); target operation so far: \\(${opTex}\\).`);
+   math(lab.querySelector('[data-status]'),[
+    'Step or play to watch \\(V^{b-(a\\oplus b)+a}\\) evaluate to \\(U^{ab}\\).',
+    b?`Stage 1: \\(b=1\\), so controlled-\\(${cfg.v}\\) applies \\(${cfg.v}\\).`:`Stage 1: \\(b=0\\), so controlled-\\(${cfg.v}\\) does nothing.`,
+    `Stage 2: CNOT from \\(a\\) sets wire 2 to \\(a\\oplus b = ${par}\\).`,
+    par?`Stage 3: wire 2 is \\(1\\), so controlled-\\(${cfg.vd}\\) applies \\(${cfg.vd}\\).`:`Stage 3: wire 2 is \\(0\\), so controlled-\\(${cfg.vd}\\) does nothing.`,
+    `Stage 4: second CNOT restores wire 2 to \\(b=${b}\\).`,
+    a?`Stage 5: \\(a=1\\) applies \\(${cfg.v}\\); net action is \\(${opTex} = ${cfg.u}^{${a&b}}\\).`:`Stage 5: \\(a=0\\) does nothing; net action is \\(${opTex} = ${cfg.u}^{${a&b}}\\).`
+   ][stage]);
+   math(next,[`1. Controlled-\\(${cfg.v}\\) from \\(b\\)`,'2. Parity CNOT',`3. Controlled-\\(${cfg.vd}\\)`,'4. Restore CNOT',`5. Controlled-\\(${cfg.v}\\) from \\(a\\)`,'Complete','Done'][stage]);
+   next.disabled=stage===6;
+   if(stage===6)pause();
+  }
+  next.onclick=()=>{pause();stage=Math.min(6,stage+1);draw()};
+  if(play)play.onclick=()=>{if(timer){pause();return}if(stage===6)stage=0;play.textContent='Pause';play.setAttribute('aria-pressed','true');draw();timer=setInterval(()=>{stage=Math.min(6,stage+1);draw()},still()?1800:900)};
+  uSel.onchange=abSel.onchange=reset.onclick=()=>{pause();stage=0;draw()};
+  lab.closest('.book-section')?.addEventListener('slideleave',pause);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});
+  draw();
+ });
+ document.querySelectorAll('[data-lab="ctrl-quiz"]').forEach(lab=>{
+  const promptEl=lab.querySelector('[data-prompt]'),optsEl=lab.querySelector('[data-options]'),statusEl=lab.querySelector('[data-status]'),rndBtn=lab.querySelector('[data-random]');
+  const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+  const shuffle=arr=>{const c=[...arr];for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}return c};
+  function makeProblem(){
+   const kind=Math.floor(Math.random()*4);
+   if(kind===0){
+    const phis=[{t:'\\pi',h:'\\pi/2',g:'S, S, S^\\dagger'},{t:'\\pi/2',h:'\\pi/4',g:'T, T, T^\\dagger'},{t:'\\pi/4',h:'\\pi/8',g:'R_{\\pi/8}, R_{\\pi/8}, R_{-\\pi/8}'}];
+    const p=pick(phis),a=pick([0,1]),b=pick([0,1]),ans=a&&b?`\\(${p.t}\\)`:'\\(0\\)';
+    const wrongs=a&&b?['\\(0\\)',`\\(${p.h}\\)`,`\\(-${p.h}\\)`]:[`\\(${p.t}\\)`,`\\(${p.h}\\)`,`\\(-${p.h}\\)`];
+    return {
+     q:`In the controlled-\\(R_{${p.t}}\\) decomposition (\\(${p.g}\\) with two CNOTs), what total phase angle \\(\\Theta\\) accumulates on input \\(\\ket{${a}${b}}\\)?`,
+     correct:ans,
+     choices:shuffle([ans,...wrongs]),
+     explain:`\\(\\Theta = \\tfrac{${p.t}}{2}(${a}+${b}-(${a}\\oplus ${b})) = (${p.t})(${a}\\cdot ${b}) = ${a&&b?p.t:'0'}\\).`
+    };
+   }
+   if(kind===1){
+    const cases=[
+     {u:'X',w:'H',a:'0',b:'\\pi',bad:['Z','S','T'],exp:'\\(X = H Z H = H\\operatorname{diag}(1,e^{i\\pi})H^\\dagger\\), so \\(W=H\\), \\(\\alpha=0\\), \\(\\beta=\\pi\\).'},
+     {u:'Y',w:'SH',a:'0',b:'\\pi',bad:['H','S','T'],exp:'\\(Y = (SH) Z (SH)^\\dagger\\) because \\(SH\\ket{0}=\\ket{+i}\\) and \\(SH\\ket{1}=\\ket{-i}\\).'},
+     {u:'Z',w:'I',a:'0',b:'\\pi',bad:['H','X','S'],exp:'\\(Z\\) is already diagonal in the computational basis, so \\(W=I\\).'}
+    ];
+    const c=pick(cases);
+    return {
+     q:`To build controlled-\\(${c.u}\\) via \\((I\\otimes W)(\\text{controlled-}R_{\\beta-\\alpha})(R_\\alpha\\otimes I)(I\\otimes W^\\dagger)\\), which basis-change gate \\(W\\) diagonalizes \\(${c.u}\\)?`,
+     correct:`\\(${c.w}\\)`,
+     choices:shuffle([`\\(${c.w}\\)`,...c.bad.map(x=>`\\(${x}\\)`)]),
+     explain:c.exp
+    };
+   }
+   if(kind===2){
+    const gammas=[{g:'\\pi',r:'Z'},{g:'\\pi/2',r:'S'},{g:'\\pi/4',r:'T'},{g:'-\\pi/2',r:'S^\\dagger'}];
+    const c=pick(gammas),others=gammas.filter(x=>x.r!==c.r).map(x=>`\\(${x.r}\\)`);
+    return {
+     q:`Suppose \\(U\\) is replaced by \\(e^{i${c.g}}U\\) before forming controlled-\\(U\\). Which gate must be added to the control wire to account for this global phase?`,
+     correct:`\\(${c.r}\\)`,
+     choices:shuffle([`\\(${c.r}\\)`,...others]),
+     explain:`Replacing \\(U\\) by \\(e^{i\\gamma}U\\) multiplies the \\(\\ket{1}\\) control branch by \\(e^{i\\gamma}\\), which is \\(R_{${c.g}} = ${c.r}\\) on the control wire.`
+    };
+   }
+   const us=[{u:'Z',v:'S',vd:'S^\\dagger'},{u:'X',v:'\\sqrt{X}',vd:'\\sqrt{X}^\\dagger'},{u:'S',v:'T',vd:'T^\\dagger'}];
+   const uc=pick(us),a=pick([0,1]),b=pick([0,1]);
+   const fired=a===0&&b===0?'I (none fire)':a===0&&b===1?`${uc.v}\\text{ and }${uc.vd}\\text{ (cancel to }I\\text{)}`:a===1&&b===0?`${uc.vd}\\text{ and }${uc.v}\\text{ (cancel to }I\\text{)}`:`${uc.v}\\text{ and }${uc.v}\\text{ (giving }${uc.u}\\text{)}`;
+   const allOpts=[
+    'I (none fire)',
+    `${uc.v}\\text{ and }${uc.vd}\\text{ (cancel to }I\\text{)}`,
+    `${uc.vd}\\text{ and }${uc.v}\\text{ (cancel to }I\\text{)}`,
+    `${uc.v}\\text{ and }${uc.v}\\text{ (giving }${uc.u}\\text{)}`
+   ];
+   return {
+    q:`In the two-control \\(V\\)–\\(V^\\dagger\\) circuit for \\(CC${uc.u}\\) (with \\(V=${uc.v}\\)), which target gates execute when \\((a,b)=(${a},${b})\\)?`,
+    correct:`\\(${fired}\\)`,
+    choices:shuffle(allOpts.map(x=>`\\(${x}\\)`)),
+    explain:`With \\((a,b)=(${a},${b})\\), \\(a\\oplus b=${a^b}\\), so \\(V^{b-(a\\oplus b)+a} = ${uc.v}^{${b}-${a^b}+${a}} = ${uc.u}^{${a&b}}\\).`
+   };
+  }
+  function load(){
+   const prob=makeProblem();
+   math(promptEl,prob.q);
+   optsEl.innerHTML='';
+   math(statusEl,'Select an answer.');
+   prob.choices.forEach(ch=>{
+    const b=document.createElement('button');
+    b.type='button';
+    math(b,ch);
+    b.onclick=()=>{
+     const ok=ch===prob.correct;
+     optsEl.querySelectorAll('button').forEach(x=>x.disabled=true);
+     b.setAttribute('aria-pressed','true');
+     math(statusEl,(ok?'Correct! ':'Not quite. ')+prob.explain);
+    };
+    optsEl.append(b);
+   });
+  }
+  rndBtn.onclick=load;
+  load();
+ });
  /* Animated figures. Each replaces a static drawing that stays in the page, hidden,
     for readers without scripting. Every frame is redrawn from the figure's state. */
  const gcd=(a,b)=>b?gcd(b,a%b):a;

@@ -98,6 +98,28 @@ and grep for `data-mjx-error`. Fix every error and rebuild. If no browser is
 available, check the TeX by eye against the rules above, and note in the report
 that the pages were not rendered.
 
+## 4b. AI claims
+
+Update `content/ai-claims.json` (rules in NEWS.md, "AI claims feed"). Add an
+entry for:
+
+- each paper approved today whose AI statement credits an AI system with the
+  main idea, proof, algorithm or counterexample for a known problem (link it
+  with `paper`);
+- each claim of the past three days, from any field, that an AI system solved or
+  substantially solved a known problem, found by searching news and lab
+  announcements (OpenAI, Google DeepMind, Anthropic, other labs, Lean and
+  Mathlib announcements, the Erdős-problems AI-contributions wiki), even if it
+  is unverified. Read the claimant's own announcement before writing, and give
+  it as the first source.
+
+Recheck the statuses of entries from the past month that are not yet
+`confirmed` or `refuted`, and update them when a review, formalization or
+correction has appeared. For a claim about a problem in
+`content/ai-problem-claims.json`, update that register entry too. Set
+`reviewed_on` to `TODAY`. If nothing new qualifies, still set `reviewed_on`
+and say so in the report.
+
 ## 5. Article (only when the news justifies one)
 
 Search for quantum-technology news from the past three days: experiments,
@@ -130,6 +152,6 @@ and push to `main`. The push publishes the site once its checks pass.
 
 ## 7. Report
 
-End with a short report: the papers approved (ID, title, area), whether an
-article was published and why or why not, any gate that failed or step that
+End with a short report: the papers approved (ID, title, area), the AI claims
+added or updated, whether an article was published and why or why not, any gate that failed or step that
 was skipped, and any error found in a paper.

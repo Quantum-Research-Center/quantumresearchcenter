@@ -23,6 +23,15 @@ cz=np.diag([1,1,1,-1]);hh=np.kron(H,H);xx=np.kron(X,X)
 s=np.ones(4)/2;D=2*np.outer(s,s)-np.eye(4)
 close(hh@xx@cz@xx@hh,-D)
 close(abs(hh@xx@cz@xx@hh@cz@s)**2,[0,0,0,1])
+# The geometric reading of section 8.1.3: the overlap with |s⟩ fixes the angle
+# to the mirror, and D maps each amplitude to twice the mean minus itself.
+zero2=np.eye(4)[:,0]
+close(abs(np.vdot(s,zero2)),.5)
+close(np.arccos(abs(np.vdot(s,zero2))),np.pi/3)
+close(D@zero2,s-zero2)
+close(D@zero2,[-.5,.5,.5,.5])
+amps=np.array([.3,-.4j,.5,.2+.1j])
+close(D@amps,2*amps.mean()-amps)
 # All four function oracles for Deutsch.
 for f in product([0,1],repeat=2):
  u=np.zeros((4,4))

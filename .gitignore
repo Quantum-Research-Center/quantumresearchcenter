@@ -26,6 +26,7 @@ scripts/.generated-manifest.json
 /news/index.json
 /news/feed.xml
 /news/papers/index.html
+/news/ai-claims/index.html
 /news/papers/*/index.html
 /news/papers/archive/
 /news/articles/index.html

@@ -1,0 +1,335 @@
+{
+  "reviewed_on": "2026-11-25",
+  "claims": [
+    {
+      "id": "qip2-two-messages-liu",
+      "date": "2026-11-23",
+      "field": "Quantum computing",
+      "problem": "Two-message quantum interactive proofs",
+      "known_since": "Open since Watrous (2003): can quantum interactive proofs be compressed from three messages to two?",
+      "claimant": "Yupan Liu (EPFL)",
+      "ai": "Large language model tools (OpenAI models through ChatGPT for Academic Researchers)",
+      "claim": "Proof claimed",
+      "verification": "unverified",
+      "summary": "A single-author preprint claims \\(\\mathsf{QIP}(2)=\\mathsf{QIP}=\\mathsf{PSPACE}\\), with a verifier that sends halves of EPR pairs and checks the reply with classical reversible gates. The AI disclosure says language-model tools were used interactively at all stages, from exploration to writing, and that the author revised the manuscript substantially.",
+      "sources": [
+        {
+          "label": "arXiv:2611.31236",
+          "url": "https://arxiv.org/abs/2611.31236"
+        }
+      ],
+      "paper": "2611.31236"
+    },
+    {
+      "id": "riemann-hypothesis-alpoge-claude",
+      "date": "2026-11-20",
+      "field": "Mathematics",
+      "problem": "Riemann hypothesis",
+      "known_since": "Posed by Riemann in 1859; a Millennium Prize Problem.",
+      "claimant": "Levent Alpöge (Anthropic)",
+      "ai": "Claude (Anthropic)",
+      "claim": "Proof claimed, with an extension to the generalized Riemann hypothesis",
+      "verification": "formal",
+      "summary": "Alpöge says he found a proof with Claude over several weeks and released it only as a Lean library of about 17 million lines; his note says the method also gives the generalized Riemann hypothesis. On 21 November the Lean FRO and the Mathlib Initiative certified that the library proves exactly Mathlib's statement of the Riemann hypothesis, checked by Lean's kernel and several independent checkers. No human-readable proof has been released. Mathematicians quoted in the press say understanding it will take a long time, and the Association for Human Mathematics objects that no person can take responsibility for it. The certification covers the Riemann hypothesis statement, not the generalized one.",
+      "sources": [
+        {
+          "label": "Alpöge's note (20 Nov)",
+          "url": "https://alpo.ge/remark.pdf"
+        },
+        {
+          "label": "Lean FRO and Mathlib statement (21 Nov)",
+          "url": "https://leanprover-community.github.io/blog/posts/riemann-hypothesis/"
+        },
+        {
+          "label": "Science News (23 Nov)",
+          "url": "https://www.sciencenews.org/article/riemann-hypothesis-solved-math-ai"
+        }
+      ],
+      "register": [
+        "riemann"
+      ]
+    },
+    {
+      "id": "photonic-ghz-no-go-alphaproof",
+      "date": "2026-11-19",
+      "field": "Quantum optics",
+      "problem": "Graph-generated high-dimensional GHZ states",
+      "known_since": "Conjectured by Krenn and coauthors in 2017: linear-optical graphs cannot produce GHZ states beyond the known cases.",
+      "claimant": "Mario Krenn, Moritz Firsching, George Tsoukalas, Rishikesh Gajjala, Xuemei Gu, Swarat Chaudhuri",
+      "ai": "AlphaProof Nexus (Formal Conjectures project)",
+      "claim": "Partial proof: impossibility whenever the dimension is at least the number of photons",
+      "verification": "formal",
+      "summary": "The paper says the proof was discovered by AlphaProof Nexus and verified in Lean, then explained by the authors. It settles the case \\(D\\ge N\\) of the conjecture; smaller dimensions remain open.",
+      "sources": [
+        {
+          "label": "arXiv:2611.26300",
+          "url": "https://arxiv.org/abs/2611.26300"
+        }
+      ],
+      "paper": "2611.26300"
+    },
+    {
+      "id": "high-temperature-gibbs-markov",
+      "date": "2026-11-19",
+      "field": "Quantum many-body physics",
+      "problem": "Markov property of high-temperature Gibbs states",
+      "known_since": "Expected but unproved beyond commuting Hamiltonians and one dimension: decay of conditional mutual information at high temperature.",
+      "claimant": "Andrew D. Kim, Tai Hsuan Yang, Jong Yeon Lee",
+      "ai": "GPT-6 Astra (proof found under the authors' guidance), with Claude Opus 5",
+      "claim": "Proof claimed",
+      "verification": "unverified",
+      "summary": "The authors prove exponential decay of mutual and conditional mutual information for all local Hamiltonians above a constant temperature. They state that the proof was found with GPT-6 Astra and that they verified and reorganised it.",
+      "sources": [
+        {
+          "label": "arXiv:2611.26626",
+          "url": "https://arxiv.org/abs/2611.26626"
+        }
+      ],
+      "paper": "2611.26626"
+    },
+    {
+      "id": "adiabatic-optimization-advantage",
+      "date": "2026-11-18",
+      "field": "Quantum computing",
+      "problem": "Super-quadratic advantage of textbook adiabatic optimization",
+      "known_since": "Open for about two decades, even with black-box objectives.",
+      "claimant": "Yufan Zheng",
+      "ai": "GPT-6 Luna (main strategy), GPT-6 Astra, GPT-6.1 Sol and Claude Opus 5",
+      "claim": "Subexponential separation claimed",
+      "verification": "unverified",
+      "summary": "A black-box objective family is constructed for which the linear-schedule adiabatic algorithm runs in polynomial time while classical algorithms need subexponentially many queries. The paper's AI table says AI devised the approach and developed the proof, but did not pose the question or write the exposition.",
+      "sources": [
+        {
+          "label": "arXiv:2611.24035",
+          "url": "https://arxiv.org/abs/2611.24035"
+        }
+      ],
+      "paper": "2611.24035"
+    },
+    {
+      "id": "otoc1-classical-simulation",
+      "date": "2026-11-18",
+      "field": "Quantum computing",
+      "problem": "Classical simulation of first-order OTOCs in one dimension",
+      "known_since": "OTOC estimation had been proposed and demonstrated as a route to quantum advantage.",
+      "claimant": "Laura Lewis, Antonio A. Mele, Ronald de Wolf, Jarrod R. McClean, Amira Abbas",
+      "ai": "ChatGPT 6 Astra (key sticking points of the proof)",
+      "claim": "Efficient classical algorithm with proof",
+      "verification": "unverified",
+      "summary": "The paper gives a classical algorithm with proven error bounds for first-order OTOCs of 1D random circuits at any depth. The authors state that key sticking points were resolved in sessions with ChatGPT 6 Astra after earlier models had failed.",
+      "sources": [
+        {
+          "label": "arXiv:2611.24640",
+          "url": "https://arxiv.org/abs/2611.24640"
+        }
+      ],
+      "paper": "2611.24640"
+    },
+    {
+      "id": "qma-qcma-hierarchy-separation",
+      "date": "2026-11-18",
+      "field": "Quantum complexity",
+      "problem": "Separating QMA from the QCMA hierarchy",
+      "known_since": "Includes a question posed by Aaronson, Ingram and Kretschmer.",
+      "claimant": "Yiming Wang",
+      "ai": "GPT-6 Astra (initial proof of a weaker separation, proof elements, audit)",
+      "claim": "Oracle separation claimed",
+      "verification": "unverified",
+      "summary": "A classical oracle relative to which QMA is not contained in the QCMA hierarchy, by a switching lemma for bounded polynomials. GPT-6 Astra produced an initial proof of a weaker separation and audited the final proof.",
+      "sources": [
+        {
+          "label": "arXiv:2611.23693",
+          "url": "https://arxiv.org/abs/2611.23693"
+        }
+      ],
+      "paper": "2611.23693"
+    },
+    {
+      "id": "self-correcting-memory-3d-hayden",
+      "date": "2026-11-16",
+      "field": "Quantum information",
+      "problem": "Self-correcting quantum memory in three dimensions",
+      "known_since": "A long-standing question: can a local 3D system store a qubit passively, as a magnet stores a bit?",
+      "claimant": "Patrick Hayden",
+      "ai": "Gemini 4 Argon (\"most of the detailed mathematical reasoning and proof construction\")",
+      "claim": "Partial result: thermal and perturbative stability shown separately",
+      "verification": "partly-formal",
+      "summary": "A 3D code family is shown to be self-correcting below a positive temperature and stable under small perturbations at zero temperature, but not under both at once, and with constants far from physical. Standalone existence theorems are verified in Lean.",
+      "sources": [
+        {
+          "label": "arXiv:2611.21749",
+          "url": "https://arxiv.org/abs/2611.21749"
+        }
+      ],
+      "paper": "2611.21749"
+    },
+    {
+      "id": "vector-dihedral-coset-smooth-modulus",
+      "date": "2026-11-13",
+      "field": "Quantum algorithms",
+      "problem": "Vector dihedral coset problem with smooth modulus",
+      "known_since": "Quasipolynomial algorithms were known only for powers of two; the problem bounds lattice and group-action cryptography.",
+      "claimant": "Aparna Gupte",
+      "ai": "ChatGPT-5.6 Sol (main algorithm), ChatGPT-6 Astra (improvement)",
+      "claim": "Quasipolynomial algorithm claimed",
+      "verification": "unverified",
+      "summary": "A quasipolynomial quantum algorithm for every smooth modulus. The paper states that the main algorithm was found by ChatGPT-5.6 Sol in July 2026 and that the author verified and simplified it.",
+      "sources": [
+        {
+          "label": "arXiv:2611.18857",
+          "url": "https://arxiv.org/abs/2611.18857"
+        }
+      ],
+      "paper": "2611.18857"
+    },
+    {
+      "id": "quantum-switch-simulation-li",
+      "date": "2026-11-12",
+      "field": "Quantum information",
+      "problem": "Simulating the quantum switch with ordered circuits",
+      "known_since": "Conjectured by Bavaresco and coauthors: no finite number of calls simulates the switch exactly.",
+      "claimant": "Dantong Li",
+      "ai": "GPT, Claude and Gemini models (most technical details and the Lean formalization)",
+      "claim": "Conjecture proved, with query bounds for approximate simulation",
+      "verification": "formal",
+      "summary": "Exact simulation is shown impossible with any finite number of calls, and approximate simulation needs \\(\\Omega(d^{1/4})\\) calls in dimension \\(d\\). The author states that AI systems worked out most of the technical details and wrote the Lean formalization.",
+      "sources": [
+        {
+          "label": "arXiv:2611.16229",
+          "url": "https://arxiv.org/abs/2611.16229"
+        }
+      ],
+      "paper": "2611.16229"
+    },
+    {
+      "id": "exact-query-composition",
+      "date": "2026-11-12",
+      "field": "Quantum computing",
+      "problem": "Exact quantum query complexity of composed functions",
+      "known_since": "Recursive not-all-equal had a gap between Ambainis's exact algorithm and the adversary lower bound.",
+      "claimant": "Gagan Chiruvella, Chandrima Kayal, Rajat Mittal, Manaswi Paraashar, Nitin Saurabh",
+      "ai": "GPT-6 Astra and GPT-6 (main proof ideas)",
+      "claim": "Composition theorem claimed; closes the recursive not-all-equal gap",
+      "verification": "unverified",
+      "summary": "Approximate inner evaluations are corrected so that composed exact algorithms cost about the degree of the outer function times a bounded-error inner cost. The authors state that the main proof ideas were generated by GPT-6 Astra and GPT-6.",
+      "sources": [
+        {
+          "label": "arXiv:2611.16412",
+          "url": "https://arxiv.org/abs/2611.16412"
+        }
+      ],
+      "paper": "2611.16412"
+    },
+    {
+      "id": "aaronson-ambainis-short-proof",
+      "date": "2026-11-09",
+      "field": "Quantum computing",
+      "problem": "Aaronson–Ambainis conjecture",
+      "known_since": "Posed in 2008; a second claimed proof after Physical Superintelligence's of 6 November.",
+      "claimant": "Thomas Huffstutler, David Miloschewsky, Supartha Podder",
+      "ai": "ChatGPT 5 (four months of exploration of the approach)",
+      "claim": "Short proof claimed",
+      "verification": "unverified",
+      "summary": "A three-page proof through a completion framework. The authors state that they explored the approach with ChatGPT 5 for four months.",
+      "sources": [
+        {
+          "label": "arXiv:2611.12795",
+          "url": "https://arxiv.org/abs/2611.12795"
+        }
+      ],
+      "paper": "2611.12795",
+      "register": [
+        "aaronson-ambainis"
+      ]
+    },
+    {
+      "id": "aaronson-ambainis-psi",
+      "date": "2026-11-06",
+      "field": "Quantum computing",
+      "problem": "Aaronson–Ambainis conjecture",
+      "known_since": "Posed in 2008; it limits quantum speedups on unstructured problems.",
+      "claimant": "Physical Superintelligence and David Turturean",
+      "ai": "Physical Superintelligence's AI system",
+      "claim": "Proof claimed",
+      "verification": "partly-formal",
+      "summary": "A 13-page paper and a Lean 4 formalization claim the conjecture. Our background article explains the key lemma and what the Lean development covers.",
+      "sources": [
+        {
+          "label": "Physical Superintelligence",
+          "url": "https://psi.inc/research/aaronson-ambainis/"
+        }
+      ],
+      "register": [
+        "aaronson-ambainis"
+      ],
+      "article": "psi-aaronson-ambainis-conjecture"
+    },
+    {
+      "id": "openai-exponential-time-hypothesis",
+      "date": "2026-10-26",
+      "field": "Computer science",
+      "problem": "Exponential Time Hypothesis",
+      "known_since": "Proposed by Impagliazzo and Paturi in 1999.",
+      "claimant": "OpenAI",
+      "ai": "OpenAI models",
+      "claim": "Refutation claimed",
+      "verification": "under-review",
+      "summary": "OpenAI says its system found a subexponential algorithm for counting solutions of fixed-width k-SAT. A manuscript and a Lean proof of a slightly weaker bound are public, and an external group is examining the work.",
+      "sources": [
+        {
+          "label": "OpenAI",
+          "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/#the-exponential-time-hypothesis-is-false"
+        }
+      ],
+      "register": [
+        "eth"
+      ],
+      "article": "openai-exponential-time-hypothesis"
+    },
+    {
+      "id": "openai-yang-mills-existence",
+      "date": "2026-10-26",
+      "field": "Physics",
+      "problem": "Yang–Mills existence",
+      "known_since": "Half of the Yang–Mills Millennium Prize Problem; the mass gap is not claimed.",
+      "claimant": "OpenAI",
+      "ai": "OpenAI models",
+      "claim": "Partial resolution claimed",
+      "verification": "under-review",
+      "summary": "OpenAI says its models proved that four-dimensional quantum Yang–Mills theory exists. The 1,147-page proof has not been released and is with a committee chaired by David Gross.",
+      "sources": [
+        {
+          "label": "OpenAI",
+          "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/#existence-of-quantum-chromodynamics-and-completions-of-the-standard-model"
+        }
+      ],
+      "register": [
+        "yang-mills"
+      ],
+      "article": "openai-yang-mills-existence"
+    },
+    {
+      "id": "openai-local-smoothing",
+      "date": "2026-10-26",
+      "field": "Mathematics",
+      "problem": "Local smoothing conjecture, with Kakeya and restriction as consequences",
+      "known_since": "Central conjectures of harmonic analysis.",
+      "claimant": "OpenAI",
+      "ai": "OpenAI models",
+      "claim": "Proof claimed in all dimensions",
+      "verification": "unverified",
+      "summary": "OpenAI claims a proof of local smoothing in all dimensions and derives the Kakeya and Stein restriction conjectures from it. A writeup and Lean artifacts are public; their coverage has not been assessed here.",
+      "sources": [
+        {
+          "label": "OpenAI",
+          "url": "https://openai.com/index/building-scientific-understanding-with-academic-communities/#local-smoothing-and-the-kakeya-conjecture"
+        }
+      ],
+      "register": [
+        "local-smoothing",
+        "kakeya",
+        "restriction"
+      ]
+    }
+  ]
+}

@@ -148,3 +148,33 @@ require `source_label` and a source supporting the unresolved problem. Retain
 the stable `id` when moving an entry between sections. A partial claim and an
 unresolved remainder may have distinct entries, as with Yang–Mills existence
 and the mass gap; state the difference explicitly in their scope notes.
+
+## AI claims feed
+
+`content/ai-claims.json` feeds the dated page `/news/ai-claims/` (the "AI Claims"
+tab of the news streams) and a preview of the four newest entries on the news
+overview. It records every claim that an AI system found, or substantially
+produced, a solution to a known problem, whether or not anyone has checked it.
+The problem register above stays a curated list of major named problems; a
+claim about one of them gets a feed entry that links to its register entry.
+
+Each entry needs `id` (stable slug), `date` (when the claim was announced or
+posted), `field`, `problem`, `known_since` (why the problem counts as known),
+`claimant`, `ai` (the systems credited and, where stated, what they did),
+`claim` (proof, refutation, partial result, algorithm, ...), `verification`,
+`summary` (attributed, two or three sentences), and labelled HTTPS `sources`.
+Optional links: `paper` (an approved paper ID), `register` (register IDs), and
+`article` (a published article slug). Set `reviewed_on` after checking sources.
+
+`verification` is one of `unverified`, `under-review`, `partly-formal`,
+`formal`, `disputed`, `confirmed`, `refuted`. Use the claimants' wording for
+what the AI did, and never upgrade a status without a source: a Lean check of
+the statement is `formal`, a Lean check of some lemmas is `partly-formal`, and
+`confirmed` needs peer review or named independent experts. When the status of
+an entry changes, update it in place and keep its `id` and `date`.
+
+Include a claim when its source names an AI system as having found or produced
+the main idea, proof, algorithm or counterexample for a problem with a prior
+literature (a stated conjecture, a named open question, a long-standing gap).
+Routine help (editing, literature search, coding, checking) does not qualify.
+

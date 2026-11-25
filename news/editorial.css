@@ -226,3 +226,28 @@ html[data-theme=dark] .article-figure{--fig-1:#3987e5;--fig-2:#d95926}
 .editorial .article-prose section.concept-card h2{margin:0 0 12px;font-size:21px;line-height:1.35}
 .editorial .article-prose section.concept-card .article-figure{margin-inline:0}
 @media(max-width:520px){.editorial .article-prose section.concept-card{padding:18px 16px 4px;margin-inline:-4px}}
+/* AI claims feed */
+.ai-claims-preview{margin:64px 0;padding:32px 0;border-top:1px solid var(--line-strong)}
+.ai-claims-month h2{font:600 15px/1.4 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:40px 0 14px}
+.ai-claims-list{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.ai-claim{padding:22px 24px;border:1px solid var(--line);border-radius:8px;background:var(--card);min-width:0}
+.ai-claim h2,.ai-claim h3{font-size:21px;line-height:1.3;margin:4px 0 6px}
+.ai-claim h2 a,.ai-claim h3 a{color:inherit;text-decoration:none}
+.ai-claim-meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;color:var(--blue-strong);font:600 11px/1.5 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.ai-claim-known{color:var(--ink-soft);font:14px/1.6 var(--sans);margin:0 0 12px}
+.ai-claim-status{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 12px;font:13px/1.5 var(--sans)}
+.ai-claim-badge{display:inline-block;font:600 11px/1.5 var(--sans);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.ai-claim-unverified,.ai-claim-under-review{color:#8a5a00}
+.ai-claim-partly-formal,.ai-claim-formal{color:var(--blue-strong)}
+.ai-claim-confirmed{color:#1f6b3a}
+.ai-claim-disputed,.ai-claim-refuted{color:#a3332b}
+.ai-claim-type{font-weight:600}
+.ai-claim-who{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:6px 20px;margin:0 0 12px;font:13px/1.55 var(--sans)}
+.ai-claim-who dt{color:var(--muted);font-weight:600}
+.ai-claim-who dd{margin:0;overflow-wrap:anywhere}
+.ai-claim-summary{margin:0 0 14px;font-size:16px;line-height:1.65}
+.ai-claim-key{margin:0 0 24px;font:14px/1.6 var(--sans)}
+.ai-claim-legend{display:grid;gap:8px;margin:14px 0}
+.ai-claim-legend div{display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:12px;align-items:start}
+.ai-claim-legend dd{margin:0;color:var(--ink-soft)}
+@media (max-width:600px){.ai-claim{padding:18px 16px}.ai-claim-legend div{grid-template-columns:1fr;gap:4px}}

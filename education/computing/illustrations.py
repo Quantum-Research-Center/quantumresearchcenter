@@ -20,6 +20,7 @@ class Drawing:
   elif spec['kind']=='phasor':description+='A vector from the origin, its phase angle, and its projections onto the real and imaginary axes.'
   elif spec['kind']=='bars':description+='; '.join(f'{label}: {value:g}' for label,value in zip(spec['labels'],spec['values']))
   elif spec['kind']=='decision':description+='; '.join(spec['nodes'])
+  elif spec['kind']=='reflection':description+=' '.join(f'{plain(panel["title"])}: the state is mirrored from {panel["angle"]} degrees to minus {panel["angle"]} degrees.' for panel in spec['panels'])
   elif spec['kind']=='diagram':description+=spec.get('summary') or '; '.join(plain(edge.get('label') and f"{edge['from']} → {edge['to']} ({edge['label']})" or f"{edge['from']} → {edge['to']}") for edge in spec.get('edges',[]))
   elif spec['kind']=='transitions':description+=' '.join('; '.join(f'{a} → {b}'+(f' (weight {w})' if w else '') for _,a,b,*rest in panel['edges'] for w in [rest[0] if rest else ''])+'.' for panel in spec['panels'])
   else:description+='; '.join(f'{label}: {angle} degrees' for label,angle in zip(spec['labels'],spec['angles']))
@@ -228,6 +229,28 @@ def render(spec):
    d.text(cx,380,'Unit radius · same angle γ','small',maxwidth=330)
   d.edge(347,230,413,230);d.text(380,210,'U','heading',maxwidth=40)
   d.text(380,420,r'\(\|U\psi\|=\|\psi\|=1,\qquad \braket{U\chi}{U\psi}=\braket\chi\psi\)',maxwidth=700)
+ elif kind=='reflection':
+  d=Drawing(spec,spec.get('height',478));cy=spec.get('cy',252);r=spec.get('r',114)
+  for panel,cx in zip(spec['panels'],spec.get('centres',(190,570))):
+   a=math.radians(panel['angle']);ca,sa=math.cos(a),math.sin(a);tx,ty=cx+r*ca,cy-r*sa;ix,iy=cx+r*ca,cy+r*sa
+   d.text(cx,70,panel['title'],'heading',maxwidth=320)
+   d.edge(cx-r-44,cy,cx+r+48,cy,'#a7bccd');d.edge(cx,cy+r+30,cx,cy-r-44,'#a7bccd')
+   d.text(cx+r+52,cy+5,spec['axes'][0],'small',anchor='start',maxwidth=90)
+   d.text(cx+12,cy-r-48,spec['axes'][1],'small',anchor='start',maxwidth=110)
+   # The kept component lies on the mirror line; the perpendicular one changes sign.
+   d.parts.append(f'<path d="M{cx:g} {cy:g}H{tx:g}" stroke="{COLORS[0]}" stroke-width="6" stroke-opacity=".5"/>')
+   d.parts.append(f'<path d="M{tx:g} {ty:g}V{iy:g}" fill="none" stroke="#a7bccd" stroke-dasharray="4 4"/>')
+   d.edge(cx,cy,tx,ty,COLORS[0]);d.edge(cx,cy,ix,iy,COLORS[1])
+   for x,y,color in ((tx,ty,COLORS[0]),(ix,iy,COLORS[1])):d.parts.append(f'<circle cx="{x:g}" cy="{y:g}" r="4" fill="{color}"/>')
+   for sign in (1,-1):
+    d.parts.append(f'<path d="M{cx+52:g} {cy:g}A52 52 0 0 {0 if sign>0 else 1} {cx+52*ca:g} {cy-sign*52*sa:g}" fill="none" stroke="#8a97a3" stroke-width="1.4"/>')
+    d.text(cx+68*math.cos(a/2),cy-sign*68*math.sin(a/2)+5,r'\(\theta\)','small',maxwidth=30)
+   d.text(cx+(r+28)*ca,cy-(r+28)*sa+5,panel['state'],'small',maxwidth=80)
+   d.text(cx+(r+28)*ca,cy+(r+28)*sa+5,panel['image'],'small',maxwidth=90)
+   if panel.get('components'):
+    d.text((cx+tx)/2,cy+20,panel['components'][0],'small',maxwidth=60)
+    d.text(tx+10,(cy+ty)/2+5,panel['components'][1],'small',anchor='start',maxwidth=60)
+   d.multiline(cx,spec.get('note_y',432),panel['note'],305,'small')
  elif kind=='plane':
   d=Drawing(spec,430);cx=225;cy=230;r=115
   d.parts.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#c4d1dc"/>')

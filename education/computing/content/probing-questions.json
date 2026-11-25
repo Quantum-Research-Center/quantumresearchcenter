@@ -385,21 +385,11 @@
     "challenge": "Preparing an arbitrary list of \\(N\\) amplitudes costs about \\(N\\) gates. For a search among \\(N\\) items with one marked item, so that \\(p=1/N\\), compare the cost of amplitude amplification with a classical scan of the list."
   },
   "topic-8-1-1": {
-    "foundation": "Show that two CNOTs in a row, with the same control and target, cancel, by following a basis state \\(\\ket a\\ket b\\).",
+    "foundation": "Show that \\(HXH=Z\\) by applying \\(H\\), then \\(X\\), then \\(H\\) to \\(\\ket0\\) and to \\(\\ket1\\).",
     "application": "Simplify the circuit: \\(Z\\) on the target, then a CNOT, then \\(Z\\) on the control and \\(Z\\) on the target.",
     "challenge": "\\(XZ\\) and \\(ZX\\) differ only by a global sign. Are controlled-\\((XZ)\\) and controlled-\\((ZX)\\) the same gate? If not, which one-qubit gate turns one into the other?"
   },
   "topic-8-1-2": {
-    "foundation": "Show that \\(HXH=Z\\) by applying \\(H\\), then \\(X\\), then \\(H\\) to \\(\\ket0\\) and to \\(\\ket1\\).",
-    "application": "Apply controlled-\\(Z\\) to \\(\\ket+\\ket+\\). Is the result a product of two one-qubit states?",
-    "challenge": "Apply \\(X\\) to both qubits and then CZ. Using the rule for moving \\(X\\) through CZ, show that this equals CZ, then \\(Z\\) on both qubits, then \\(X\\) on both qubits, up to an overall sign. What is the sign?"
-  },
-  "topic-8-1-3": {
-    "foundation": "Which gates mark the string \\(10\\) on two qubits? Trace \\(\\ket{10}\\) and \\(\\ket{00}\\) through them.",
-    "application": "On three qubits, give a circuit for \\(O_{010}\\). How many \\(X\\) gates does it use?",
-    "challenge": "A two-qubit function has \\(f(01)=f(10)=1\\) and \\(f(00)=f(11)=0\\). Build its phase oracle from two marking gates. Then use \\(f(x)=x_1\\oplus x_2\\) to find a cheaper circuit."
-  },
-  "topic-8-1-4": {
     "foundation": "For two qubits, write \\(R_0=2\\ketbra{00}{00}-I\\) as a diagonal matrix. Show that \\(X\\otimes X\\), then CZ, then \\(X\\otimes X\\) gives \\(-R_0\\).",
     "application": "Apply the two-qubit reflection \\(D=2\\ketbra ss-I\\) to \\(\\ket{00}\\). What are the four amplitudes?",
     "challenge": "Let \\(A\\) be a circuit with \\(A\\ket{0^n}=\\ket\\psi\\). Show that \\(AR_0A^\\dagger\\) keeps \\(\\ket\\psi\\) and negates every state orthogonal to \\(\\ket\\psi\\)."
