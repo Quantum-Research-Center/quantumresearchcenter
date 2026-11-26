@@ -1,0 +1,245 @@
+{
+  "slug": "quartic-query-separation",
+  "title": "An AI-written proof claims quantum query speedups reach the fourth power",
+  "summary": "For problems defined on every input, a quantum algorithm can save at most a fourth power in queries over a randomized one. The best examples reached only a cube, and a cube was conjectured to be the limit. An OpenAI manuscript claims functions that come arbitrarily close to the fourth power. How query complexity works, how the construction beats the cube, and what is still unchecked.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: columns of bit cells above a tournament bracket that narrows to one winner, beside a staircase climbing toward a horizontal ceiling."
+  },
+  "key_points": [
+    "For total Boolean functions, randomized query complexity is at most about the fourth power of quantum query complexity, \\(R=O(Q^4)\\). This was proved in 2020 using Huang's sensitivity theorem.",
+    "The best separations reached \\(R\\approx Q^3\\), and in 2020 Aaronson, Ben-David, Kothari, Rao and Tal conjectured that \\(R=O(Q^3)\\) always holds.",
+    "An OpenAI manuscript released 6 October claims functions with \\(Q\\approx\\sqrt m\\) and \\(R\\approx m^{2-1/k}\\), so \\(R\\approx Q^{4-2/k}\\) for every \\(k\\), which would make the fourth power the true answer.",
+    "The construction lets the winning column of a cheat-sheet-style function point to a zero in every other column, so a quantum tournament finds it cheaply.",
+    "No independent check or Lean proof has been reported."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "The quartic ceiling is reached",
+      "paragraphs": [
+        "How much can a quantum computer save when it must read its input bit by bit? For functions defined on every input, the saving is known to be at most a fourth power: if a quantum algorithm needs \\(Q\\) queries, a randomized one needs at most about \\(Q^4\\). The best separations reached only a cube, and in 2020 Aaronson, Ben-David, Kothari, Rao and Tal conjectured that the cube is the truth.",
+        "A 19-page manuscript dated 5 October, released by OpenAI on 6 October and “produced by an unnamed internal OpenAI model”, claims to refute that conjecture. For each integer \\(k\\ge2\\) it builds total Boolean functions on which quantum algorithms need about \\(\\sqrt m\\) queries and randomized ones about \\(m^{2-1/k}\\). The exponent \\((2-1/k)/(1/2)=4-2/k\\) gets as close to 4 as one likes. If correct, the fourth power is the right answer. No one outside OpenAI has reported checking it, and there is no Lean proof."
+      ],
+      "stats": [
+        {
+          "value": "4",
+          "label": "universal upper bound on the exponent (2020)"
+        },
+        {
+          "value": "3",
+          "label": "best separation before, and the conjectured limit"
+        },
+        {
+          "value": "≈ 4",
+          "label": "new separation exponent, approached as k grows"
+        },
+        {
+          "value": "19",
+          "label": "pages in the manuscript"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        6
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What is being counted?",
+      "paragraphs": [
+        "In the query model the input \\(x\\in\\{0,1\\}^n\\) sits behind an oracle, and the only cost is the number of bits read. A randomized algorithm reads bits adaptively and may toss coins; \\(R(f)\\) is the worst-case number of reads needed to compute \\(f\\) with error at most \\(\\tfrac13\\) on every input. A quantum algorithm queries in superposition, \\(O_x\\ket{i,b}=\\ket{i,\\,b\\oplus x_i}\\), and \\(Q(f)\\) is its worst-case count. Computation between queries is free in both cases.",
+        "The standard example is OR, which asks whether any bit is 1. Classically you must look at nearly all \\(n\\) bits, but Grover's algorithm needs only about \\(\\sqrt n\\) quantum queries, a quadratic saving. The model is idealized, and it is useful precisely because, unlike running time, lower bounds in it can actually be proved."
+      ],
+      "source_refs": [
+        3
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why do total functions behave differently?",
+      "paragraphs": [
+        "A partial function is defined only on inputs that satisfy a promise. There the gap can be enormous. Forrelation asks whether one sign vector correlates with the Walsh–Hadamard transform of another. A quantum algorithm answers it with one query, while a classical one needs about \\(\\sqrt n\\) queries, and Bansal and Sinha's \\(k\\)-fold version pushes the classical cost to about \\(n^{1-1/k}\\). We checked the promise numerically: for random sign vectors of length 1024 the correlation \\(\\Phi\\) is about \\(0.03\\), while for correlated ones it is about \\(0.80\\), close to \\(\\sqrt{2/\\pi}\\).",
+        "A total function is defined on every input, so there is no promise to exploit. Beals, Buhrman, Cleve, Mosca and de Wolf proved in 1998 that the deterministic cost is then at most \\(Q^6\\). In 2020 Aaronson, Ben-David, Kothari, Rao and Tal used Hao Huang's proof of the sensitivity conjecture to improve this to \\(Q^4\\), and randomized cost is never more than deterministic. Exponential quantum speedups need structure; this article series met the same lesson with the Aaronson–Ambainis conjecture. The open question was the exact power for unstructured problems."
+      ],
+      "source_refs": [
+        3,
+        4,
+        6,
+        7,
+        9
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How were the earlier separations built?",
+      "paragraphs": [
+        "From partial functions, by a trick that removes the promise. In the cheat-sheet construction of Aaronson, Ben-David and Kothari, the input contains several instances of a partial function plus a large array of cells. The answers to the instances form an address, and the cell at that address must contain a certificate: a short, checkable proof of those answers. The function accepts only when the certificate checks out. Every input now has a defined value, and an input that breaks the promise simply fails the check. A quantum algorithm computes the address cheaply and verifies the cell, while a classical one must first solve the hard instances.",
+        "This gave exponent \\(2.5\\) in 2016. Better partial functions raised it to \\(8/3\\) (Tal) and then to \\(3\\) (Bansal and Sinha, and independently Sherstov, Storozhenko and Wu). For deterministic algorithms, “pointer” functions had already reached nearly 4, but those constructions do not give the same gap against randomized algorithms, and the randomized question stalled at the cube."
+      ],
+      "figure": {
+        "file": "ladder.svg",
+        "caption": "Exponents \\(\\alpha\\) for total functions. Blue: the best known separation \\(R\\approx Q^\\alpha\\), from Grover's quadratic speedup to the cubic separations of 2021. Orange: the best universal bound \\(R=O(Q^\\alpha)\\), lowered from 6 to 4 in 2020. Dotted: the conjectured cubic limit. The hollow circle is OpenAI's October 2026 claim, which reaches every exponent below 4.",
+        "alt": "Step chart from 1994 to 2028 with exponent from 2 to 6 on the vertical axis. A blue staircase rises from 2 in 1996 to 2.5 in 2016, 8/3 in 2020 and 3 in 2021. An orange staircase falls from 6 in 1998 to 4 in 2020. A dotted line at 3 marks the conjectured limit, and a dashed segment in 2026 rises from 3 to a hollow circle at 4, labelled claimed, October 2026."
+      },
+      "source_refs": [
+        5,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What is the new function?",
+      "paragraphs": [
+        "The input has \\(m\\) columns. Column \\(i\\) holds a string \\(X_i\\) of \\(m\\) bits and an array of certificate cells. As in a cheat sheet, the relevant cell is addressed by the answers to several \\(k\\)-fold Forrelation instances belonging to that column. The new ingredient is what the certificate must contain: besides proving the address, it must point to a 0 in every other column's string.",
+        "Column \\(i\\) wins if its own string is all ones and its addressed cell holds a correct certificate pointing to a zero in every other column. The function asks whether some column wins. At most one can, since two winners would each have to point to a zero in the other's all-ones string. Nothing is promised, so the function is total: a wrong address or a bad certificate simply fails."
+      ],
+      "figure": {
+        "file": "construction.svg",
+        "caption": "The function's input. Each column holds a string \\(X_i\\) and an array of certificate cells addressed by answers to Forrelation instances. The winning column (highlighted) has an all-ones string, and its certificate (orange arrows) points to a 0 in every other column, which no other column can do to it.",
+        "alt": "Five columns of eight bit cells labelled X1 to X5. The middle column is all ones and highlighted; each other column contains one zero. Orange arrows run from a filled certificate box below the middle column to the zero in each other column. Labels say the certificate of the winning column points to a 0 in every other column, and the address cells are set by Forrelation answers."
+      },
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why is it cheap for a quantum computer?",
+      "paragraphs": [
+        "A quantum algorithm runs a tournament. To compare two columns, it computes one column's address with a constant number of queries per Forrelation instance, reads the cell, and checks whether its pointer into the other column lands on a 0. A genuine winner beats every opponent reliably. Comparisons between two losers can come out any way at all, because their instances may violate the promise and give meaningless answers.",
+        "The paper's tournament lemma handles exactly this. It uses the actual comparison probabilities as multiplicative weights, sampled with amplitude amplification, and needs reliability only in comparisons involving the winner. It produces a short list of candidates containing the winner after about \\(\\sqrt m\\) queries times logarithmic factors, and quantum search then checks their certificates. In total \\(Q\\le C_k\\sqrt m\\,(\\log m)^{b_k}\\)."
+      ],
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why is it expensive classically?",
+      "paragraphs": [
+        "The lower bound compares two kinds of input that a classical algorithm cannot tell apart cheaply. In the first, every string \\(X_i\\) has one hidden zero and all cells are blank, so there is no winner. To make the second, choose a column at random, erase its zero, and fill its correctly addressed cell, which creates a winner. The algorithm can notice the difference in only two ways. It can find the missing zero, which is unlikely without reading a large fraction of all \\(m^2\\) string bits, since it does not know which column was changed. Or it can read the filled cell, which needs that column's address, and solving its Forrelation instances costs about \\(m^{1-1/k}\\) classical queries per column.",
+        "A direct-product argument makes this precise. Guessing a whole vector of hard answers is exponentially unlikely, even for an algorithm that chooses adaptively which columns to investigate. The result is \\(R\\ge c_k\\,m^{2-1/k}/(\\log m)^2\\). Comparing exponents gives \\(R\\approx Q^{4-2/k}\\): \\(k=2\\) gives only the known cube, \\(k=3\\) gives \\(3.33\\), \\(k=10\\) gives \\(3.8\\), and \\(k=100\\) gives \\(3.98\\)."
+      ],
+      "table": {
+        "columns": [
+          "k",
+          "Randomized",
+          "Quantum",
+          "Exponent"
+        ],
+        "rows": [
+          [
+            "2",
+            "\\(m^{1.5}\\)",
+            "\\(m^{0.5}\\)",
+            "3"
+          ],
+          [
+            "3",
+            "\\(m^{1.67}\\)",
+            "\\(m^{0.5}\\)",
+            "3.33"
+          ],
+          [
+            "10",
+            "\\(m^{1.9}\\)",
+            "\\(m^{0.5}\\)",
+            "3.8"
+          ],
+          [
+            "100",
+            "\\(m^{1.99}\\)",
+            "\\(m^{0.5}\\)",
+            "3.98"
+          ]
+        ],
+        "caption": "Query costs of the new functions for several values of k, ignoring logarithmic factors, and the resulting exponent of the separation."
+      },
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "kicker": "Back to the claim",
+      "heading": "Where it stands",
+      "paragraphs": [
+        "Why “nearly” quartic? For each fixed \\(k\\) the exponent is \\(4-2/k\\), with constants that depend on \\(k\\). Every exponent below 4 is ruled out as a universal bound, so the optimal power is exactly 4, but no single family is shown to achieve \\(R\\ge Q^4\\) up to logarithmic factors. Whether one exists is a natural next question.",
+        "The claim has not been independently reviewed, and there is no Lean formalization. It is, however, built from well-tested parts: cheat sheets, Bansal and Sinha's \\(k\\)-fold Forrelation bounds, direct-product theorems, and the candidate-comparison tournaments of Ben-David and Kothari and of Ambainis, Iraids and Kokainis. The genuinely new parts are the outward pointers, which let a winner defeat opponents whose own instances are off-promise, and the tournament lemma that tolerates unreliable comparisons between losers. Those are where checking should concentrate.",
+        "What does it mean for quantum computing? These functions are artificial, and query counts are not running times. But the result would close a 28-year-old question about unstructured problems. When the input carries no promise, quantum algorithms can save up to a fourth power over randomized ones, and no more. Exponential speedups, as in factoring or Forrelation, need the structure a promise provides."
+      ],
+      "asks": [
+        "Will query-complexity specialists confirm the tournament lemma and the adaptive direct-product bound?",
+        "Is there a single family with \\(R\\ge Q^4/\\mathrm{polylog}\\), without the loss of \\(2/k\\)?",
+        "Do the outward-pointer certificates give new separations for other pairs of measures, such as approximate degree?",
+        "Can the construction be formalized, as some of OpenAI's other results have been?"
+      ],
+      "source_refs": [
+        1,
+        2,
+        6,
+        9
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "OpenAI: A nearly quartic separation between randomized and quantum query complexity (5 October 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/A-Nearly-Quartic-Separation-Between-Randomized-and-Quantum-Query-Complexity-October-5-2026/quartic-query-separation.pdf"
+    },
+    {
+      "title": "OpenAI: math repository README (how the manuscripts were produced)",
+      "url": "https://github.com/openai/math"
+    },
+    {
+      "title": "Beals, Buhrman, Cleve, Mosca and de Wolf: Quantum lower bounds by polynomials (1998)",
+      "url": "https://arxiv.org/abs/quant-ph/9802049"
+    },
+    {
+      "title": "Scott Aaronson and Andris Ambainis: Forrelation",
+      "url": "https://arxiv.org/abs/1411.5729"
+    },
+    {
+      "title": "Aaronson, Ben-David and Kothari: Separations in query complexity using cheat sheets",
+      "url": "https://arxiv.org/abs/1511.01937"
+    },
+    {
+      "title": "Aaronson, Ben-David, Kothari, Rao and Tal: Degree vs. approximate degree and quantum implications of Huang's sensitivity theorem",
+      "url": "https://arxiv.org/abs/2010.12629"
+    },
+    {
+      "title": "Hao Huang: Induced subgraphs of hypercubes and a proof of the sensitivity conjecture",
+      "url": "https://arxiv.org/abs/1907.00847"
+    },
+    {
+      "title": "Avishay Tal: Towards optimal separations between quantum and randomized query complexities",
+      "url": "https://arxiv.org/abs/1912.12561"
+    },
+    {
+      "title": "Nikhil Bansal and Makrand Sinha: k-Forrelation optimally separates quantum and classical query complexity",
+      "url": "https://arxiv.org/abs/2008.07003"
+    },
+    {
+      "title": "Sherstov, Storozhenko and Wu: An optimal separation of randomized and quantum query complexity",
+      "url": "https://arxiv.org/abs/2008.10223"
+    },
+    {
+      "title": "Ambainis, Balodis, Belovs, Lee, Santha and Smotrovs: Separations in query complexity based on pointer functions",
+      "url": "https://arxiv.org/abs/1506.04719"
+    }
+  ],
+  "related_articles": [
+    "psi-aaronson-ambainis-conjecture",
+    "unitary-synthesis-boolean-oracle",
+    "vp-vnp-valiant-conjecture"
+  ]
+}

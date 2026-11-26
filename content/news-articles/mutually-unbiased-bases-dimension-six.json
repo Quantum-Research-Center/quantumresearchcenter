@@ -1,0 +1,280 @@
+{
+  "slug": "mutually-unbiased-bases-dimension-six",
+  "title": "Dimension six has only three mutually unbiased bases",
+  "summary": "Zauner conjectured in 1991 that a six-level quantum system has only three perfectly complementary measurements. An OpenAI manuscript proves it with a certified computer search, and independent groups have since confirmed it by other routes. What unbiased bases are, why six is the hard case, and how much of the proof rests on the computer.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a six-by-six grid of small dials pointing in different directions, beside three families of parallel lines crossing at sixty degrees."
+  },
+  "key_points": [
+    "Two bases are mutually unbiased when every state of one gives equal outcome probabilities in the other. Dimension \\(d\\) allows at most \\(d+1\\) such bases, and prime-power dimensions attain that bound.",
+    "An OpenAI manuscript released 6 October proves that \\(\\mathbb{C}^6\\) has exactly three, settling Zauner's 1991 conjecture. Its exclusion of a fourth basis is a certified computation that assumes correct floating-point arithmetic.",
+    "A companion proves a bound of five in exact arithmetic, and Lean checks it. Yang and coauthors have since simplified that certificate.",
+    "Cárdenes Wuttig and Tindall gave an independent proof by classifying every triple of unbiased bases, and Jaswal reran OpenAI's computation. Cárdenes Wuttig and Tindall's proof was itself developed with AI assistance.",
+    "A six-level system therefore has only three perfectly complementary measurements, so tomography and key distribution there cannot use a complete set."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "Three is the most",
+      "paragraphs": [
+        "How many perfectly complementary measurements does a six-level quantum system allow? In 1991 Gerhard Zauner conjectured three, although counting arguments leave room for seven. On 6 October OpenAI released a 76-page manuscript, dated 24 September and “produced by an unnamed internal OpenAI model”, that proves Zauner right: \\(\\mathbb{C}^6\\) has three mutually unbiased bases and no more. The proof is computer-assisted. It holds under stated conditions on the floating-point arithmetic and the compiler that ran it.",
+        "Unusually for an AI claim, it did not stay alone for long. A companion manuscript gives an exact certificate, in integer and rational arithmetic, for the weaker bound of five, and OpenAI's Lean formalization checks that bound. Jaswal reran OpenAI's computation independently. Mateo Cárdenes Wuttig and Joseph Tindall then proved the result by a different route, classifying every triple of unbiased bases in dimension six, though their proof was itself developed with AI agents. Jinze Yang, Yile Liu, Yangyang Li and Xiu-Hao Deng simplified the exact certificate.",
+        "What does “unbiased” mean, why should six be special, and how does a computer rule out a fourth basis among infinitely many candidates? The cards below take these in turn."
+      ],
+      "stats": [
+        {
+          "value": "1991",
+          "label": "Zauner's conjecture"
+        },
+        {
+          "value": "7",
+          "label": "upper bound from counting, d + 1"
+        },
+        {
+          "value": "3",
+          "label": "proved maximum in dimension six"
+        },
+        {
+          "value": "4",
+          "label": "independent proofs or recomputations since October"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What does “unbiased” mean?",
+      "paragraphs": [
+        "Two orthonormal bases \\(B\\) and \\(C\\) of \\(\\mathbb{C}^d\\) are mutually unbiased if \\[ |\\langle b,c\\rangle|^2=\\frac1d\\qquad\\text{for every } b\\in B,\\ c\\in C. \\] Prepare a state from one basis and measure in the other: every outcome is equally likely. Knowing the result of one measurement tells you nothing about the other. This is complementarity in its sharpest finite form.",
+        "A qubit shows the idea. The eigenbases of the Pauli matrices \\(Z\\), \\(X\\) and \\(Y\\) are \\(\\{\\ket0,\\ket1\\}\\), \\(\\{\\ket+,\\ket-\\}\\) and \\(\\{\\ket{+i},\\ket{-i}\\}\\). On the Bloch sphere they sit on three perpendicular axes, and any state from one axis has overlap \\(\\tfrac12\\) with every state on the others. Unbiased bases do practical work. BB84 key distribution uses two of them and the six-state protocol uses all three. A complete set of them is the most efficient way to reconstruct an unknown state."
+      ],
+      "figure": {
+        "file": "bloch.svg",
+        "caption": "A qubit's three mutually unbiased bases are the eigenbases of \\(Z\\), \\(X\\) and \\(Y\\), on three perpendicular axes of the Bloch sphere. Opposite points are orthogonal; points on different axes have overlap \\(\\tfrac12\\).",
+        "alt": "A sphere with three perpendicular axes, each ending in two dots labelled 0 and 1, plus and minus, and plus i and minus i. Text beside it says states on one axis are orthogonal, states on different axes overlap with probability one half, and a qubit has room for exactly three such bases."
+      },
+      "source_refs": [
+        14
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why can there be at most d + 1?",
+      "paragraphs": [
+        "Count parameters. A density matrix in dimension \\(d\\) has \\(d^2-1\\) real parameters, and measuring in one basis reveals \\(d-1\\) independent probabilities. Unbiased measurements reveal non-overlapping information, which can be made exact. Give each basis vector \\(b\\) the traceless matrix \\(bb^*-I/d\\). A short calculation gives \\[ \\operatorname{tr}\\bigl[(bb^*-\\tfrac Id)(cc^*-\\tfrac Id)\\bigr]=|\\langle b,c\\rangle|^2-\\tfrac1d, \\] so unbiased bases span mutually orthogonal \\((d-1)\\)-dimensional subspaces of the \\((d^2-1)\\)-dimensional space of traceless Hermitian matrices. At most \\((d^2-1)/(d-1)=d+1\\) of them fit. A complete set of \\(d+1\\) fills the space exactly, so its outcome statistics determine any state.",
+        "In dimension six the bound is seven. In 2013 Michael Weiner proved that any \\(d\\) mutually unbiased bases can always be completed to \\(d+1\\). So before this autumn the possible answers in dimension six were 3, 4, 5 or 7."
+      ],
+      "source_refs": [
+        1,
+        10,
+        14
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Which dimensions reach the bound?",
+      "paragraphs": [
+        "Prime powers do. Ivanović found complete sets in prime dimensions in 1981, and Wootters and Fields extended them to every prime power in 1989. For an odd prime \\(p\\), take the standard basis together with the \\(p\\) bases whose \\(j\\)-th entries are \\(\\omega^{aj^2+bj}/\\sqrt p\\), where \\(\\omega=e^{2\\pi i/p}\\) and \\(a\\) labels the basis; we checked numerically that this gives \\(p+1\\) unbiased bases for \\(p=3,5,7\\).",
+        "Other dimensions are harder. Tensor products of complete sets in the prime-power factors give \\(1+\\min\\) of those factors' sizes, so three in dimension six (\\(2\\times3\\)) and ten. Dimension six is the smallest dimension that is not a prime power, and nobody found a fourth basis there. Numerical searches by Butterley and Hall and by Brierley and Weigert came up empty. Several families were ruled out one by one: Grassl excluded the pair formed by the standard and Fourier bases, and Jaming and coauthors the whole Fourier family. In dimension twelve, Cárdenes Wuttig and Tindall found five bases in September, one more than the product construction."
+      ],
+      "figure": {
+        "file": "counts.svg",
+        "caption": "The largest known number of mutually unbiased bases in dimensions 2 to 12 (filled), against the upper bound \\(d+1\\) (dashed outline). Prime powers attain the bound. Dimension six (orange) is now settled at three. Dimensions ten and twelve (grey) remain open, with three and five bases known.",
+        "alt": "Bar chart for dimensions 2 to 12. Dashed outlines rise to d plus 1 in each dimension. Blue bars reach the outline in dimensions 2, 3, 4, 5, 7, 8, 9 and 11. An orange bar of height 3 stands in dimension 6. Grey bars of height 3 and 5 stand in dimensions 10 and 12."
+      },
+      "source_refs": [
+        9,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why is six so hard?",
+      "paragraphs": [
+        "Rotate so that the first basis is the standard one. A second unbiased basis is then the columns of \\(H/\\sqrt6\\), where \\(H\\) is a complex Hadamard matrix: every entry has modulus one and \\(HH^*=6I\\). In dimensions up to five such matrices are fully classified. In dimension six they come in continuous families with up to four free parameters, plus one isolated example found by Terence Tao, and their classification was completed only in August 2026. A third and fourth basis must be unbiased to the first two and to each other.",
+        "So the question is a search over a continuum: for every possible \\(H\\), exclude two more bases. A fourth basis cannot simply be missed, as a numerical search might miss it. It has to be ruled out everywhere at once, including near configurations that almost work."
+      ],
+      "source_refs": [
+        1,
+        5,
+        15
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How does a computer rule out a fourth basis?",
+      "paragraphs": [
+        "OpenAI's proof covers the continuum with finitely many small regions and certifies an exclusion in each. Multiplying rows and columns by phases makes the first row and column of \\(H\\) all ones, leaving nine phases in its first two rows and columns. Symmetries and simple necessary conditions cover all possible values of these phases with finitely many “seed balls”. In each, the program accounts for every way to complete the remaining \\(4\\times4\\) block, by covering the group of \\(2\\times2\\) unitaries, and shrinks the balls using approximate tangent directions with certified error bounds.",
+        "Inside each final ball comes the exclusion. Cover every vector unbiased to the first two bases by small vector balls, and make two graphs on them: an edge in one where two balls might contain orthogonal vectors, an edge in the other where they might contain unbiased ones. Two further bases would need two disjoint groups of six balls, pairwise orthogonal within each group, with all 36 pairs across the groups unbiased. An exhaustive search finds no such pattern. Every rejection uses a necessary condition with a safety margin; a region that cannot be decided is kept and refined, never discarded.",
+        "The weak point is the arithmetic. The bounds are computed in standard double-precision floating point, and the theorem holds “under the stated binary64 arithmetic and compiler conditions”. That assumes the hardware and compiler round exactly as specified. It is a standard premise in computer-assisted proofs, but a premise, not a theorem."
+      ],
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Can it be done without floating point?",
+      "paragraphs": [
+        "Partly. The companion manuscript works only with integers and rationals. Its first part proves a conjecture of Matolcsi, Ruzsa and Weiner about character sums of a Hadamard matrix, \\[ g_H(a)=\\frac16\\sum_{k=0}^{5}\\prod_{i=0}^{5}H_{ik}^{\\,a_i},\\qquad a=\\pi(1,1,1,-1,-1,-1). \\] It shows that these vanish for every permutation \\(\\pi\\) and every \\(H\\) except Tao's. We checked both sides of the exception: for the \\(6\\times6\\) Fourier matrix all 20 sums vanish, while for Tao's matrix every one has modulus \\(\\tfrac12\\).",
+        "The second part feeds this vanishing into a positivity certificate on the moments of a hypothetical complete set of seven bases, which cannot exist. By Weiner's theorem that gives at most five, with no floating-point premise, and OpenAI's Lean development checks this bound. Yang, Liu, Li and Deng then showed that the vanishing step is unnecessary for it. Their certificate uses only orthonormality, unbiasedness and a standard moment identity of complete sets, and checks in exact arithmetic in about 90 seconds. Getting from five down to three this way is still open."
+      ],
+      "source_refs": [
+        2,
+        3,
+        6,
+        10
+      ]
+    },
+    {
+      "kicker": "Back to the claim",
+      "heading": "What has been checked",
+      "paragraphs": [
+        "Three groups outside OpenAI have checked or extended it. Jaswal's recomputation of OpenAI's discretization, posted on Zenodo on 21 October, makes the same binary64 assumption; a second Zenodo report on 6 November classifies the triples by computer as well. Cárdenes Wuttig and Tindall's proof is genuinely different. They prove that the space of all order-six Hadamard matrices except Tao's is connected, cover it with 2,775 certified four-dimensional phase balls, and find every third basis for every pair. Every triple turns out to belong to a known two-parameter family or to one isolated triple built from the Fourier matrix, and none extends to a fourth basis. This proves a conjecture of Matolcsi, Matszangosz, Varga and Weiner that no other triples exist, and so Zauner's conjecture too. Their bounds use interval arithmetic.",
+        "Two caveats remain. First, every proof that the answer is exactly three is computer-assisted, and none is formalized in Lean. Second, the independent work also used AI. Cárdenes Wuttig and Tindall write that ChatGPT 6 Astra and Claude Opus 5.5 “assisted significantly in developing the proof”, under their direction and review, and Yang and coauthors used Claude Opus 5.5 to write and run their code. What makes the result convincing is not human-only checking but several independent routes, with different arithmetic, that agree.",
+        "What changes for quantum information? A six-level system, such as a qubit paired with a qutrit, has only three perfectly complementary measurements. Tomography and key distribution in dimension six cannot use a complete set of unbiased bases. Other optimal measurements still exist there: Grassl found an exact symmetric informationally complete measurement (SIC-POVM) in dimension six in 2004. The proof also settles a question in Lie theory. At most three Cartan subalgebras of \\(\\mathfrak{sl}_6(\\mathbb{C})\\) can be mutually orthogonal for the Killing form and closed under the conjugate transpose."
+      ],
+      "table": {
+        "columns": [
+          "Work",
+          "Date",
+          "Result",
+          "Method"
+        ],
+        "rows": [
+          [
+            "OpenAI",
+            "24 Sep (released 6 Oct)",
+            "\\(N(6)=3\\)",
+            "Certified floating-point cover and graph search; binary64 and compiler premise"
+          ],
+          [
+            "OpenAI, companion",
+            "24 Sep (released 6 Oct)",
+            "\\(N(6)\\le5\\); Fourier-vanishing conjecture",
+            "Exact rational certificate; Lean checks the bound of five"
+          ],
+          [
+            "Jaswal",
+            "21 Oct",
+            "Independent recomputation of the exclusion of four",
+            "Certified computation; binary64 premise"
+          ],
+          [
+            "Cárdenes Wuttig and Tindall",
+            "4 Nov",
+            "All triples classified, hence \\(N(6)=3\\)",
+            "Topology and interval arithmetic; AI-assisted"
+          ],
+          [
+            "Yang, Liu, Li and Deng",
+            "15 Nov",
+            "\\(N(6)\\le5\\) without Fourier vanishing",
+            "Exact integer certificate"
+          ]
+        ],
+        "caption": "Proofs and recomputations as of 26 November 2026. All are preprints; the Jaswal reports are on Zenodo, the others on arXiv or OpenAI's repository."
+      },
+      "asks": [
+        "Can the exclusion of a fourth basis be made exact and checked in Lean, as the bound of five already is?",
+        "Is there a conceptual reason, beyond case analysis, why dimension six fails?",
+        "Do the topological methods extend to dimensions ten and twelve?",
+        "Does the classification of triples say anything about SIC-POVMs or other designs in dimension six?"
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        11
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "OpenAI: The maximum number of mutually unbiased bases in dimension six (24 September 2026)",
+      "url": "https://github.com/openai/math/tree/main/preprints/The-maximum-number-of-mutually-unbiased-bases-in-dimension-six-September-24-2026"
+    },
+    {
+      "title": "OpenAI: Exact Fourier certificates for complex Hadamard matrices of order six (24 September 2026)",
+      "url": "https://github.com/openai/math/tree/main/preprints/Exact-Fourier-certificates-for-complex-Hadamard-matrices-of-order-six-September-24-2026"
+    },
+    {
+      "title": "OpenAI: Lean formalization scope for the dimension-six results",
+      "url": "https://github.com/openai/math/blob/main/lean/docs/266.md"
+    },
+    {
+      "title": "OpenAI: math repository README (how the manuscripts were produced)",
+      "url": "https://github.com/openai/math"
+    },
+    {
+      "title": "Mateo Cárdenes Wuttig and Joseph Tindall: Using topology to reveal all mutually unbiased bases in dimension six",
+      "url": "https://arxiv.org/abs/2611.06917"
+    },
+    {
+      "title": "Yang, Liu, Li and Deng: No complete set of mutually unbiased bases in C^6 without Fourier vanishing",
+      "url": "https://arxiv.org/abs/2611.19809"
+    },
+    {
+      "title": "M. Jaswal: An independent certified computation excluding four mutually unbiased bases in dimension six (Zenodo)",
+      "url": "https://doi.org/10.5281/zenodo.23533384"
+    },
+    {
+      "title": "M. Jaswal: Triplets of mutually unbiased bases in dimension six (Zenodo)",
+      "url": "https://doi.org/10.5281/zenodo.23991331"
+    },
+    {
+      "title": "William Wootters and Brian Fields: Optimal state-determination by mutually unbiased measurements (1989)",
+      "url": "https://doi.org/10.1016/0003-4916(89)90322-9"
+    },
+    {
+      "title": "Michael Weiner: A gap for the maximum number of mutually unbiased bases",
+      "url": "https://arxiv.org/abs/0902.0635"
+    },
+    {
+      "title": "Markus Grassl: On SIC-POVMs and MUBs in dimension 6",
+      "url": "https://arxiv.org/abs/quant-ph/0406175"
+    },
+    {
+      "title": "Jaming, Matolcsi, Móra, Szöllősi and Weiner: A generalized Pauli problem and an infinite family of MUB-triplets in dimension 6",
+      "url": "https://arxiv.org/abs/0902.0882"
+    },
+    {
+      "title": "Mateo Cárdenes Wuttig and Joseph Tindall: More mutually unbiased bases",
+      "url": "https://arxiv.org/abs/2609.40311"
+    },
+    {
+      "title": "Durt, Englert, Bengtsson and Życzkowski: On mutually unbiased bases (review)",
+      "url": "https://arxiv.org/abs/1004.3348"
+    },
+    {
+      "title": "Mateo Cárdenes Wuttig and Joseph Tindall: A complete classification of complex Hadamard matrices of order six",
+      "url": "https://arxiv.org/abs/2608.18053"
+    }
+  ],
+  "related_articles": [
+    "haldane-gap-proof",
+    "quantum-safe-security",
+    "riemann-hypothesis-lean-proof"
+  ]
+}

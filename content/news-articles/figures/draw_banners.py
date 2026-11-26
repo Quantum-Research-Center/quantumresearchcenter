@@ -631,7 +631,231 @@ def hybrid_link():
     return svg(''.join(out))
 
 
+def riemann():
+    """The critical strip with zeros on its centre line, and the prime staircase they encode."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('rh_draw', HERE / 'riemann-hypothesis-lean-proof' / 'draw.py')
+    rh = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rh)
+    out = [rect(150, 0, 120, H, 'fig-wash-1')]
+    out.append(line(210, 0, 210, H, 'fig-measure'))
+    for t in rh.ZEROS[:22]:
+        for y in (200 - t * 3.2, 200 + t * 3.2):
+            if 6 < y < H - 6:
+                out.append(circle(210, y, 6, 'fig-fill-1'))
+    for x in (60, 90, 120):
+        out.append(circle(x, 200, 6, 'fig-hollow'))
+    lo, hi = 2, 60
+    X = lambda x: 360 + (x - lo) / (hi - lo) * 800
+    Y = lambda v: 360 - v / 62 * 320
+    pts, prev = [(X(lo), Y(0))], 0.0
+    for k in range(2, hi + 1):
+        v = rh.psi(k)
+        if v != prev:
+            pts += [(X(k), Y(prev)), (X(k), Y(v))]
+            prev = v
+    out.append(path(pts + [(X(hi), Y(prev))], 'fig-link'))
+    xs = [lo + i * (hi - lo) / 700 for i in range(701)]
+    out.append(path([(X(x), Y(rh.explicit(x, 40))) for x in xs], 'fig-line-1'))
+    out.append(line(X(lo), Y(lo), X(hi), Y(hi), 'fig-ref'))
+    return svg(''.join(out))
+
+
+def matrix_exponent():
+    """Two matrices meeting in a product, and three wires joined at one hub."""
+    out = []
+    def block(x0, y0, n, s, cls):
+        for i in range(n):
+            for j in range(n):
+                out.append(rect(x0 + j * s, y0 + i * s, s - 6, s - 6, cls, 3))
+    block(70, 80, 5, 48, 'fig-fill-muted-soft')
+    out.append(rect(70 + 2 * 48 - 3, 77, 6 + 48, 5 * 48, 'fig-wash-1', 4))
+    block(380, 80, 5, 48, 'fig-fill-muted-soft')
+    out.append(rect(377, 80 + 3 * 48 - 3, 5 * 48, 48 + 6, 'fig-wash-1', 4))
+    block(690, 80, 5, 48, 'fig-fill-muted-soft')
+    out.append(rect(690 + 2 * 48, 80 + 3 * 48, 42, 42, 'fig-fill-1', 3))
+    hub, tips = (1060, 200), ((980, 90), (1150, 130), (1040, 320))
+    for t in tips:
+        out.append(line(hub[0], hub[1], t[0], t[1], 'fig-line-2'))
+        out.append(circle(t[0], t[1], 16, 'fig-node'))
+    out.append(path([tips[0], tips[1], tips[2]], 'fig-ref', close=True))
+    out.append(circle(hub[0], hub[1], 9, 'fig-fill-2'))
+    return svg(''.join(out))
+
+
+def vp_vnp():
+    """A layered arithmetic circuit narrowing to one output, beside a wide fan of terms."""
+    random.seed(7)
+    out = []
+    layers = [12, 9, 6, 4, 2, 1]
+    pos = []
+    for li, n in enumerate(layers):
+        y = 350 - li * 62
+        xs = [120 + (k + 0.5) * 520 / n for k in range(n)]
+        pos.append([(x, y) for x in xs])
+    for li in range(1, len(layers)):
+        for (x, y) in pos[li]:
+            for (px, py) in random.sample(pos[li - 1], min(2, len(pos[li - 1]))):
+                out.append(line(px, py, x, y, 'fig-link'))
+    for li, row in enumerate(pos):
+        for (x, y) in row:
+            out.append(circle(x, y, 9 if li else 7, 'fig-fill-1' if li == len(layers) - 1 else 'fig-node'))
+    top = pos[-1][0]
+    for k in range(28):
+        x = 760 + k * 15
+        out.append(line(top[0] + 12, top[1], x, 330, 'fig-ref'))
+    out.append(rect(752, 330, 28 * 15, 26, 'fig-wash-2', 4))
+    return svg(''.join(out))
+
+
+def haldane():
+    """A ring of spin-one sites with valence bonds, and a gap between two energy bands."""
+    out = []
+    cx, cy, r = 300, 200, 140
+    n = 14
+    pts = [(cx + r * math.cos(2 * math.pi * k / n), cy + r * math.sin(2 * math.pi * k / n)) for k in range(n)]
+    for k in range(n):
+        a, b = pts[k], pts[(k + 1) % n]
+        if k % 2 == 0:
+            out.append(line(a[0], a[1], b[0], b[1], 'fig-line-1'))
+        else:
+            out.append(line(a[0], a[1], b[0], b[1], 'fig-ref'))
+    for x, y in pts:
+        out.append(circle(x, y, 15, 'fig-node'))
+        out.append(circle(x - 5, y, 3.5, 'fig-fill-1'))
+        out.append(circle(x + 5, y, 3.5, 'fig-fill-1'))
+    out.append(rect(640, 300, 460, 40, 'fig-wash-1', 6))
+    out.append(line(660, 320, 1080, 320, 'fig-line-2'))
+    out.append(rect(640, 50, 460, 140, 'fig-wash-2', 6))
+    for k in range(13):
+        out.append(line(660, 180 - k * 10, 1080, 180 - k * 10, 'fig-link'))
+    out.append(line(860, 194, 860, 312, 'fig-ref'))
+    return svg(''.join(out))
+
+
+def mub():
+    """Three crossing families of parallel lines over a six-by-six grid of phases."""
+    out = []
+    for i in range(6):
+        for j in range(6):
+            x, y = 90 + j * 46, 70 + i * 46
+            a = 2 * math.pi * ((i * j) % 6) / 6
+            out.append(circle(x, y, 15, 'fig-node'))
+            out.append(line(x, y, x + 12 * math.cos(a), y - 12 * math.sin(a), 'fig-line-1'))
+    cx, cy = 820, 200
+    for k, cls in enumerate(('fig-line-1', 'fig-line-2', 'fig-ref')):
+        a = math.pi * k / 3
+        for t in range(-3, 4):
+            ox, oy = -math.sin(a) * t * 26, math.cos(a) * t * 26
+            out.append(line(cx + ox - 170 * math.cos(a), cy + oy - 170 * math.sin(a),
+                            cx + ox + 170 * math.cos(a), cy + oy + 170 * math.sin(a), cls))
+    return svg(''.join(out))
+
+
+def unitary_synthesis():
+    """A circuit of wires and gate blocks, with oracle blocks reading from a long strip of bits."""
+    random.seed(11)
+    out = []
+    for k in range(7):
+        y = 80 + k * 34
+        out.append(line(60, y, 820, y, 'fig-link'))
+    for i in range(9):
+        x = 100 + i * 80
+        if i % 2:
+            out.append(rect(x - 22, 180, 44, 130, 'fig-fill-2', 4))
+            out.append(line(x, 310, x, 345, 'fig-ref'))
+        else:
+            out.append(rect(x - 20, 64, 40, 246, 'fig-box', 4))
+    for j in range(60):
+        out.append(rect(60 + j * 12.5, 345, 9, 18, 'fig-fill-1' if random.random() < 0.5 else 'fig-fill-muted-soft', 2))
+    for k in range(4):
+        out.append(rect(880 + k * 60, 120 + k * 30, 180 - k * 40, 180 - k * 40, 'fig-wash-1', 6))
+    return svg(''.join(out))
+
+
+def quartic_queries():
+    """A tournament bracket over columns of bits, beside a staircase climbing toward a ceiling."""
+    random.seed(5)
+    out = []
+    for i in range(8):
+        x = 70 + i * 62
+        for r in range(9):
+            out.append(rect(x, 40 + r * 22, 40, 18, 'fig-fill-1' if (i == 5 or random.random() > 0.12) else 'fig-fill-2', 3))
+    lvl = [70 + 20 + i * 62 for i in range(8)]
+    y = 250
+    while len(lvl) > 1:
+        nxt = []
+        for a, b in zip(lvl[0::2], lvl[1::2]):
+            out.append(line(a, y, a, y + 22, 'fig-link'))
+            out.append(line(b, y, b, y + 22, 'fig-link'))
+            out.append(line(a, y + 22, b, y + 22, 'fig-link'))
+            nxt.append((a + b) / 2)
+        lvl = nxt
+        y += 22
+    out.append(circle(lvl[0], y + 8, 7, 'fig-fill-2'))
+    steps = [(640, 330), (740, 300), (820, 260), (900, 230), (1000, 120)]
+    pts = []
+    for (x, yy), (x2, _) in zip(steps, steps[1:] + [(1140, 0)]):
+        pts += [(x, yy), (x2, yy)]
+    out.append(path(pts, 'fig-line-1'))
+    out.append(line(640, 110, 1140, 110, 'fig-line-2'))
+    out.append(line(640, 230, 1000, 230, 'fig-ref'))
+    return svg(''.join(out))
+
+
+def eu_quantum_act():
+    """A network of linked centres feeding one shared computing hub, beside a padlock built from lattice points."""
+    random.seed(26)
+    out = []
+    hub = (420, 200)
+    nodes = [(120 + 70 * i + random.uniform(-20, 20), 60 + random.uniform(0, 280)) for i in range(9)]
+    for i, a in enumerate(nodes):
+        out.append(line(a[0], a[1], hub[0], hub[1], 'fig-link'))
+        b = nodes[(i + 1) % len(nodes)]
+        out.append(line(a[0], a[1], b[0], b[1], 'fig-ref'))
+    for x, y in nodes:
+        out.append(circle(x, y, 12, 'fig-node'))
+    out.append(rect(hub[0] - 50, hub[1] - 40, 100, 80, 'fig-fill-1', 8))
+    for k in range(4):
+        out.append(line(hub[0] - 38, hub[1] - 24 + 16 * k, hub[0] + 38, hub[1] - 24 + 16 * k, 'fig-node'))
+    out.append(path([(820, 200), (820, 140), (850, 105), (910, 105), (940, 140), (940, 200)], 'fig-line-2'))
+    out.append(rect(790, 200, 180, 140, 'fig-wash-2', 10))
+    for i in range(6):
+        for j in range(5):
+            out.append(circle(812 + i * 27, 222 + j * 24, 3.5, 'fig-fill-2' if (i * 3 + j * 5) % 7 < 3 else 'fig-fill-muted'))
+    return svg(''.join(out))
+
+
+def npt_bound():
+    """Pairs of linked nodes entering a sealed box from which nothing emerges."""
+    out = []
+    for k in range(7):
+        y = 60 + k * 44
+        out.append(circle(80, y, 10, 'fig-node'))
+        out.append(circle(260, y, 10, 'fig-node'))
+        out.append(line(90, y, 250, y, 'fig-ref'))
+        out.append(line(270, y, 420, 200, 'fig-link'))
+    out.append(rect(420, 90, 300, 220, 'fig-fill-muted-soft', 10))
+    for i in range(8):
+        for j in range(8):
+            out.append(circle(450 + i * 34, 112 + j * 25, 3, 'fig-fill-2' if (i + j) % 5 == 0 else 'fig-fill-muted'))
+    out.append(line(720, 200, 900, 200, 'fig-ref'))
+    out.append(circle(960, 200, 12, 'fig-hollow'))
+    out.append(circle(1100, 200, 12, 'fig-hollow'))
+    out.append(line(972, 200, 1088, 200, 'fig-grid'))
+    return svg(''.join(out))
+
+
 BANNERS = {
+    'npt-bound-entanglement': npt_bound,
+    'eu-quantum-act-proposal': eu_quantum_act,
+    'quartic-query-separation': quartic_queries,
+    'unitary-synthesis-boolean-oracle': unitary_synthesis,
+    'mutually-unbiased-bases-dimension-six': mub,
+    'haldane-gap-proof': haldane,
+    'matrix-multiplication-exponent-nine-fourths': matrix_exponent,
+    'vp-vnp-valiant-conjecture': vp_vnp,
+    'riemann-hypothesis-lean-proof': riemann,
     'qkd-pqc-8000-km-sc26-demo': hybrid_link,
     'gordon-bell-femoco-exascale-classical': femoco,
     'google-contextuality-willow-science': contextuality,

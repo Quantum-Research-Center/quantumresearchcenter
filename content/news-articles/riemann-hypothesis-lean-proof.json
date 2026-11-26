@@ -1,0 +1,270 @@
+{
+  "slug": "riemann-hypothesis-lean-proof",
+  "title": "A machine-checked proof of the Riemann hypothesis, found with Claude",
+  "summary": "Levent Alpöge says he and Claude have proved the Riemann hypothesis, and Lean agrees: the 17-million-line formal proof passes every independent check. What the hypothesis says about primes, what the machine check does and does not certify, and what is still missing: a proof people can read.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a shaded vertical strip with a dashed centre line carrying a column of dots, three hollow dots to its left, and a staircase closely traced by a smooth wavy curve."
+  },
+  "key_points": [
+    "On 20 November 2026 Levent Alpöge of Anthropic said that he and Claude had proved the Riemann hypothesis. He released the proof only as a 17-million-line library for the Lean proof assistant.",
+    "The Lean FRO and the Mathlib Initiative certified on 21 November that the library proves Mathlib's statement of the hypothesis. Independent checks run by Andrew Sutherland at MIT, using several separate proof checkers, all passed.",
+    "The library also proves the generalized Riemann hypothesis for Dirichlet L-functions. Other families of L-functions are not covered.",
+    "A shorter Lean proof of about 76,000 lines appeared on 25 November and passes the same checks.",
+    "No human-readable proof exists yet. The machine check certifies that the statement is true, but no one can yet explain why. The Clay prize requires journal publication, two years and general acceptance."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "What was announced",
+      "paragraphs": [
+        "On 20 November 2026 Levent Alpöge, a mathematician at Anthropic, posted a two-page note saying that, working with Claude, he had found a proof of the Riemann hypothesis, and that the method also settles the generalized Riemann hypothesis. He did not post a paper. The proof was released only as a library for Lean, a computer proof assistant, of about 17 million lines in 175,187 files. An informal write-up had run past 250,000 pages, and he judged it unreadable, so he chose to “only present Lean”.",
+        "The next day the Lean FRO and the Mathlib Initiative, the groups that maintain Lean and its main mathematics library, certified that the library proves Mathlib's statement of the hypothesis. Andrew Sutherland at MIT then ran a long series of independent checks, all of which passed by 25 November. His report also confirms that the library proves the generalized hypothesis for one important family of functions. On 25 November a second, much shorter Lean proof appeared, about 76,000 lines in its compact edition, and it passes the same checks. What does not exist yet is a proof that a person can read.",
+        "What exactly has been proved, and how can a program certify a proof that nobody has read? The cards below take it one question at a time: why primes need a hypothesis, what the zeta function and its zeros are, what “generalized” adds, and what Lean's check does and does not establish. After them we come back to Claude's part and what is still missing."
+      ],
+      "stats": [
+        {
+          "value": "1859",
+          "label": "Riemann poses the hypothesis"
+        },
+        {
+          "value": "17 million",
+          "label": "lines in the original Lean proof"
+        },
+        {
+          "value": "76,000",
+          "label": "lines in the shorter proof of 25 November"
+        },
+        {
+          "value": "0",
+          "label": "pages of human-readable proof released"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why would primes need a hypothesis?",
+      "paragraphs": [
+        "Primes thin out as numbers grow, but irregularly. Gauss guessed that near \\(x\\) roughly one number in \\(\\log x\\) is prime, and in 1896 Hadamard and de la Vallée Poussin proved it: the number of primes up to \\(x\\) is about \\(x/\\log x\\). That is only a first approximation. The real question is how far the true count strays from its smooth estimate.",
+        "The count is cleanest with a weight. Give each prime power \\(p^k\\) the weight \\(\\log p\\) and add the weights up to \\(x\\): \\[ \\psi(x)=\\sum_{p^k\\le x}\\log p . \\] The prime number theorem says \\(\\psi(x)\\) is close to \\(x\\). How close? If primes behaved like coin tosses, the error would be about \\(\\sqrt{x}\\), the size of random fluctuations. In 1901 von Koch showed that the Riemann hypothesis is exactly the statement that the error is that small, up to logarithms: \\[ \\psi(x)=x+O\\bigl(\\sqrt{x}\\,(\\log x)^2\\bigr). \\] So the hypothesis is a promise about primes: they are as regular as anything random could be, and no more irregular. Riemann did not phrase it this way. He phrased it in terms of a function, and the next card explains why."
+      ],
+      "source_refs": [
+        10
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What does a function have to do with primes?",
+      "paragraphs": [
+        "Euler noticed that the sum over all whole numbers factors into a product over primes: \\[ \\zeta(s)=\\sum_{n\\ge1}\\frac{1}{n^s}=\\prod_{p}\\frac{1}{1-p^{-s}}\\qquad(\\operatorname{Re}s>1). \\] Expanding each factor as a geometric series and multiplying out gives every \\(n^{-s}\\) exactly once, because every number factors into primes in exactly one way. So \\(\\zeta\\) knows the primes. Taking the logarithmic derivative even recovers our weights: \\(-\\zeta'(s)/\\zeta(s)=\\sum_n \\Lambda(n)\\,n^{-s}\\), where \\(\\Lambda(n)=\\log p\\) if \\(n=p^k\\) and \\(0\\) otherwise.",
+        "The sum only converges when \\(\\operatorname{Re}s>1\\). Riemann's step in 1859 was to extend \\(\\zeta\\) to all complex \\(s\\) except a pole at \\(s=1\\), and to find a symmetry relating \\(\\zeta(s)\\) to \\(\\zeta(1-s)\\). The extended function vanishes at \\(-2,-4,-6,\\dots\\); these are the trivial zeros. Every other zero lies in the strip \\(0<\\operatorname{Re}s<1\\), placed symmetrically about the line \\(\\operatorname{Re}s=\\tfrac12\\). Riemann computed the first few, found them on that line, and wrote that it was “very probable” all of them are. That is the Riemann hypothesis: every nontrivial zero has real part \\(\\tfrac12\\).",
+        "Computers have since checked it far beyond Riemann's few zeros. Platt and Trudgian confirmed in 2021 that every zero with imaginary part between \\(0\\) and \\(3\\cdot10^{12}\\) lies on the line. But a counterexample could hide beyond any height we can compute, so no amount of checking proves it."
+      ],
+      "figure": {
+        "file": "strip.svg",
+        "caption": "The complex plane of \\(s\\). The series for \\(\\zeta(s)\\) converges only to the right of \\(\\operatorname{Re}s=1\\) (grey). The extended function has a pole at \\(s=1\\), trivial zeros at \\(-2,-4,-6,\\dots\\) (hollow), and all its other zeros in the critical strip \\(0<\\operatorname{Re}s<1\\) (shaded). The first four pairs of those zeros, at heights \\(14.13\\), \\(21.02\\), \\(25.01\\) and \\(30.42\\), sit on the dashed line \\(\\operatorname{Re}s=\\tfrac12\\). The hypothesis says they all do.",
+        "alt": "Complex plane with a shaded vertical strip between real part 0 and 1, a dashed vertical line at real part one half carrying four pairs of filled dots symmetric about the real axis, hollow dots at minus 2, minus 4 and minus 6 on the real axis, a cross at 1 marking the pole, and a grey region to the right of 1 labelled as where the series converges."
+      },
+      "source_refs": [
+        10,
+        11
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why do the zeros control the primes?",
+      "paragraphs": [
+        "Riemann's formula, made rigorous by von Mangoldt, writes the prime count exactly in terms of the zeros. For \\(x>1\\) not a prime power, \\[ \\psi(x)=x-\\sum_{\\rho}\\frac{x^{\\rho}}{\\rho}-\\log 2\\pi-\\tfrac12\\log\\bigl(1-x^{-2}\\bigr), \\] where \\(\\rho\\) runs over the nontrivial zeros. Read it as music. The main term \\(x\\) is the smooth trend. Each zero \\(\\rho=\\beta+i\\gamma\\) adds a wave that oscillates like \\(\\cos(\\gamma\\log x)\\) with size \\(x^{\\beta}/|\\rho|\\). The jumps of the prime staircase are what all these waves add up to.",
+        "Now the hypothesis has a meaning you can see. If every \\(\\beta=\\tfrac12\\), every wave has size about \\(\\sqrt{x}\\), and the error \\(\\psi(x)-x\\) is as small as square-root fluctuations allow. A single zero with \\(\\beta>\\tfrac12\\) would make a wave of size \\(x^{\\beta}\\), and the primes would drift from their trend by more than any random process would. The location of the zeros is the regularity of the primes."
+      ],
+      "figure": {
+        "file": "staircase.svg",
+        "caption": "The staircase \\(\\psi(x)\\) jumps by \\(\\log p\\) at each prime power \\(p^k\\). The explicit formula, keeping only the first 3 pairs of zeros (orange), already follows the trend \\(x\\) (dashed) with the right bumps; with the first 100 pairs (blue) it traces the steps closely. Computed from the zeros of \\(\\zeta\\) listed in the figure's script; the formula with 100 pairs is within about \\(0.2\\) of \\(\\psi(x)\\) between the steps.",
+        "alt": "Plot for x from about 2 to 40. A black staircase rises from 0 to about 36, close to a dashed diagonal line. An orange smooth curve built from 3 pairs of zeros wiggles around the staircase. A blue curve built from 100 pairs of zeros follows the staircase steps closely."
+      }
+    },
+    {
+      "card": true,
+      "heading": "What does “generalized” add?",
+      "paragraphs": [
+        "Primes also spread out over remainders. Among primes ending in 1, 3, 7 and 9, each last digit gets a quarter in the long run. To count primes in the class \\(a\\bmod q\\), Dirichlet used characters \\(\\chi\\), periodic functions that pick out remainders, and built one function for each: \\[ L(s,\\chi)=\\sum_{n\\ge1}\\frac{\\chi(n)}{n^s}. \\] The generalized Riemann hypothesis for Dirichlet \\(L\\)-functions says their zeros in the critical strip also lie on \\(\\operatorname{Re}s=\\tfrac12\\). Then every residue class gets its share of primes with square-root error.",
+        "Many results in number theory and in algorithms were proved assuming this. A classic one is Miller's 1976 primality test: assuming it, Bach showed in 1990 that testing the bases \\(a\\le 2(\\ln n)^2\\) decides whether \\(n\\) is prime. Since 2002 there has been a deterministic polynomial-time primality test that needs no hypothesis, so the practical gain is small, but a long list of conditional theorems would become plain theorems.",
+        "Sutherland's report lists exactly what the library proves: Mathlib's Riemann hypothesis, and the hypothesis for every Dirichlet \\(L\\)-function, primitive or not, of every modulus. It also states the limit: Dedekind zeta functions, Hecke \\(L\\)-functions and automorphic \\(L\\)-functions in general “are not among the statements that were checked.” Alpöge's note says the method extends further. That part is so far a claim.",
+        "The proof also turns old equivalences into theorems. Robin showed in 1984 that the hypothesis holds exactly when the sum of divisors satisfies \\(\\sigma(n)<e^{\\gamma}n\\log\\log n\\) for every \\(n>5040\\). The inequality fails for 26 numbers, the largest being 5040. Combined with an existing Lean formalization of Robin's theorem, the library now yields this inequality, and Lagarias's elementary variant of it, as checked theorems."
+      ],
+      "source_refs": [
+        3,
+        4,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What does it mean that Lean checked it?",
+      "paragraphs": [
+        "Lean is a proof assistant. A proof written in it is reduced to steps that a small program, the kernel, checks one by one against fixed rules of logic and a few axioms. The kernel does not need to understand the proof, only to confirm every step. This is why a proof no one has read can still be checked. It also means the check rests on three things outside the proof: that the statement says what we mean, that the kernel is correct, and that nothing was smuggled in. The Xena Project blog set out these concerns as four questions on 12 November, after earlier AI-generated Lean releases.",
+        "First, the statement. Mathlib's definition reads, in mathematical notation, \\[ \\forall s\\in\\mathbb{C}:\\quad \\zeta(s)=0,\\ \\ s\\notin\\{-2,-4,-6,\\dots\\},\\ \\ s\\neq1\\ \\Longrightarrow\\ \\operatorname{Re}s=\\tfrac12 . \\] The condition \\(s\\neq1\\) is there because Mathlib assigns \\(\\zeta\\) a conventional value at its pole. But is Mathlib's \\(\\zeta\\) the real one? It is defined through the Hurwitz zeta function, not as the series. Mathlib, however, proves that it equals \\(\\sum n^{-s}\\) when \\(\\operatorname{Re}s>1\\) and is complex-differentiable everywhere except \\(s=1\\). Two such functions that agree on a half-plane agree on the whole connected domain, by the identity theorem of complex analysis. So the definition cannot quietly be a different function.",
+        "The other questions were answered by separate tools. The table summarizes Sutherland's report on the original library. The kernel replays alone took days: Lean's default kernel needed 48 hours and 82.6 GiB of memory. All the theorems depend only on the three standard axioms Mathlib uses throughout ordinary mathematics. The report's own caveat is the honest summary: a passing check shows the statements follow from the axioms according to the kernels used, and relies on Mathlib's definitions meaning what they are meant to."
+      ],
+      "table": {
+        "columns": [
+          "Check",
+          "What it rules out",
+          "Result"
+        ],
+        "rows": [
+          [
+            "Full build of 175,187 files",
+            "Errors, unfinished steps",
+            "Compiles with no errors"
+          ],
+          [
+            "Axiom audit",
+            "Hidden assumptions or gaps (sorry)",
+            "Only propext, Classical.choice, Quot.sound"
+          ],
+          [
+            "Statement comparison (comparator, con-leche, con-ron)",
+            "Proving a different or weaker theorem",
+            "Matches Mathlib's statement exactly"
+          ],
+          [
+            "Lean kernel, standard and paranoid modes",
+            "Invalid inference steps",
+            "Accepted"
+          ],
+          [
+            "Independent kernels (nanoda, con-leche, con-ron, lean4lean)",
+            "A bug in Lean's own kernel",
+            "All accept"
+          ],
+          [
+            "Rebuild on an offline second machine",
+            "A tampered or corrupted build",
+            "Byte-identical output"
+          ]
+        ],
+        "caption": "Checks on the original library, from Andrew Sutherland's verification report (completed 25 November). The shorter proof of 25 November passed the same kinds of checks, with one memory-limited rerun still without a verdict."
+      },
+      "source_refs": [
+        2,
+        3,
+        4,
+        6,
+        7
+      ]
+    },
+    {
+      "kicker": "Back to the claim",
+      "heading": "What did Claude do?",
+      "paragraphs": [
+        "The only account is Alpöge's note. He says he worked with Claude for weeks; his timeline runs from 6 October to 16 November, and Science News reports six weeks of back and forth. The version of Claude has not been disclosed. He describes his own role as steering: he chose to combine two ideas that worked in a simpler “toy” setting and guided the work to the analogous situation for the integers. Then, he writes, “Claude far outpaced me near the finish line,” especially in automorphic forms on higher-rank groups, where he says his own mastery is limited.",
+        "The idea he singles out descends from Stepanov's method. Weil proved the analogue of the Riemann hypothesis for curves over finite fields in the 1940s, and in 1969 Stepanov found an elementary route: build an auxiliary polynomial that vanishes to high multiplicity at the points being counted, then compare its degree with the number of zeros it is forced to have. Over the integers there is no obvious notion of multiplicity; Alpöge compares it to “differentiating whole numbers”. In his account, each step of a chain of theta lifts, maps between spaces of automorphic forms, supplies one order of multiplicity, and Claude proposed a chain of length \\(\\sqrt{X}\\) for a prime sum of length \\(X\\).",
+        "Alpöge is candid about the limits of this description. Where Claude was the expert, he writes, he is paraphrasing a summary “which might make zero sense”, and “the Lean should suffice to clarify everything.” He expects the argument to be “massively simplified”, and he intends to understand it and write it up properly. The shorter proof of 25 November, from a separate repository, is a first sign that simplification is possible. Its authors have not been identified, and its idea has not yet been explained."
+      ],
+      "source_refs": [
+        1,
+        4,
+        5
+      ]
+    },
+    {
+      "heading": "What is still missing",
+      "paragraphs": [
+        "A proof does two jobs: it establishes that a statement is true and it explains why. The Lean check settles the first job as firmly as anything in mathematics, provided the kernels and definitions are right, and several independent kernels agree. The second job has not started. No one can yet say in a few pages why the zeros lie on the line, and that understanding is what other mathematicians build on.",
+        "Reactions follow that line. Ken Ono told Science News, “As a mathematical landmark, it really doesn't get bigger than this.” Bryna Kra, a critic of AI-only results, accepted this one because “there is someone to stand behind” it. The Association for Human Mathematics, founded in September by mathematicians who refuse to work with AI companies, replied that “no human being can reasonably claim to be responsible for, or even to understand, such a document”, and objected to what it called a corporate model of proof production. The cognitive scientist Gary Marcus questioned how far the method generalizes beyond mathematics.",
+        "There is also the Millennium Prize. The Clay Institute considers a solution only after it is published in a refereed mathematics journal of worldwide repute, or an outlet its board approves, then two years have passed and the solution has general acceptance. A Lean library alone meets none of these conditions, and we found no statement from the Institute.",
+        "What does this mean for quantum computing? Little directly. RSA and other cryptosystems do not rest on the hypothesis, and Shor's algorithm is unaffected. The physics connection is older: the spacings between zeros match the eigenvalue statistics of random quantum Hamiltonians, which led to the hope that the zeros are the energy levels of some quantum system. According to Alpöge's note, this proof runs through automorphic forms, not through such a Hamiltonian, so that hope is neither confirmed nor ruled out."
+      ],
+      "asks": [
+        "When will a human-readable account appear, and will it come from the shorter proof?",
+        "What is the one new idea that a number theorist can check by hand?",
+        "Does the method reach Dedekind and automorphic L-functions, as the note suggests?",
+        "Will a journal publish a proof whose primary form is a formal library, and how would it be refereed?"
+      ],
+      "source_refs": [
+        4,
+        5,
+        8,
+        9
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Levent Alpöge: announcement note (20 November 2026)",
+      "url": "https://alpo.ge/remark.pdf"
+    },
+    {
+      "title": "Lean FRO and Mathlib Initiative: Lean verification of the Riemann Hypothesis",
+      "url": "https://leanprover-community.github.io/blog/posts/riemann-hypothesis/"
+    },
+    {
+      "title": "Andrew Sutherland: verification report for the Lean proof",
+      "url": "https://math.mit.edu/~drew/grh/"
+    },
+    {
+      "title": "Andrew Sutherland: verification report for the shorter Lean proof",
+      "url": "https://math.mit.edu/~drew/shortgrh/"
+    },
+    {
+      "title": "Science News: Math's holy grail, the Riemann hypothesis, appears solved with AI's help",
+      "url": "https://www.sciencenews.org/article/riemann-hypothesis-solved-math-ai"
+    },
+    {
+      "title": "Xena Project: And the proof is checked in Lean",
+      "url": "https://xenaproject.wordpress.com/2026/11/12/and-the-proof-is-checked-in-lean/"
+    },
+    {
+      "title": "Mathlib: the Riemann zeta function and RiemannHypothesis",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/RiemannZeta.html"
+    },
+    {
+      "title": "Association for Human Mathematics: statements",
+      "url": "https://ahmath.org/statements"
+    },
+    {
+      "title": "Clay Mathematics Institute: Millennium Prize rules",
+      "url": "https://www.claymath.org/millennium-problems/rules/"
+    },
+    {
+      "title": "Clay Mathematics Institute: the Riemann hypothesis",
+      "url": "https://www.claymath.org/millennium/riemann-hypothesis/"
+    },
+    {
+      "title": "Dave Platt and Tim Trudgian: The Riemann hypothesis is true up to 3·10^12",
+      "url": "https://arxiv.org/abs/2004.09765"
+    },
+    {
+      "title": "Jeffrey Lagarias: An elementary problem equivalent to the Riemann hypothesis",
+      "url": "https://arxiv.org/abs/math/0008177"
+    },
+    {
+      "title": "Gary Miller: Riemann's hypothesis and tests for primality",
+      "url": "https://doi.org/10.1016/S0022-0000(76)80043-8"
+    },
+    {
+      "title": "Eric Bach: Explicit bounds for primality testing and related problems",
+      "url": "https://doi.org/10.1090/S0025-5718-1990-1023756-8"
+    }
+  ],
+  "related_articles": [
+    "openai-yang-mills-existence",
+    "openai-exponential-time-hypothesis",
+    "psi-aaronson-ambainis-conjecture",
+    "mip-star-equals-re-verified"
+  ]
+}

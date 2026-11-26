@@ -1,6 +1,138 @@
 {
-  "reviewed_on": "2026-11-25",
+  "reviewed_on": "2026-11-26",
   "claims": [
+    {
+      "id": "npt-bound-entanglement-faisal",
+      "date": "2026-11-25",
+      "field": "Quantum information",
+      "problem": "NPT bound entanglement",
+      "known_since": "Asked by the Horodeckis in 1998: can every entangled state with a negative partial transpose be distilled? Problem 4 of Horodecki, Rudnicki and Życzkowski's 2022 list.",
+      "claimant": "Islam Faisal",
+      "ai": "Generative AI from OpenAI and Anthropic, with an agent memory system, credited with helping find the state",
+      "claim": "Proof claimed: an explicit NPT bound entangled Werner state",
+      "verification": "unverified",
+      "summary": "A single-author preprint shows that the Werner state \\((23I-3\\,\\mathrm{SWAP})/1448\\) on \\(\\mathbb C^8\\otimes\\mathbb C^8\\) has a negative partial transpose yet stays undistillable for every number of copies: no separable operation yields a Bell fidelity above \\((1+\\sqrt2)/4\\). The proof rests on an explicit 4096-dimensional certificate matrix. Our numerical check of its four conditions passed, but no independent review has been reported. If correct, distillable entanglement is neither additive nor convex.",
+      "sources": [
+        {
+          "label": "arXiv:2611.34921",
+          "url": "https://arxiv.org/abs/2611.34921"
+        }
+      ],
+      "paper": "2611.34921",
+      "register": [
+        "npt-bound-entanglement"
+      ],
+      "article": "npt-bound-entanglement"
+    },
+    {
+      "id": "rains-bound-depolarizing-barber-pirandola",
+      "date": "2026-11-24",
+      "field": "Quantum information",
+      "problem": "Attainability of the Rains bound and the depolarizing channel's two-way capacity",
+      "known_since": "Whether the Rains and relative-entropy bounds give the distillable entanglement and two-way capacities of Pauli channels has been open since Rains (1999) and Pirandola et al. (2017).",
+      "claimant": "Matthew Barber, Stefano Pirandola",
+      "ai": "GPT-6 Astra (candidate derivations and proofs), with Claude Opus 5.5 for checking",
+      "claim": "Proof claimed: the bound is attained exactly when a Bell probability vanishes",
+      "verification": "unverified",
+      "summary": "The authors prove that PPT-preserving distillation of a Bell-diagonal qubit state attains its Rains bound \\(1-h_2(F)\\) if and only if one Bell probability is zero, and that every mixed entangled isotropic state falls strictly below its bound. So the qubit depolarizing channel's two-way quantum capacity is strictly below the PLOB bound. They state that GPT-6 Astra generated candidate derivations and proofs, which they checked and revised.",
+      "sources": [
+        {
+          "label": "arXiv:2611.33317",
+          "url": "https://arxiv.org/abs/2611.33317"
+        }
+      ],
+      "paper": "2611.33317"
+    },
+    {
+      "id": "openai-matrix-multiplication-exponent",
+      "date": "2026-11-24",
+      "field": "Computer science",
+      "problem": "Exponent of matrix multiplication",
+      "known_since": "Open since Strassen showed in 1969 that the exponent is below 3; many expected it to be 2.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Exact value claimed: \\(\\omega=9/4\\) over every field",
+      "verification": "partly-formal",
+      "summary": "OpenAI's 2 October preprint proved \\(\\omega\\le 9/4\\) over the complex numbers; four independent groups have since reproved or extended it, including over every field. The 111-page preprint of 24 November claims the matching lower bound: every formal arithmetic circuit for the \\(n\\times n\\) product needs at least \\(n^{9/4}/2\\) multiplications or divisions. Its Lean proof covers division-free circuits only, and the lower bound has had no independent review.",
+      "sources": [
+        {
+          "label": "Lower-bound preprint (24 Nov)",
+          "url": "https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf"
+        },
+        {
+          "label": "Upper-bound preprint (2 Oct)",
+          "url": "https://github.com/openai/math/blob/main/preprints/Matrix-Multiplication-Nine-Fourths-October-2-2026/paper.pdf"
+        },
+        {
+          "label": "Amanov, van den Berg and Zuiddam",
+          "url": "https://arxiv.org/abs/2610.30054"
+        }
+      ],
+      "register": [
+        "matrix-multiplication"
+      ],
+      "article": "matrix-multiplication-exponent-nine-fourths"
+    },
+    {
+      "id": "anthropic-vp-vnp",
+      "date": "2026-11-23",
+      "field": "Computer science",
+      "problem": "VP versus VNP (Valiant's conjecture)",
+      "known_since": "Conjectured by Leslie Valiant in 1979; the algebraic analogue of P versus NP.",
+      "claimant": "Anthropic",
+      "ai": "An internal research Claude model, credited as sole author",
+      "claim": "Proof claimed: superpolynomial circuit lower bounds for the permanent and Hamiltonian cycle polynomial over every field",
+      "verification": "formal",
+      "summary": "A 70-page paper credited to Claude claims that circuits for the Hamiltonian cycle polynomial, and for the permanent outside characteristic 2, need more than \\(m^{c(\\log m)^{1/3}}\\) gates, also for approximating circuits, so \\(\\mathsf{VP}\\ne\\mathsf{VNP}\\) over every field. Every numbered statement but one remark is formalized in Lean; the repository checks it with Lean's kernel and the independent nanoda kernel, and a community fork adds two more kernels. Anthropic says no human mathematician has checked the proof, and no machine checks that the statement file says what is claimed.",
+      "sources": [
+        {
+          "label": "Anthropic repository and README",
+          "url": "https://github.com/anthropics/formal-math/tree/main/vp-vnp"
+        },
+        {
+          "label": "Paper",
+          "url": "https://github.com/anthropics/formal-math/blob/main/vp-vnp/paper.pdf"
+        },
+        {
+          "label": "Community fork with kernel CI",
+          "url": "https://github.com/kim-em/vp-vnp"
+        }
+      ],
+      "register": [
+        "vp-vnp"
+      ],
+      "article": "vp-vnp-valiant-conjecture"
+    },
+    {
+      "id": "openai-vp-vnp",
+      "date": "2026-11-23",
+      "field": "Computer science",
+      "problem": "VP versus VNP (Valiant's conjecture)",
+      "known_since": "Conjectured by Leslie Valiant in 1979; the algebraic analogue of P versus NP.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed, with separations of Valiant's whole hierarchy",
+      "verification": "partly-formal",
+      "summary": "A 30-page preprint of 23 November claims a border-circuit lower bound of \\(\\exp(\\Omega((\\log n)^{5/4}))\\) for an explicit VNP family. Two preprints of 24 November supersede it: a grid state sum separates VP from VNP, paths and trees separate formulas, branching programs and circuits, and Hamiltonian cycle and the permanent need \\(\\exp(c(\\log N)^2/(\\log\\log N)^2)\\) gates. The Lean development proves the exact separations; the quantitative bounds are not formalized. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "VP and VNP are different (23 Nov)",
+          "url": "https://github.com/openai/math/blob/main/preprints/VP-and-VNP-are-different-November-23-2026/paper.pdf"
+        },
+        {
+          "label": "Paths, trees and grids (24 Nov)",
+          "url": "https://github.com/openai/math/blob/main/preprints/Paths-trees-and-grids-separate-Valiants-hierarchy-November-24-2026/paper.pdf"
+        },
+        {
+          "label": "Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/379.md"
+        }
+      ],
+      "register": [
+        "vp-vnp"
+      ],
+      "article": "vp-vnp-valiant-conjecture"
+    },
     {
       "id": "qip2-two-messages-liu",
       "date": "2026-11-23",
@@ -30,7 +162,7 @@
       "ai": "Claude (Anthropic)",
       "claim": "Proof claimed, with an extension to the generalized Riemann hypothesis",
       "verification": "formal",
-      "summary": "Alpöge says he found a proof with Claude over several weeks and released it only as a Lean library of about 17 million lines; his note says the method also gives the generalized Riemann hypothesis. On 21 November the Lean FRO and the Mathlib Initiative certified that the library proves exactly Mathlib's statement of the Riemann hypothesis, checked by Lean's kernel and several independent checkers. No human-readable proof has been released. Mathematicians quoted in the press say understanding it will take a long time, and the Association for Human Mathematics objects that no person can take responsibility for it. The certification covers the Riemann hypothesis statement, not the generalized one.",
+      "summary": "Alpöge says he found a proof with Claude over several weeks and released it only as a Lean library of about 17 million lines. On 21 November the Lean FRO and the Mathlib Initiative certified that the library proves exactly Mathlib's statement of the Riemann hypothesis. Independent checks by Andrew Sutherland (MIT) with several separate kernels passed by 25 November, and confirm that the library also proves the generalized hypothesis for Dirichlet L-functions; other L-functions were not checked. A shorter Lean proof of about 76,000 lines appeared on 25 November and passes the same checks. No human-readable proof has been released. Mathematicians quoted in the press say understanding it will take a long time, and the Association for Human Mathematics objects that no person can take responsibility for it.",
       "sources": [
         {
           "label": "Alpöge's note (20 Nov)",
@@ -41,13 +173,18 @@
           "url": "https://leanprover-community.github.io/blog/posts/riemann-hypothesis/"
         },
         {
+          "label": "Sutherland's verification report",
+          "url": "https://math.mit.edu/~drew/grh/"
+        },
+        {
           "label": "Science News (23 Nov)",
           "url": "https://www.sciencenews.org/article/riemann-hypothesis-solved-math-ai"
         }
       ],
       "register": [
         "riemann"
-      ]
+      ],
+      "article": "riemann-hypothesis-lean-proof"
     },
     {
       "id": "photonic-ghz-no-go-alphaproof",
@@ -329,6 +466,400 @@
         "local-smoothing",
         "kakeya",
         "restriction"
+      ]
+    },
+    {
+      "id": "openai-haldane-gap",
+      "date": "2026-10-06",
+      "field": "Quantum many-body physics",
+      "problem": "Haldane gap of the spin-one Heisenberg chain",
+      "known_since": "Conjectured by Haldane in 1983: integer-spin antiferromagnetic chains have a spectral gap.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed for even periodic rings",
+      "verification": "confirmed",
+      "summary": "The manuscript (24 September) proves that the spin-one Heisenberg antiferromagnet on even periodic rings has a spectral gap bounded away from zero, deducing it from finite-ring computations. OpenAI gives no Lean proof, but Sirui Lu has since verified the argument, formalized it in Lean 4 and sharpened the bound to \\(\\Delta_L>0.0729\\) for even \\(L\\ge36\\). Tasaki used its methods to prove uniqueness of the translation-invariant ground state, and Grover extended the argument to higher dimensions.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/The-periodic-spin-one-Haldane-gap-September-24-2026"
+        },
+        {
+          "label": "Lu: verification and Lean formalization",
+          "url": "https://arxiv.org/abs/2611.11049"
+        },
+        {
+          "label": "Tasaki: uniqueness of the ground state",
+          "url": "https://arxiv.org/abs/2610.34330"
+        },
+        {
+          "label": "Grover: extensions",
+          "url": "https://arxiv.org/abs/2611.07400"
+        }
+      ],
+      "article": "haldane-gap-proof"
+    },
+    {
+      "id": "openai-mub-dimension-six",
+      "date": "2026-10-06",
+      "field": "Quantum information",
+      "problem": "Mutually unbiased bases in dimension six",
+      "known_since": "Zauner conjectured in 1999 that \\(\\mathbb{C}^6\\) has only three mutually unbiased bases, rather than the seven of a complete set.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed: exactly three exist",
+      "verification": "confirmed",
+      "summary": "The manuscript (24 September) proves that no four mutually unbiased bases exist in \\(\\mathbb{C}^6\\), by a certified floating-point computation, and a companion proves the Matolcsi–Ruzsa–Weiner Fourier-vanishing conjecture outside Tao's matrix. OpenAI's Lean proof covers only the weaker bound of at most five. Cárdenes Wuttig and Tindall have since given an independent topological proof that every triple belongs to a known family and none extends to a fourth basis. Jaswal independently reran OpenAI's computation. Yang, Liu, Li and Deng reproved that no complete set of seven exists without the Fourier-vanishing step.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/The-maximum-number-of-mutually-unbiased-bases-in-dimension-six-September-24-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/266.md"
+        },
+        {
+          "label": "Cárdenes Wuttig and Tindall: independent proof",
+          "url": "https://arxiv.org/abs/2611.06917"
+        },
+        {
+          "label": "Yang, Liu, Li and Deng",
+          "url": "https://arxiv.org/abs/2611.19809"
+        }
+      ],
+      "article": "mutually-unbiased-bases-dimension-six"
+    },
+    {
+      "id": "openai-ppt-squared",
+      "date": "2026-10-06",
+      "field": "Quantum information",
+      "problem": "PPT-squared conjecture",
+      "known_since": "Conjectured by Christandl in 2012: composing two PPT channels always gives an entanglement-breaking channel.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Counterexample claimed",
+      "verification": "formal",
+      "summary": "A trace-preserving PPT channel on \\(21\\times21\\) matrices whose square is not entanglement breaking, and two PPT maps on \\(10\\times10\\) matrices whose composition is not, from the manuscript of 27 September. Both counterexamples are stated and checked in Lean. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Entanglement-with-zero-distillable-secret-key-in-local-dimension-ten-September-27-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/272.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-entanglement-zero-key",
+      "date": "2026-10-06",
+      "field": "Quantum information",
+      "problem": "Entanglement without distillable secret key",
+      "known_since": "Since the Horodeckis and Oppenheim showed in 2005 that some bound-entangled states yield secret key, it has been open whether every entangled state does.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Construction claimed: an entangled state with zero distillable key",
+      "verification": "unverified",
+      "summary": "The manuscript (27 September) constructs an entangled state on \\(\\mathbb{C}^{10}\\otimes\\mathbb{C}^{10}\\) from which no secret key can be distilled, for local-instrument protocols with two-way public communication against an eavesdropper holding the purification. The Lean formalization covers the PPT-composition counterexamples from the same paper, not this key statement.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Entanglement-with-zero-distillable-secret-key-in-local-dimension-ten-September-27-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/272.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-entropy-photon-number",
+      "date": "2026-10-06",
+      "field": "Quantum information",
+      "problem": "Entropy photon-number inequality",
+      "known_since": "Conjectured by Guha, Erkmen and Shapiro in 2008; it would settle capacities of several bosonic channels.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed",
+      "verification": "formal",
+      "summary": "The manuscript (24 September) proves that for a beam splitter of transmissivity \\(\\eta\\) and independent finite-energy inputs in any number of modes, \\(N(\\rho_C)\\ge\\eta N(\\rho_A)+(1-\\eta)N(\\rho_B)\\), where \\(N\\) is the entropy photon number. The inequality is formalized in Lean; the paper's capacity consequences are not. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/The-entropy-photon-number-inequality-September-24-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/273.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-gad-capacity",
+      "date": "2026-10-06",
+      "field": "Quantum information",
+      "problem": "Classical capacity of the generalized amplitude-damping channel",
+      "known_since": "Open because additivity of the Holevo information was unknown for this basic qubit noise model; only bounds were known.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Exact capacity claimed",
+      "verification": "formal",
+      "summary": "The manuscript (24 September) determines the unassisted classical capacity of every qubit generalized amplitude-damping channel as a one-variable optimization, attained by two-state product ensembles. Lean formalizes the additivity over repeated uses and the capacity formula, but not additivity with other channels. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Classical-capacity-and-entropy-inequalities-for-generalized-amplitude-damping-September-24-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/276.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-parity-qac0",
+      "date": "2026-10-06",
+      "field": "Quantum computing",
+      "problem": "Parity and \\(\\mathsf{QAC}^0\\) (Moore's conjecture)",
+      "known_since": "Moore conjectured in 1999 that constant-depth quantum circuits with unbounded Toffoli gates cannot compute parity.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed in the measured-output model",
+      "verification": "formal",
+      "summary": "The manuscripts (24 September) prove that constant-depth circuits with arbitrary one-qubit gates, unbounded-arity Toffoli gates and polynomially many qubits cannot compute parity with any fixed advantage over guessing, when one output qubit is measured. The bounded-error statement is formalized in Lean. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Regular-trajectories-pruning-and-quantum-parity-September-24-2026"
+        },
+        {
+          "label": "Companion manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Product-projection-localization-and-the-QAC0-parity-lower-bound-September-24-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/274.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-qma-coulomb",
+      "date": "2026-10-06",
+      "field": "Quantum complexity",
+      "problem": "QMA-hardness of continuum electronic structure",
+      "known_since": "Earlier QMA-hardness results for electronic structure, such as Schuch and Verstraete's of 2009, used lattice models, a fixed basis or external fields.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed",
+      "verification": "formal",
+      "summary": "The manuscripts (24 September) prove that approximating the ground energy of electrons around clamped unit-charge nuclei, in the full continuum with Coulomb interactions and no basis or external field, is QMA-hard. Both the unit-charge and the binary-charge versions are formalized in Lean. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/QMA-hardness-of-continuum-Coulomb-energy-with-unit-nuclear-charges-September-24-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/275.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-qaoa-sk",
+      "date": "2026-10-06",
+      "field": "Quantum computing",
+      "problem": "QAOA on the Sherrington–Kirkpatrick model",
+      "known_since": "Conjectured by Basso, Farhi, Marwaha, Villalonga and Zhou in 2022: QAOA reaches the Parisi ground-state energy as depth grows.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed in the thermodynamic-first limit",
+      "verification": "partly-formal",
+      "summary": "The manuscript (25 September) proves that for every accuracy some finite depth and fixed angles bring QAOA's limiting energy per spin within that accuracy of the Sherrington–Kirkpatrick ground-state energy, with size taken to infinity first. It gives no bound on the depth. Lean formalizes the Parisi-value identities the argument uses, not the convergence of QAOA itself.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/QAOA-attains-the-SK-ground-state-energy-in-the-thermodynamic-first-limit-September-25-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/281.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-exact-factoring",
+      "date": "2026-10-06",
+      "field": "Quantum algorithms",
+      "problem": "Exact quantum factoring",
+      "known_since": "Shor's algorithm succeeds with high probability; earlier zero-error variants, such as Mosca and Zalka's of 2003, used gates that depend on the input.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Construction claimed: zero-error factoring over one finite gate set",
+      "verification": "formal",
+      "summary": "The manuscript (25 September) gives a uniform polynomial-size quantum circuit family over a single fixed finite gate set that outputs the full prime factorization of every \\(N\\ge2\\) with probability exactly one. The statement is formalized in Lean. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Exact-quantum-factoring-over-a-fixed-finite-gate-set-September-25-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/279.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-entangled-threshold-repetition",
+      "date": "2026-10-06",
+      "field": "Quantum complexity",
+      "problem": "Parallel repetition of entangled games",
+      "known_since": "Exponential parallel repetition for general two-player entangled games has been open; Yuen proved polynomial decay in 2016.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Exponential threshold repetition claimed for every finite game",
+      "verification": "formal",
+      "summary": "The manuscript (25 September) proves that if a game's entangled value is \\(v<1\\), the chance of winning more than a fraction \\(v+\\delta\\) of \\(k\\) repetitions decays exponentially in \\(k\\), for all finite-dimensional strategies. Lean formalizes this with a weaker rate in \\(\\delta\\) (\\(\\delta^{13}\\) against the paper's \\(\\delta^5\\)). This threshold form is not the standard parallel repetition question, which asks about winning every round.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Threshold-parallel-repetition-for-finite-dimensional-entangled-games-September-25-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/277.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-unitary-synthesis",
+      "date": "2026-10-06",
+      "field": "Quantum complexity",
+      "problem": "Aaronson–Kuperberg unitary synthesis problem",
+      "known_since": "Posed by Aaronson and Kuperberg in 2007: can every unitary be implemented efficiently given a suitable classical oracle?",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Positive answer claimed for constant error",
+      "verification": "unverified",
+      "summary": "The manuscript (5 October) gives, for each \\(n\\), a polynomial-size quantum circuit with \\(H,T,T^\\dagger,\\mathrm{CNOT}\\) and a Boolean oracle that approximates any \\(n\\)-qubit unitary to diamond-norm error \\(1/2\\), for an oracle chosen to suit the target. The oracle need not be efficiently constructible. There is no Lean proof and no independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Polynomial-Time-Unitary-Synthesis-from-a-Boolean-Oracle-October-5-2026"
+        }
+      ],
+      "article": "unitary-synthesis-boolean-oracle"
+    },
+    {
+      "id": "openai-quartic-query-separation",
+      "date": "2026-10-06",
+      "field": "Quantum computing",
+      "problem": "Randomized versus quantum query complexity",
+      "known_since": "Aaronson, Ben-David, Kothari, Rao and Tal proved \\(R(f)=O(Q(f)^4)\\) for total functions in 2020; a cubic separation was known and a cubic bound was conjectured.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Nearly quartic separation claimed, disproving the cubic conjecture",
+      "verification": "unverified",
+      "summary": "The manuscript (5 October) constructs total Boolean functions whose randomized query complexity is almost the fourth power of their quantum query complexity, so no bound \\(R(f)=O(Q(f)^{\\alpha})\\) with \\(\\alpha<4\\) holds. There is no Lean proof and no independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/A-Nearly-Quartic-Separation-Between-Randomized-and-Quantum-Query-Complexity-October-5-2026"
+        }
+      ],
+      "article": "quartic-query-separation"
+    },
+    {
+      "id": "openai-2d-area-law",
+      "date": "2026-10-06",
+      "field": "Quantum many-body physics",
+      "problem": "Area law in two dimensions",
+      "known_since": "Hastings proved the area law for gapped one-dimensional ground states in 2007; the two-dimensional case has been a central open problem.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed, with efficient PEPS approximations",
+      "verification": "unverified",
+      "summary": "The manuscripts (24 September) prove an entanglement area law for unique ground states of gapped finite-range Hamiltonians on square-lattice domains, assuming only the gap of the full system, and that such ground states on \\(L\\times L\\) squares have PEPS approximations with bond dimension polynomial in \\(L\\). There is no Lean proof and no independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript: area law",
+          "url": "https://github.com/openai/math/tree/main/preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026"
+        },
+        {
+          "label": "OpenAI manuscript: PEPS",
+          "url": "https://github.com/openai/math/tree/main/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026"
+        }
+      ]
+    },
+    {
+      "id": "openai-laughlin-gap",
+      "date": "2026-10-06",
+      "field": "Quantum many-body physics",
+      "problem": "Spectral gap of the Laughlin state",
+      "known_since": "A uniform gap above the Laughlin state at filling 1/3 has been expected since the 1980s, but not proved.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed, with stability under weak disorder",
+      "verification": "partly-formal",
+      "summary": "The manuscripts (24 September and 5 October) prove a uniform gap above the fermionic Laughlin state for the \\(V_1\\) interaction at filling \\(1/3\\) on the sphere, stable under weak one-body potentials. Lean formalizes the uniform gap bound for large particle numbers, but not the stability under disorder. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/A-Fock-space-inequality-and-the-Laughlin-spectral-gap-September-24-2026"
+        },
+        {
+          "label": "OpenAI manuscript: stability",
+          "url": "https://github.com/openai/math/tree/main/preprints/Uniform-Stability-of-the-Spherical-Laughlin-Gap-October-5-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/269.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-heisenberg-ferromagnet",
+      "date": "2026-10-06",
+      "field": "Quantum many-body physics",
+      "problem": "Spontaneous magnetization of the quantum Heisenberg ferromagnet",
+      "known_since": "Dyson, Lieb and Simon proved order for quantum antiferromagnets in 1978; the quantum ferromagnet, and Bloch's 1930 \\(T^{3/2}\\) law, stayed unproved.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed in every dimension from three, with Bloch's law",
+      "verification": "partly-formal",
+      "summary": "The manuscripts (24 September and 5 October) prove spontaneous magnetization of the nearest-neighbour quantum Heisenberg ferromagnet in every dimension \\(d\\ge3\\) and every spin, and Bloch's \\(T^{3/2}\\) law with its exact coefficient in three dimensions. Lean formalizes the magnetization result, not Bloch's law. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Spontaneous-magnetization-in-the-quantum-Heisenberg-ferromagnet-September-24-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/271.md"
+        }
+      ]
+    },
+    {
+      "id": "openai-bose-einstein-condensation",
+      "date": "2026-10-06",
+      "field": "Quantum many-body physics",
+      "problem": "Bose–Einstein condensation of an interacting gas",
+      "known_since": "Condensation of an interacting Bose gas in the thermodynamic limit had not been proved at any positive temperature.",
+      "claimant": "OpenAI",
+      "ai": "An unnamed internal OpenAI model",
+      "claim": "Proof claimed for the dilute hard-sphere gas",
+      "verification": "partly-formal",
+      "summary": "The manuscripts (24 September to 5 October) prove condensation for the dilute three-dimensional hard-sphere gas at a positive temperature in the thermodynamic limit, and Bogoliubov's leading quantum-depletion law at zero temperature. Lean formalizes ground-state condensation only, not the positive-temperature result. No independent review has been reported.",
+      "sources": [
+        {
+          "label": "OpenAI manuscript",
+          "url": "https://github.com/openai/math/tree/main/preprints/Bose-Einstein-condensation-at-positive-temperature-in-the-dilute-hard-sphere-gas-October-5-2026"
+        },
+        {
+          "label": "OpenAI Lean scope",
+          "url": "https://github.com/openai/math/blob/main/lean/docs/267.md"
+        }
       ]
     }
   ]

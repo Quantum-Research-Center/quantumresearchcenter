@@ -1,0 +1,232 @@
+{
+  "slug": "vp-vnp-valiant-conjecture",
+  "title": "Two AI-written proofs claim VP ≠ VNP, the algebraic P versus NP",
+  "summary": "On 23 November Anthropic and OpenAI each posted a proof, written by AI and formalized in Lean, that the permanent has no polynomial-size arithmetic circuit. If either is right, Valiant's 1979 conjecture is settled. What VP and VNP are, why the permanent is the test case, how the proofs work, and what remains unchecked.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a layered network of nodes narrowing to a single filled output node, beside a wide fan of dashed lines spreading out to a long band."
+  },
+  "key_points": [
+    "Valiant's conjecture says the permanent, unlike the determinant, cannot be computed by polynomial-size arithmetic circuits. This is \\(\\mathsf{VP}\\ne\\mathsf{VNP}\\), the algebraic analogue of P versus NP.",
+    "On 23 November Anthropic posted a 70-page paper credited to Claude that claims a superpolynomial lower bound over every field. OpenAI posted its own proof the same day and stronger versions on 24 November.",
+    "Both come with Lean proofs. Anthropic's repository checks its proof with Lean's kernel and an independently written one, and a community fork adds two more. OpenAI formalized the separations but not its quantitative bounds.",
+    "No human has checked either proof. The key open check is whether the Lean statement files define circuits, VP and VNP correctly.",
+    "The result would not settle P versus NP, because Boolean circuits only need to be correct on the inputs 0 and 1."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "Two proofs in one day",
+      "paragraphs": [
+        "On 23 November 2026 Anthropic published a 70-page paper titled “VP ≠ VNP over every field”, with Claude listed as its only author, together with a Lean 4 formalization. Its README says the result “was discovered by an internal research Claude model”, that the paper and the Lean code “were written by AI models, and no human mathematician has checked the proof.” The same day OpenAI posted a 30-page preprint, “VP and VNP are different”, also with Lean code; its repository says its manuscripts were “produced by an unnamed internal OpenAI model”. On 24 November OpenAI followed with two longer preprints that it says subsume the first.",
+        "Both claim to prove a conjecture Leslie Valiant made in 1979: the permanent of a matrix, unlike the determinant, cannot be computed by arithmetic circuits of polynomial size. This is the algebraic analogue of P versus NP. It is generally thought to be easier than P versus NP, but until now nobody could prove anything close to it.",
+        "What are VP and VNP, why is the permanent the test case, and what exactly has Lean checked? The cards below take these one at a time. After them we compare the two claims."
+      ],
+      "stats": [
+        {
+          "value": "1979",
+          "label": "Valiant states the conjecture"
+        },
+        {
+          "value": "2",
+          "label": "independent AI-written proofs, both with Lean code"
+        },
+        {
+          "value": "70 + 30",
+          "label": "pages: Anthropic's and OpenAI's first papers"
+        },
+        {
+          "value": "0",
+          "label": "human checks of either proof reported"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        4,
+        12
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What does an arithmetic circuit compute?",
+      "paragraphs": [
+        "An arithmetic circuit starts from variables and constants and combines them with addition and multiplication gates; its size is the number of gates. The last gate computes a polynomial. “Computes” here means equality as polynomials, a formal identity, not just agreement on some inputs. A circuit over the real numbers must also be right for complex inputs.",
+        "The number of terms says little about the cost. The product \\((x_1+y_1)(x_2+y_2)\\cdots(x_n+y_n)\\) expands into \\(2^n\\) terms, one for each way of choosing \\(x_i\\) or \\(y_i\\) from each bracket, yet the circuit in the figure computes it with \\(2n-1\\) gates. So the real question is which polynomials have a structure that a small circuit can exploit."
+      ],
+      "figure": {
+        "file": "circuit.svg",
+        "caption": "A circuit with five gates computes \\((x_1+y_1)(x_2+y_2)(x_3+y_3)\\), whose expansion has eight terms. In general \\(2n-1\\) gates produce \\(2^n\\) terms, so a large number of terms does not by itself make a polynomial hard to compute.",
+        "alt": "Six input boxes labelled x1, y1, x2, y2, x3 and y3 feed in pairs into three plus gates. Two multiplication gates combine them, the last producing the product. Labels say 5 gates, 8 terms, and with n pairs, 2n minus 1 gates and 2 to the n terms."
+      }
+    },
+    {
+      "card": true,
+      "heading": "Why the permanent and not the determinant?",
+      "paragraphs": [
+        "For an \\(m\\times m\\) matrix of variables \\(x_{ij}\\), \\[ \\det X=\\sum_{\\sigma\\in S_m}\\operatorname{sgn}(\\sigma)\\prod_{i=1}^{m}x_{i\\sigma(i)},\\qquad \\operatorname{perm}X=\\sum_{\\sigma\\in S_m}\\prod_{i=1}^{m}x_{i\\sigma(i)} . \\] Both have \\(m!\\) terms and differ only in the signs. The signs make the determinant easy: Gaussian elimination, or Berkowitz's division-free method, computes it with polynomially many operations. The permanent has no such shortcut. Ryser's formula from 1963 takes about \\(2^m\\) operations, and nothing much better is known.",
+        "The permanent also counts. For a matrix of zeros and ones, \\(\\operatorname{perm}X\\) is the number of perfect matchings of the bipartite graph it describes; the \\(4\\times4\\) all-ones matrix has permanent \\(4!=24\\) and determinant \\(0\\). Its close relative, the Hamiltonian cycle polynomial \\(\\mathrm{HC}_m\\), sums the same products over the \\((m-1)!\\) permutations that form a single cycle, and so counts Hamiltonian cycles in a directed graph. In characteristic two, where \\(-1=1\\), the permanent becomes the determinant and is easy. That is why the claims use \\(\\mathrm{HC}_m\\) to cover every field."
+      ],
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What are VP and VNP?",
+      "paragraphs": [
+        "VP is the class of families of polynomials \\((f_n)\\) with polynomially many variables and polynomial degree that have circuits of polynomial size. The determinant is in VP. VNP adds one operation, summation over exponentially many choices: \\[ f_n(x)=\\sum_{e\\in\\{0,1\\}^{m}} g_n(x,e),\\qquad (g_n)\\in\\mathsf{VP}. \\] This mirrors NP, where a solution is a witness \\(e\\) that can be checked quickly. The permanent is such a sum: \\(e\\) encodes a permutation, and \\(g\\) checks it and returns the product of the chosen entries.",
+        "Valiant proved in 1979 that the permanent is complete for VNP in every characteristic other than two: every VNP family is a projection of a permanent of polynomial size. So \\(\\mathsf{VP}\\ne\\mathsf{VNP}\\) means exactly that the permanent, or \\(\\mathrm{HC}_m\\), needs circuits of superpolynomial size. The relation to P versus NP runs one way only. Bürgisser showed that \\(\\mathsf{VP}=\\mathsf{VNP}\\) over suitable fields would imply its Boolean analogue, so the Boolean separation implies the algebraic one, but not conversely. A Boolean circuit only has to be right on inputs 0 and 1, and it can compute a different polynomial that agrees there. An algebraic lower bound says nothing about such circuits, so P versus NP stays open."
+      ],
+      "source_refs": [
+        1,
+        9,
+        10
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How far from this were we?",
+      "paragraphs": [
+        "Very far. For general circuits, with no restriction on depth or structure, the best lower bound for any explicit polynomial was the 1983 bound of Baur and Strassen, about \\(n\\log d\\) for \\(n\\) variables and degree \\(d\\). For the permanent that gives roughly \\(m^2\\log m\\), barely more than the number of its inputs. Strong bounds existed only for restricted models: monotone circuits, multilinear formulas, and, since a 2021 breakthrough by Limaye, Srinivasan and Tavenas, circuits of constant depth. Geometric complexity theory, Mulmuley and Sohoni's programme through representation theory, had run into proven obstacles to its original plan.",
+        "Against that background, both claims are superpolynomial for general circuits. Anthropic's bound is \\(m^{c(\\log m)^{1/3}}\\) gates for \\(\\mathrm{HC}_m\\) and the permanent. OpenAI's 24 November paper gives \\(\\exp\\bigl(c(\\log N)^2/(\\log\\log N)^2\\bigr)\\). Both are far below the roughly \\(2^m\\) of the best algorithms, so the true complexity is still unknown."
+      ],
+      "source_refs": [
+        1,
+        5,
+        11
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How do the proofs work?",
+      "paragraphs": [
+        "Both start where OpenAI's matrix multiplication lower bound also starts: Strassen's asymptotic spectrum, the functions on tensors that add over direct sums, multiply over tensor products and never increase under linear maps. Read logarithmically, such a function assigns each “wire”, an index shared by two parties of a tensor, a price that behaves like a distance. Lower bounds then come from comparing what a circuit could build cheaply with the geometry those distances must satisfy.",
+        "Anthropic's paper proves that these prices have nonpositive curvature, then splits into two cases. Either Euclidean configurations can occur as prices (the flat case), or prices on a certain space of matrices over \\(\\mathbb{F}_2\\) fall short of Euclidean rectangles by a fixed factor (the contracting case). It proves that one of the two holds over every field, adding: “We do not know which of the two hypotheses holds, even over R.” In the flat case a polynomial that the permanent can express has a tensor that is too expensive for a small circuit. In the contracting case a small circuit would yield an “accelerator” for short nondeterministic programs, which a diagonal argument rules out.",
+        "The paper says where the determinant and Boolean circuits escape. Only two steps use the permanent, by substituting into it, and the determinant has no such reduction. Only two steps look inside the circuit, and both need the circuit's output to be the polynomial itself, which a Boolean circuit does not provide. The paper is also candid about its own completeness: four statements about machines and programs are checked only in Lean, so “the contracting case, and with it every main result, rests on Lean at these points.” OpenAI describes its proof in similar terms, trading “the rigidity of tensor networks priced in Euclidean space” against the ability to diagonalize against circuits. Neither company says whether the two arguments were found independently."
+      ],
+      "source_refs": [
+        1,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "kicker": "Back to the claims",
+      "heading": "What has been checked",
+      "paragraphs": [
+        "Lean checks that a proof follows from a statement's definitions, not that the definitions are the right ones. Anthropic's README is explicit: “Lean checks the proofs, but no machine checks that this file says what is claimed.” Its 98-line Statement.lean, which imports only Mathlib, defines circuits, the permanent, \\(\\mathrm{HC}_m\\), VP and VNP. That file is the first thing experts need to read, and a single mismatch there, for example in how circuit size or degree is counted, would empty the claim. Appendix Q of the paper lists the Lean counterpart of every numbered statement. Every statement is formalized except one remark, the consequence for determinantal complexity.",
+        "The Lean proofs are set up to be checked several times over. Anthropic's continuous integration runs Lean's comparator against a separate challenge file and replays the proof in nanoda, an independently written kernel. A community fork moved the project to a newer Lean and Mathlib, changing Statement.lean only in notation, and added continuous integration with two further kernels, con-leche and con-ron. We could not confirm the current results of either repository's checks. OpenAI's Lean development proves the exact separations over every field. By its own scope document, the quantitative border bounds in its papers are not formalized. We found no report of anyone outside OpenAI rerunning its Lean code, and no published assessment of either proof by a specialist in algebraic complexity.",
+        "What would it mean for quantum computing? The permanent is the function behind boson sampling: the output probabilities of photons passing through an interferometer are squared permanents. The hardness argument for boson sampling, however, rests on approximating permanents being hard for classical Boolean algorithms. An algebraic circuit lower bound neither proves nor refutes that, so the case for boson sampling is unchanged."
+      ],
+      "table": {
+        "columns": [
+          "Claim",
+          "Hard polynomial",
+          "Lower bound claimed",
+          "In Lean"
+        ],
+        "rows": [
+          [
+            "Anthropic (Claude), 23 November",
+            "Hamiltonian cycle polynomial; permanent outside characteristic 2",
+            "\\(m^{c(\\log m)^{1/3}}\\), also for approximating circuits",
+            "All numbered statements but one remark"
+          ],
+          [
+            "OpenAI, 23 November",
+            "An explicit VNP family; permanent outside characteristic 2",
+            "\\(\\exp(\\Omega((\\log n)^{5/4}))\\) for border circuits",
+            "The exact separation"
+          ],
+          [
+            "OpenAI, 24 November",
+            "State sum on an \\(n\\times n\\) grid; Hamiltonian cycle; permanent",
+            "\\(n^{\\Omega((\\log n)^{1/12})}\\) for the grid; \\(\\exp(c(\\log N)^2/(\\log\\log N)^2)\\) for Hamiltonian cycle",
+            "\\(\\mathsf{VF}\\subsetneq\\mathsf{VBP}\\subsetneq\\mathsf{VP}\\subsetneq\\mathsf{VNP}\\); superpolynomial exact bounds"
+          ]
+        ],
+        "caption": "The claims as stated in each paper, README or Lean scope document. Neither company reports a human check of its proof."
+      },
+      "asks": [
+        "Do the Lean statement files define circuits, VP and VNP exactly as the literature does?",
+        "Which of Anthropic's two cases actually holds, and over which fields?",
+        "Were the two proofs found independently, and why do they rest on the same geometry?",
+        "What do the new bounds give for derandomizing polynomial identity testing?"
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Claude (Anthropic): VP ≠ VNP over every field (paper)",
+      "url": "https://github.com/anthropics/formal-math/blob/main/vp-vnp/paper.pdf"
+    },
+    {
+      "title": "Anthropic: vp-vnp README and Lean formalization",
+      "url": "https://github.com/anthropics/formal-math/tree/main/vp-vnp"
+    },
+    {
+      "title": "OpenAI: VP and VNP are different (23 November 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/VP-and-VNP-are-different-November-23-2026/paper.pdf"
+    },
+    {
+      "title": "OpenAI: Paths, trees and grids separate Valiant's hierarchy (24 November 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/Paths-trees-and-grids-separate-Valiants-hierarchy-November-24-2026/paper.pdf"
+    },
+    {
+      "title": "OpenAI: Circuit lower bounds for Hamiltonian cycle and the permanent (24 November 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/Circuit-lower-bounds-for-Hamiltonian-cycle-and-the-permanent-November-24-2026/paper.pdf"
+    },
+    {
+      "title": "OpenAI: Lean formalization scope for Valiant's hierarchy",
+      "url": "https://github.com/openai/math/blob/main/lean/docs/379.md"
+    },
+    {
+      "title": "Anthropic: Statement.lean for VP ≠ VNP",
+      "url": "https://github.com/anthropics/formal-math/blob/main/vp-vnp/Statement.lean"
+    },
+    {
+      "title": "Community fork with independent-kernel CI (kim-em/vp-vnp)",
+      "url": "https://github.com/kim-em/vp-vnp"
+    },
+    {
+      "title": "Leslie Valiant: Completeness classes in algebra (1979)",
+      "url": "https://doi.org/10.1145/800135.804419"
+    },
+    {
+      "title": "Peter Bürgisser: Completeness and Reduction in Algebraic Complexity Theory",
+      "url": "https://doi.org/10.1007/978-3-662-04179-6"
+    },
+    {
+      "title": "Walter Baur and Volker Strassen: The complexity of partial derivatives (1983)",
+      "url": "https://doi.org/10.1016/0304-3975(83)90110-X"
+    },
+    {
+      "title": "OpenAI: math repository README (how the manuscripts were produced)",
+      "url": "https://github.com/openai/math"
+    }
+  ],
+  "related_articles": [
+    "matrix-multiplication-exponent-nine-fourths",
+    "riemann-hypothesis-lean-proof",
+    "openai-exponential-time-hypothesis",
+    "psi-aaronson-ambainis-conjecture"
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "slug": "haldane-gap-proof",
+  "title": "How an AI-found proof settled the Haldane gap",
+  "summary": "Haldane predicted in 1983 that spin-one chains have an energy gap. An OpenAI manuscript now proves it for even rings, by squaring one partition function in space and in imaginary time, and independent physicists have verified, formalized and extended the argument. How the proof works and what has been checked.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a ring of sites, each holding two small dots, joined alternately by solid and dashed bonds, beside a single low energy level separated by a gap from a dense band of higher levels."
+  },
+  "key_points": [
+    "Haldane predicted in 1983 that the spin-one Heisenberg antiferromagnet has an energy gap that survives in arbitrarily long chains. Numerics put it near \\(0.4105\\), but it had never been proved.",
+    "An OpenAI manuscript, released 6 October, proves a unique ground state for even rings of \\(L\\ge60\\) sites and a gap above \\(0.0038\\) for every even \\(L\\ge2304\\).",
+    "The proof reads one partition function in two ways. Doubling the inverse temperature squares the Boltzmann weights and doubling the ring squares a set of spatial weights, so a finite computation propagates to rings of every length.",
+    "Sirui Lu verified the finite inputs, formalized the argument in Lean and sharpened the bound to \\(0.0729\\) for every even \\(L\\ge36\\). Tasaki and Grover have built new results on it.",
+    "The method needs reflection positivity, so many two-dimensional models are still out of reach."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "A 43-year-old prediction, proved",
+      "paragraphs": [
+        "In 1983 Duncan Haldane predicted that a chain of spin-one magnets coupled antiferromagnetically has an energy gap: lifting it out of its ground state costs a fixed amount of energy, however long the chain. The prediction is backed by decades of numerics and neutron-scattering experiments, and it helped earn Haldane a share of the 2016 Nobel Prize in Physics. But for the plain Heisenberg chain it had never been proved.",
+        "A 30-page manuscript dated 24 September 2026, released by OpenAI on 6 October among its AI-generated mathematics, now proves it for even rings. For every even ring of \\(L\\ge2304\\) sites the gap is larger than \\(\\log 20/784\\approx0.0038\\), and the ground state is unique from \\(L=60\\). OpenAI says its manuscripts were “produced by an unnamed internal OpenAI model”. Unlike most of the AI claims in our feed, this one has been checked from outside. Sirui Lu at the Max Planck Institute of Quantum Optics verified the finite inputs in exact arithmetic, recast the proof in tensor-network diagrams and formalized it in Lean. He also sharpened the bound to \\(0.0729\\) for every even \\(L\\ge36\\). Hal Tasaki and Tarun Grover have since built new results on it.",
+        "The numerical value of the gap is about \\(0.4105\\), so the proved bounds are far from sharp. What matters is that they never reach zero. How can a computation on short rings settle what happens on rings of any length? The cards below explain, starting from the chain itself."
+      ],
+      "stats": [
+        {
+          "value": "1983",
+          "label": "Haldane's prediction"
+        },
+        {
+          "value": "0.4105",
+          "label": "numerical gap (White and Huse, 1993)"
+        },
+        {
+          "value": "0.0038",
+          "label": "OpenAI's proved bound, L ≥ 2304"
+        },
+        {
+          "value": "0.0729",
+          "label": "Lu's sharpened bound, L ≥ 36"
+        }
+      ],
+      "source_refs": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What is the spin-one Heisenberg chain?",
+      "paragraphs": [
+        "Put a spin-one particle on each of \\(L\\) sites around a ring. Each site has three states, \\(m=-1,0,+1\\), so the ring's state space has dimension \\(3^L\\). Neighbours interact through \\[ H_L=\\sum_{j=0}^{L-1}\\mathbf S_j\\cdot\\mathbf S_{j+1},\\qquad \\mathbf S_L=\\mathbf S_0, \\] which lowers the energy when neighbouring spins point in opposite directions. Write \\(E_0(L)\\) for the lowest energy and \\(E_1(L)\\) for the next one. The gap is \\(\\gamma_L=E_1(L)-E_0(L)\\).",
+        "For any finite ring the gap is positive. The question is whether it stays bounded away from zero as \\(L\\to\\infty\\). If it does, the chain is gapped: correlations between distant spins decay exponentially, and the ground state is robust against small perturbations. If the gap closes, correlations decay only as a power and the low-energy physics is critical. Exact diagonalization of rings of 4 to 12 sites, done for this article, gives gaps of \\(1.000\\), \\(0.721\\), \\(0.594\\), \\(0.525\\) and \\(0.484\\). They fall steadily, so these sizes alone cannot tell which case holds."
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why should the size of the spin matter?",
+      "paragraphs": [
+        "For spin one-half the answer is known. Bethe solved that chain exactly in 1931, and it is gapless. In 1961 Lieb, Schultz and Mattis proved that a half-integer chain cannot have both a unique ground state and a gap. Haldane mapped long-wavelength spin waves onto a field theory, the nonlinear sigma model, and found a topological term that depends on the spin \\(S\\) through \\(\\theta=2\\pi S\\). For half-integer \\(S\\) it makes the chain critical, and for integer \\(S\\) it is invisible, leaving a gapped, disordered state. Many physicists doubted this at first; spin one looked too similar to spin one-half to behave so differently.",
+        "The evidence piled up. In 1987 Affleck, Kennedy, Lieb and Tasaki proved a gap for a close relative, the AKLT chain. That chain adds the term \\(\\tfrac13(\\mathbf S_j\\cdot\\mathbf S_{j+1})^2\\), and its ground state pairs half-spins on neighbouring sites into singlets, leaving a free spin one-half at each end of an open chain. In 1993 White and Huse estimated the Heisenberg gap at \\(0.41050\\) with the density-matrix renormalization group, and neutron scattering on quasi-one-dimensional magnets saw it. The proof methods available need a property the pure Heisenberg chain lacks: being frustration free, meaning the ground state minimizes every bond separately. Perturbation theory around AKLT covers only a small neighbourhood of that model. So the plain chain stayed open."
+      ],
+      "source_refs": [
+        1,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How does a temperature reveal a gap?",
+      "paragraphs": [
+        "The proof's first idea is elementary. At inverse temperature \\(\\beta\\), the Gibbs state gives the \\(k\\)-th energy level the weight \\(w_k=e^{-\\beta E_k}/Z_L(\\beta)\\), where \\(Z_L(\\beta)=\\operatorname{Tr}e^{-\\beta H_L}\\). Its purity \\[ P=\\sum_k w_k^2=\\frac{Z_L(2\\beta)}{Z_L(\\beta)^2} \\] is close to one only when a single level carries almost all the weight. Since \\(P\\le w_0\\), the ratio of the first excited weight to the ground weight satisfies \\[ e^{-\\beta\\gamma_L}=\\frac{w_1}{w_0}\\le\\frac{1-P}{P}. \\] So if the purity is at least \\(1-\\varepsilon\\), the gap is at least \\(\\tfrac1\\beta\\log\\tfrac{1-\\varepsilon}{\\varepsilon}\\). For the 4-site ring at \\(\\beta=3\\) the purity is \\(0.761\\), which certifies \\(\\gamma_4\\ge0.386\\); the true gap is \\(1\\). The difficulty is getting a high purity on every ring at once, with \\(\\beta\\) growing no faster than the bound can tolerate."
+      ],
+      "source_refs": [
+        1,
+        4
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What is gained by reading the partition function sideways?",
+      "paragraphs": [
+        "Picture \\(Z_L(\\beta)\\) as a sum over histories on a torus: space runs around the ring and imaginary time runs from \\(0\\) to \\(\\beta\\), periodic in both. Read along time, it is \\(\\operatorname{Tr}e^{-\\beta H_L}\\). Read along space, it is the trace of an operator \\(X_\\beta\\) that carries the history of one bond through the whole time interval to the next bond: \\(Z_L(\\beta)=\\operatorname{Tr}X_\\beta^{\\,L}\\). OpenAI builds \\(X_\\beta\\) from a standard expansion of the partition function in bond events. Lu shows that on a time lattice it factorizes as \\(F^{\\mathsf T}F\\ge0\\), a form of reflection positivity, so its eigenvalues \\(\\lambda_i\\) give a second set of weights \\(\\lambda_i^L/Z_L(\\beta)\\).",
+        "Now there are two purities of the same number. The thermal purity \\(Z_n(2\\beta)/Z_n(\\beta)^2\\) is the purity of the Boltzmann weights. The spatial purity \\(Z_{2n}(\\beta)/Z_n(\\beta)^2\\) is the purity of the spatial weights. Squaring weights and renormalizing pushes a nearly pure distribution closer to pure: the defect \\(1-P\\) becomes at most about \\((1-P)^2/2\\). Squaring the Boltzmann weights doubles \\(\\beta\\), and squaring the spatial weights doubles the ring."
+      ],
+      "figure": {
+        "file": "spacetime.svg",
+        "caption": "The partition function \\(Z_n(\\beta)\\) as a space–time torus of width \\(n\\) and height \\(\\beta\\). Read upward it is a thermal trace; read across it is the \\(n\\)-th power of a spatial transfer operator \\(X_\\beta\\). Doubling the width gives the spatial purity, which squares the transfer weights. Doubling the height gives the thermal purity, which squares the Boltzmann weights.",
+        "alt": "Left: a grid rectangle labelled n wide and beta high, with an upward arrow labelled trace of e to the minus beta H and a rightward arrow labelled trace of X beta to the n. Right: a wide flat rectangle of width 2n labelled spatial purity Z 2n over Z n squared, and a tall narrow rectangle of height 2 beta labelled thermal purity Z n of 2 beta over Z n squared."
+      },
+      "source_refs": [
+        1,
+        4
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How do two squarings make a uniform gap?",
+      "paragraphs": [
+        "The two purities are tied together by an identity that follows straight from their definitions: \\[ \\frac{Z_{2n}(2\\beta)}{Z_n(\\beta)^4}\\;=\\;S(n,2\\beta)\\,T(n,\\beta)^2\\;=\\;T(2n,\\beta)\\,S(n,\\beta)^2, \\] where \\(S\\) is the spatial purity and \\(T\\) the thermal one. Suppose both defects are at most \\(\\varepsilon\\) at a starting point \\((n_0,\\beta_0)\\). Alternating the two squarings with this identity moves to \\((2n_0,2\\beta_0)\\) with both defects of order \\(\\varepsilon^2\\), then to \\((4n_0,4\\beta_0)\\) with \\(\\varepsilon^4\\), and so on. A moment inequality fills in the even lengths between \\(n_j=2^jn_0\\) and \\(2n_j\\).",
+        "Now count. At step \\(j\\) the inverse temperature is \\(\\beta_j=2^j\\beta_0\\) and the defect is about \\(\\varepsilon^{2^j}\\), so the gap bound \\(\\tfrac{1}{\\beta_j}\\log\\tfrac{1}{\\varepsilon_j}\\approx\\tfrac{2^j\\log(1/\\varepsilon)}{2^j\\beta_0}\\) does not shrink at all. That is the whole trick: the defect improves doubly exponentially, exactly fast enough to pay for the doubling temperature. The paper's Proposition 4.3 makes this precise. A seed at \\(n_0=2304\\), \\(\\beta_0=784\\) with defects below \\(1/100\\) gives \\(\\gamma_L>\\log20/784\\) for every even \\(L\\ge2304\\)."
+      ],
+      "figure": {
+        "file": "bootstrap.svg",
+        "caption": "The bootstrap. From a finite seed at \\((n_0,\\beta_0)\\) with purity defects at most \\(\\varepsilon\\), alternating spatial and thermal squarings reach \\((2n_0,2\\beta_0)\\) with defects of order \\(\\varepsilon^2\\), then \\((4n_0,4\\beta_0)\\) with \\(\\varepsilon^4\\). At each step an interpolation inequality covers every even length up to the next point (blue). Because \\(\\log(1/\\varepsilon_j)\\) doubles as \\(\\beta_j\\) doubles, the certified gap stays the same.",
+        "alt": "A staircase in a plane with ring length on the horizontal axis (n0, 2n0, 4n0, 8n0) and inverse temperature on the vertical axis (beta0, 2 beta0, 4 beta0). Orange dots at the corners are labelled epsilon, approximately epsilon squared and epsilon to the fourth. Blue horizontal segments run from each dot to the next length, and dashed arrows climb diagonally from dot to dot. A label says the gap bound log of 1 over epsilon j divided by beta j stays fixed."
+      },
+      "source_refs": [
+        1,
+        4
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Where does the computer come in?",
+      "paragraphs": [
+        "Only in the seed. The defects at the starting point come from partition functions of short rings, of 4 to 12 sites, at \\(\\beta=21/2\\) and \\(\\beta=49/4\\), including versions twisted by spin rotations. Each is enclosed by rational approximations to the matrix exponential with explicit error bounds; no floating-point eigenvalue is a premise. Two matrix-product trial states on rings of 72 and 120 sites add the information that the ground energy per site is below \\(-1.401482\\), just above the true value of about \\(-1.401484\\). With the energy shifted by \\(a=1.401482\\) per site, those two rings have shifted partition functions above one, which anchors the moment bounds; simple moment inequalities then turn the finite numbers into the needed purities.",
+        "We reproduced five of the table entries by exact diagonalization. For example, the shifted partition function \\(Z_6(21/2)=\\operatorname{Tr}e^{-\\frac{21}{2}(H_6+6a)}\\) comes out as \\(8.945303\\), and \\(Z_8(49/4)\\) as \\(4.639283\\). Both agree with the paper's table to better than its stated error of \\(10^{-5}\\)."
+      ],
+      "source_refs": [
+        1,
+        4
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Isn't the spectral gap undecidable?",
+      "paragraphs": [
+        "In general, yes. Cubitt, Pérez-García and Wolf proved in 2015 that no algorithm can decide, for every translation-invariant two-dimensional Hamiltonian, whether it is gapped, and Bausch, Cubitt, Lucia and Pérez-García proved the same in one dimension. That rules out a method that works for all models. It does not stop a proof for one model. The bootstrap succeeds when short rings already look like the infinite chain, so that the seed purities are high. A chain whose finite-size behaviour is misleading, as in the undecidable constructions, would never produce a good enough seed."
+      ],
+      "source_refs": [
+        11,
+        12
+      ]
+    },
+    {
+      "kicker": "Checking an AI proof",
+      "heading": "What has been checked, and what followed",
+      "paragraphs": [
+        "OpenAI's manuscript ships with a verification program but no Lean proof. The checks have come from outside. Lu first verified the finite inputs in exact arithmetic. He circulated a reformulation at Stanford on 7 October, the day after the release, and posted it on 8 November. His Lean 4 formalization proves the general doubling theorem and checks the trial states and the shortest ring traces in the kernel. The remaining short-ring trace bounds enter as hypotheses. Starting from the same finite data he gets a bound 19 times larger, and he applies the method to seven more spin chains and ladders.",
+        "Others have built on the result. Tasaki used its machinery and numerical inputs to prove that the infinite chain has a unique translation-invariant ground state. OpenAI's companion manuscript proves a gap for odd open chains with an end field, which addresses the gap assumption of Tasaki's earlier topological-index theorem. Grover extended the bootstrap to higher dimensions, nearly degenerate ground states and fermions. He applies it to the toric code in a field, a standard model of topological quantum memory, and to a two-dimensional tensor-network state. These papers are preprints, but three researchers independent of OpenAI have now worked through the argument and built on it.",
+        "What does it mean for quantum technology? Haldane's chain is the prototype of a symmetry-protected topological phase, whose ground states can carry quantum information along a chain in measurement-based quantum computing. More directly, the bootstrap is a new way to certify gaps from small computations. Gaps control how fast adiabatic algorithms can run and how stable topological memories are, and they are usually known only numerically. The method needs reflection positivity. Lu notes that it fails for the honeycomb AKLT model, so many two-dimensional models remain out of reach for now."
+      ],
+      "table": {
+        "columns": [
+          "Work",
+          "Date",
+          "Result"
+        ],
+        "rows": [
+          [
+            "OpenAI, periodic chain",
+            "24 Sep (released 6 Oct)",
+            "Unique ground state for even \\(L\\ge60\\); \\(\\gamma_L>\\log20/784\\approx0.0038\\) for even \\(L\\ge2304\\)"
+          ],
+          [
+            "OpenAI, open chain",
+            "24 Sep (released 6 Oct)",
+            "Gap for odd open chains with end field 3/5; topological index −1"
+          ],
+          [
+            "Lu",
+            "7 Oct (posted 8 Nov)",
+            "Finite inputs verified; Lean formalization; \\(\\gamma_L>0.0729\\) for even \\(L\\ge36\\); seven more models"
+          ],
+          [
+            "Tasaki",
+            "25 Oct",
+            "Unique translation-invariant ground state of the infinite chain"
+          ],
+          [
+            "Grover",
+            "5 Nov",
+            "Higher dimensions, near degeneracy, fermions, tensor-network states"
+          ]
+        ],
+        "caption": "The proof and the work built on it, as of 26 November 2026. The follow-ups are arXiv preprints."
+      },
+      "figure": {
+        "file": "gaps.svg",
+        "caption": "Exact gaps of rings of 4 to 12 sites (blue), computed for this article, fall toward the numerical bulk value \\(0.4105\\) (dashed). The proved lower bounds (orange) are much smaller but never reach zero: \\(0.0729\\) for every even \\(L\\ge36\\) (Lu) and \\(0.0038\\) for every even \\(L\\ge2304\\) (OpenAI).",
+        "alt": "Plot of gap against ring length on a log scale from 4 to 10,000. Blue dots at lengths 4 to 12 fall from 1 to about 0.48. A dashed line at 0.4105 marks the numerical bulk gap. Two orange horizontal lines mark proved bounds: 0.0729 from length 36 onward and 0.0038 from length 2304 onward."
+      },
+      "asks": [
+        "Can larger seeds push the proved bound close to the true gap of about 0.41?",
+        "Can the remaining short-ring trace bounds be checked inside Lean, making the proof fully formal?",
+        "Does the bootstrap settle the spin-two chain or the bilinear–biquadratic family between Heisenberg and AKLT?",
+        "Is there a version that works without reflection positivity, for models such as the honeycomb AKLT magnet?"
+      ],
+      "source_refs": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        13
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "OpenAI: The periodic spin-one Haldane gap (24 September 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/The-periodic-spin-one-Haldane-gap-September-24-2026/paper.pdf"
+    },
+    {
+      "title": "OpenAI: A boundary-field gap for the spin-one Heisenberg chain (24 September 2026)",
+      "url": "https://github.com/openai/math/tree/main/preprints/A-boundary-field-gap-for-the-spin-one-Heisenberg-chain-September-24-2026"
+    },
+    {
+      "title": "OpenAI: math repository README (how the manuscripts were produced)",
+      "url": "https://github.com/openai/math"
+    },
+    {
+      "title": "Sirui Lu: Bridging gaps with tensor networks: from the Haldane gap and beyond",
+      "url": "https://arxiv.org/abs/2611.11049"
+    },
+    {
+      "title": "Hal Tasaki: On the uniqueness of translation-invariant ground states of the S=1 Heisenberg and J–D antiferromagnetic chains",
+      "url": "https://arxiv.org/abs/2610.34330"
+    },
+    {
+      "title": "Tarun Grover: Extensions of the Haldane gap proof",
+      "url": "https://arxiv.org/abs/2611.07400"
+    },
+    {
+      "title": "F. D. M. Haldane: Nonlinear field theory of large-spin Heisenberg antiferromagnets (1983)",
+      "url": "https://doi.org/10.1103/PhysRevLett.50.1153"
+    },
+    {
+      "title": "Affleck, Kennedy, Lieb and Tasaki: Rigorous results on valence-bond ground states in antiferromagnets (1987)",
+      "url": "https://doi.org/10.1103/PhysRevLett.59.799"
+    },
+    {
+      "title": "Steven White and David Huse: Numerical renormalization-group study of low-lying eigenstates of the antiferromagnetic S=1 Heisenberg chain (1993)",
+      "url": "https://doi.org/10.1103/PhysRevB.48.3844"
+    },
+    {
+      "title": "Lieb, Schultz and Mattis: Two soluble models of an antiferromagnetic chain (1961)",
+      "url": "https://doi.org/10.1016/0003-4916(61)90115-4"
+    },
+    {
+      "title": "Cubitt, Pérez-García and Wolf: Undecidability of the spectral gap",
+      "url": "https://arxiv.org/abs/1502.04573"
+    },
+    {
+      "title": "Bausch, Cubitt, Lucia and Pérez-García: Undecidability of the spectral gap in one dimension",
+      "url": "https://arxiv.org/abs/1810.01858"
+    },
+    {
+      "title": "Else, Schwarz, Bartlett and Doherty: Symmetry-protected phases for measurement-based quantum computation",
+      "url": "https://arxiv.org/abs/1201.4877"
+    }
+  ],
+  "related_articles": [
+    "measurement-based-quantum-computing-introduction",
+    "riemann-hypothesis-lean-proof",
+    "vp-vnp-valiant-conjecture"
+  ]
+}

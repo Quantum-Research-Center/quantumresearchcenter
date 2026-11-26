@@ -1,0 +1,256 @@
+{
+  "slug": "unitary-synthesis-boolean-oracle",
+  "title": "An AI-written proof claims every unitary is easy with the right classical oracle",
+  "summary": "Aaronson and Kuperberg asked in 2007 whether every quantum operation can be performed efficiently given a suitable Boolean function as an oracle. An OpenAI manuscript claims yes, for constant error, by shrinking a unitary one block at a time through a feedback loop. What the question means, how the construction works, and why it is still unchecked.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: horizontal wires crossed by tall gate blocks and orange oracle blocks that read from a long strip of bits, beside a set of nested, shrinking squares."
+  },
+  "key_points": [
+    "The unitary synthesis problem asks whether every \\(n\\)-qubit unitary has a polynomial-size quantum circuit once the circuit may query a Boolean function chosen for that unitary. Aaronson and Kuperberg posed it in 2007.",
+    "An OpenAI manuscript released 6 October claims a positive answer for constant error. One circuit works for every unitary, and only the oracle changes.",
+    "The construction removes a block of coordinates at a time. Feeding a contracting block back through diagonal phases leaves a smaller unitary, and each of about \\(n^3\\) levels calls the smaller circuit once.",
+    "It is consistent with known lower bounds: one query is not enough, and a random oracle is not enough.",
+    "No independent check or Lean proof has been reported. The oracle may be hard to compute, and the resources are polynomial but enormous."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "Every unitary from a Boolean function",
+      "paragraphs": [
+        "In 2007 Scott Aaronson and Greg Kuperberg asked whether every quantum operation becomes easy once a suitable classical function is available as an oracle. On 6 October OpenAI released a 21-page manuscript, dated 5 October and “produced by an unnamed internal OpenAI model”, that answers yes, in the constant-error form of the question. For every \\(n\\) there is one quantum circuit, built from the gates \\(H\\), \\(T\\), \\(T^\\dagger\\) and CNOT plus calls to a Boolean oracle. It has polynomially many qubits, gates and queries, and it implements any chosen \\(n\\)-qubit unitary to within a constant error once the oracle is chosen to suit that unitary.",
+        "No one outside OpenAI has yet reported checking the argument, and there is no Lean proof. The manuscript is short and self-contained, though, and its central identity is a classical one that we verified numerically. On the day it was dated, an independent group posted a result that can look like the opposite: with a random oracle, Haar-random unitaries cannot be synthesized efficiently. The two fit together, as the cards below explain."
+      ],
+      "stats": [
+        {
+          "value": "2007",
+          "label": "Aaronson and Kuperberg pose the problem"
+        },
+        {
+          "value": "1",
+          "label": "query: proved insufficient in 2023"
+        },
+        {
+          "value": "21",
+          "label": "pages in the manuscript"
+        },
+        {
+          "value": "0",
+          "label": "independent checks reported"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        10
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What exactly is being asked?",
+      "paragraphs": [
+        "A Boolean oracle for a function \\(f:\\{0,1\\}^m\\to\\{0,1\\}\\) is the gate \\(O_f\\ket{x,b}=\\ket{x,\\,b\\oplus f(x)}\\), which a quantum circuit may call on superpositions of inputs. The function can be anything, with no limit on how hard it is to compute. With such an oracle many tasks become trivial. One query decides any yes-or-no question about the input, and Rosenthal showed that one query suffices to prepare any \\(n\\)-qubit state.",
+        "Unitary synthesis asks for more: a circuit that acts as a given unitary \\(U\\) on every input state, including inputs entangled with a reference system. The circuit may depend only on \\(n\\), while \\(f\\) may depend on \\(U\\). An \\(n\\)-qubit unitary has about \\(4^n\\) real parameters, and \\(f\\) can store exponentially many bits, so the question is not whether the information fits. It is whether a polynomial-size circuit can use it coherently. A yes would mean that the hardness of any quantum transformation lies in the classical description of a Boolean function, and nowhere else."
+      ],
+      "figure": {
+        "file": "model.svg",
+        "caption": "The model. A single circuit, built from fixed gates and calls to an oracle \\(O_f\\), works for every \\(n\\)-qubit unitary. Only the Boolean function \\(f\\) is chosen for the target \\(U\\), and its truth table may be exponentially long and hard to compute.",
+        "alt": "Seven horizontal wires, three marked as n input qubits and four as workspace starting at zero, pass through alternating tall boxes labelled gates and shorter boxes labelled O sub f. The output is labelled approximately U. Below, a box reads f from m bits to one bit, chosen for U, and a caption reads the same circuit for every n-qubit unitary."
+      },
+      "source_refs": [
+        1,
+        3,
+        7
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why is a unitary harder than a state?",
+      "paragraphs": [
+        "A state can be built one amplitude at a time. Rotate the first qubit so the probabilities of its two values are right, then rotate the second conditioned on the first, and so on. Each rotation angle is a number the oracle can supply. A unitary must map every basis input \\(\\ket x\\) to its column \\(U\\ket x\\), coherently and at once. Preparing the column while remembering \\(x\\) is easy: that is state preparation controlled on \\(x\\). The trouble is the last step, where the label \\(x\\) must be erased. Erasing it requires recognizing \\(x\\) from the quantum state \\(U\\ket x\\), and in a superposition of inputs there is no classical record to consult.",
+        "Earlier results bracketed the problem. Rosenthal synthesized any unitary in time about \\(2^{n/2}\\) using Grover search. Lombardi, Ma and Wright proved in 2023 that one query, or polynomially many queries made in parallel, cannot do it. Nehoran, Slote and Yuen showed that a constant number of queries suffices if the queries may be exponentially wide. Left open was the natural middle ground: polynomially many narrow queries, interleaved with quantum computation."
+      ],
+      "source_refs": [
+        1,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How do you make a unitary smaller?",
+      "paragraphs": [
+        "The proof shrinks the problem one block at a time. First the program mixes the unitary with permutations, random signs and Walsh transforms. A moment argument shows that some choice of these makes a corner block \\(D\\) contracting, \\(\\|D\\|\\le\\tfrac34\\), \\[ V=\\begin{pmatrix}A&B\\\\C&D\\end{pmatrix}. \\] The corner \\(D\\) acts on the \\(s\\) coordinates to be removed. Feed its output back into its input through a diagonal phase unitary \\(Z\\), as in a feedback loop. Solving the loop gives \\[ F=A+BZ(I-DZ)^{-1}C, \\] the transfer function of the loop, a construction familiar from control and scattering theory. Because \\(V\\) conserves norm and nothing escapes the loop, \\(F\\) is unitary on the remaining \\(d-s\\) coordinates.",
+        "We checked this numerically. For random \\(64\\)-dimensional unitaries with a \\(16\\)-dimensional corner, \\(F^*F\\) equals the identity to \\(10^{-15}\\). Truncating \\((I-DZ)^{-1}\\) to its first 80 powers already reproduces \\(F\\) to rounding error. Random signs and Walsh transforms also do what the proof needs: for the identity matrix, whose corner has norm 1, they bring the corner of a \\(256\\)-dimensional matrix down to about \\(0.5\\). Each step removes at least a \\(1/(16384(n+1)^2)\\) fraction of the dimension, so on the order of \\(n^3\\) steps take \\(2^n\\) dimensions down to one."
+      ],
+      "figure": {
+        "file": "feedback.svg",
+        "caption": "One reduction step. A unitary \\(V\\) is split so that its corner \\(D\\) on the removed coordinates is contracting. Closing those coordinates through a diagonal phase \\(Z\\) leaves \\(F=A+BZ(I-DZ)^{-1}C\\), a smaller unitary on the kept coordinates. It depends on \\(Z\\), so the next level must synthesize a whole family of unitaries controlled by \\(Z\\).",
+        "alt": "A box labelled V is divided into four blocks A, B, C and D. A blue line enters and leaves on the kept coordinates through A and B, ending at F x. An orange loop leaves the box from D, passes through a box labelled Z, diagonal phases, and returns into the box at C and D. A label reads V equals A B over C D with the norm of D at most three quarters."
+      },
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why doesn't the recursion explode?",
+      "paragraphs": [
+        "Two problems remain. The smaller unitary \\(F\\) depends on \\(Z\\), so each level must synthesize a family of unitaries controlled by a phase register. And the circuit must move states between the big space and the pair consisting of the phase register and the smaller space, without leaving a trace of the input index. The paper builds two encoding maps from the forward and backward geometric series of \\((I-DZ)^{-1}\\), truncated at a length \\(L\\), with errors that shrink like \\(\\|D\\|^L\\). They satisfy \\(\\tilde F E\\approx RV\\), where \\(\\tilde F\\) applies \\(F\\) controlled on the phase register.",
+        "The key observation is about sparsity. Give each removed coordinate \\(i\\) the frequency vector \\((1,i,\\dots,i^L)\\). In the Fourier expansion of the encoders, a nonzero coefficient then records a multiset of coordinates through its power sums. As a result every row of the encoding matrices has at most \\(L\\) nonzero entries. Few entries per row is exactly what lets a circuit prepare a column and then erase the input index coherently, the step that blocks naive approaches; amplitude amplification fixes the normalization. Finally, each level calls the smaller circuit exactly once, between its two encoders. The total size is therefore a sum over the levels, not a product, and the whole circuit uses \\(O((n+1)^{10})\\) qubits and \\(O((n+1)^{13})\\) programmable gates."
+      ],
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What does the oracle hold?",
+      "paragraphs": [
+        "The construction is first written with programmable gates: single-qubit gates controlled by other qubits whose matrices, one for each control value, depend on \\(U\\). The last step replaces each such matrix by a short word in \\(H\\), \\(T\\) and \\(T^\\dagger\\), and stores all the words in one Boolean function. The circuit looks up the word for its current control value, applies it, and erases the lookup. Care is needed to keep the relative phases between different control values, which a global phase would otherwise destroy. The oracle is a gigantic lookup table of gate choices; the circuit that reads it is generated from \\(n\\) alone.",
+        "Three limits follow from the statement. The theorem does not say how to compute \\(f\\) from a description of \\(U\\). The polynomials have degree 10 and 13 with very large constants, so this is a proof of possibility, not a compiler. The error is constant. The construction ends below \\(\\tfrac15\\) in the diamond norm, and the theorem is stated with \\(\\tfrac12\\), the constant-error form of the problem. The paper does not claim a version with smaller error."
+      ],
+      "source_refs": [
+        1,
+        4
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Doesn't a random oracle make it impossible?",
+      "paragraphs": [
+        "Andrew Huang, Akshar Ramkumar and John Wright posted on 5 October a proof that implementing a Haar-random unitary with access to a random Boolean function needs superpolynomially many queries. That is an average-case question: the oracle is random and knows nothing about \\(U\\). In the Aaronson–Kuperberg question the oracle is chosen for \\(U\\). The two results answer different questions and are consistent. Likewise, the new construction does not contradict the one-query lower bound of Lombardi, Ma and Wright, because it uses polynomially many queries, each depending on the answers to earlier ones."
+      ],
+      "source_refs": [
+        5,
+        10
+      ]
+    },
+    {
+      "kicker": "Back to the claim",
+      "heading": "Where it stands",
+      "paragraphs": [
+        "Like several of OpenAI's quantum results, this one is unverified. It has no Lean formalization, OpenAI's repository flags unformalized results as possibly having issues, and no follow-up paper has engaged with it yet. In its favour, it is only 21 pages, every step is stated as a lemma with explicit constants, and the ingredients are standard: feedback of a unitary block, Gaussian moment bounds, uniformly controlled gates, amplitude amplification and Solovay–Kitaev-style compilation. It is the kind of argument a specialist can check line by line.",
+        "If it holds, the meaning is conceptual. Quantum complexity theory has asked whether some quantum transformations are hard for reasons that no classical object can capture. This theorem would say that, relative to a suitably chosen Boolean function, every unitary is easy, so the hardness of quantum transformations can always be moved into the classical complexity of a function. Lombardi, Ma and Wright had tied unitary synthesis to the security of quantum cryptography; what the new upper bound means there has not yet been worked out in print."
+      ],
+      "table": {
+        "columns": [
+          "Work",
+          "Year",
+          "Queries",
+          "Result"
+        ],
+        "rows": [
+          [
+            "Aaronson and Kuperberg",
+            "2007",
+            "—",
+            "Pose the problem"
+          ],
+          [
+            "Rosenthal",
+            "2022",
+            "Exponential",
+            "Any unitary in time about \\(2^{n/2}\\)"
+          ],
+          [
+            "Lombardi, Ma and Wright",
+            "2023",
+            "One, or many in parallel",
+            "Impossible"
+          ],
+          [
+            "Nehoran, Slote and Yuen",
+            "2026",
+            "Constant, exponentially wide",
+            "Possible"
+          ],
+          [
+            "Huang, Ramkumar and Wright",
+            "Oct 2026",
+            "Random oracle",
+            "Impossible for Haar-random unitaries"
+          ],
+          [
+            "OpenAI",
+            "Oct 2026",
+            "Polynomially many, adaptive, polynomial width",
+            "Possible, constant error (unverified)"
+          ]
+        ],
+        "caption": "Results on unitary synthesis relative to a Boolean oracle. Except for the last two rows, the oracle may be chosen for the target unitary."
+      },
+      "asks": [
+        "Will specialists in quantum query complexity confirm the multiset sparsity argument and the error bookkeeping?",
+        "Can the error be made inverse-polynomially small at polynomial cost?",
+        "How hard is it to compute a suitable oracle from a description of the unitary?",
+        "What does the result imply for oracle separations and for the security of quantum cryptography?"
+      ],
+      "source_refs": [
+        1,
+        2,
+        5,
+        7,
+        8,
+        9,
+        10
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "OpenAI: Polynomial-time unitary synthesis from a Boolean oracle (5 October 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/Polynomial-Time-Unitary-Synthesis-from-a-Boolean-Oracle-October-5-2026/paper.pdf"
+    },
+    {
+      "title": "OpenAI: math repository README (how the manuscripts were produced)",
+      "url": "https://github.com/openai/math"
+    },
+    {
+      "title": "Scott Aaronson and Greg Kuperberg: Quantum versus classical proofs and advice (2007)",
+      "url": "https://doi.org/10.4086/toc.2007.v003a007"
+    },
+    {
+      "title": "Scott Aaronson: Open problems related to quantum query complexity (2021)",
+      "url": "https://doi.org/10.1145/3488559"
+    },
+    {
+      "title": "Alex Lombardi, Fermi Ma and John Wright: A one-query lower bound for unitary synthesis and breaking quantum cryptography",
+      "url": "https://arxiv.org/abs/2310.08870"
+    },
+    {
+      "title": "Fangqi Dong, Alex Lombardi and Fermi Ma: Explicit separations for one-query unitary synthesis",
+      "url": "https://arxiv.org/abs/2607.26478"
+    },
+    {
+      "title": "Gregory Rosenthal: Efficient quantum state synthesis with one query",
+      "url": "https://doi.org/10.1137/1.9781611977912.89"
+    },
+    {
+      "title": "Gregory Rosenthal: Query and depth upper bounds for quantum unitaries via Grover search",
+      "url": "https://doi.org/10.22331/q-2026-06-30-2144"
+    },
+    {
+      "title": "Barak Nehoran, Joseph Slote and Henry Yuen: All unitaries have constant depth quantum circuits",
+      "url": "https://arxiv.org/abs/2609.40351"
+    },
+    {
+      "title": "Andrew Huang, Akshar Ramkumar and John Wright: Random-oracle unitary synthesis is impossible",
+      "url": "https://arxiv.org/abs/2610.06700"
+    }
+  ],
+  "related_articles": [
+    "haldane-gap-proof",
+    "mutually-unbiased-bases-dimension-six",
+    "psi-aaronson-ambainis-conjecture"
+  ]
+}

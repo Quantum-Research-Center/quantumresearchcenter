@@ -1,0 +1,235 @@
+{
+  "slug": "npt-bound-entanglement",
+  "title": "A paper claims the first bound entangled state with a negative partial transpose",
+  "summary": "Since 1998 it has been open whether an entangled state that fails the partial-transpose test can still be impossible to distill. A new preprint, written with AI help, gives an explicit eight-level Werner state and a single certificate matrix that rules out distillation for every number of copies. We rebuilt the certificate and its conditions hold. Independent review is still pending.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: seven pairs of linked circles feeding into a grey box filled with a grid of dots, with only an empty, faint pair of circles on the far side."
+  },
+  "key_points": [
+    "Distillation turns many noisy entangled pairs into fewer good ones. Bound entangled states are entangled but cannot be distilled, and all known examples had a positive partial transpose.",
+    "A preprint by Islam Faisal, posted 25 November 2026, claims that the Werner state \\((23I-3\\,\\mathrm{SWAP})/1448\\) on two eight-level systems has a negative partial transpose and still cannot be distilled from any number of copies.",
+    "The proof turns an infinite family of checks into four conditions on one explicit 4096-dimensional matrix. We rebuilt the matrix, and the conditions hold numerically.",
+    "If correct, it answers a question open since 1998 and shows that distillable entanglement is neither additive nor convex.",
+    "The paper credits AI from OpenAI and Anthropic with helping find the state. It has not been independently reviewed, and the author promises verification code in a revised version."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "An entangled state nobody can use",
+      "paragraphs": [
+        "Entanglement is useful only once it is purified. Two labs that share many noisy entangled pairs can, with local operations and classical communication, turn them into fewer near-perfect Bell pairs. That step, distillation, feeds teleportation, entanglement-based key distribution and quantum repeaters. In 1998 the Horodeckis discovered that some entangled states cannot be distilled at all. They called this bound entanglement and asked a question that stayed open for 28 years: can a state be bound entangled even when the simplest entanglement test, the partial transpose, flags it as entangled?",
+        "On 25 November 2026 Islam Faisal of Boston University posted a short paper, arXiv:2611.34921, claiming the answer is yes, with an explicit example: the Werner state \\(\\rho=(23I-3\\,\\mathrm{SWAP})/1448\\) on two eight-level systems. The paper credits generative AI from OpenAI and Anthropic, with an agent memory system, with helping to find the state. The proof hinges on one explicit \\(4096\\times4096\\) matrix. We rebuilt it from the printed coefficients and checked its four defining conditions numerically, and they hold. No independent expert review has been reported yet, and the author says a revised version with verification code will follow."
+      ],
+      "stats": [
+        {
+          "value": "1998",
+          "label": "question posed by the Horodeckis"
+        },
+        {
+          "value": "8 × 8",
+          "label": "local dimensions of the new state"
+        },
+        {
+          "value": "4096",
+          "label": "size of the certificate matrix"
+        },
+        {
+          "value": "0.604",
+          "label": "Bell fidelity bound, for every number of copies"
+        }
+      ],
+      "figure": {
+        "file": "distill.svg",
+        "caption": "Distillation. Alice and Bob turn many noisy entangled pairs into fewer near-perfect Bell pairs, using only local operations and classical communication. A state is bound entangled when it is entangled but no protocol produces any good pairs, however many copies it uses.",
+        "alt": "Six pairs of circles joined by dashed lines on the left enter a box labelled local operations and classical communication, Alice to Bob. Two pairs of filled circles joined by solid lines come out on the right, labelled fewer near-perfect Bell pairs. A caption below says that for bound entanglement, the right-hand side stays empty."
+      },
+      "source_refs": [
+        1,
+        2
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What is the partial transpose test?",
+      "paragraphs": [
+        "A state of two systems is separable if it is a mixture of product states \\(\\omega_A\\otimes\\omega_B\\); otherwise it is entangled. Deciding which is hard in general, but Asher Peres found a one-line test in 1996. Transpose only the second system, \\(\\rho\\mapsto\\rho^\\Gamma\\). For a product state this gives \\(\\omega_A\\otimes\\omega_B^{T}\\), still a valid state, so every separable state has \\(\\rho^\\Gamma\\ge0\\). A negative eigenvalue of \\(\\rho^\\Gamma\\) therefore proves entanglement. States with \\(\\rho^\\Gamma\\ge0\\) are called PPT, and those with a negative eigenvalue NPT.",
+        "For two qubits, and for a qubit with a qutrit, the test is exact: PPT means separable. In larger dimensions there are entangled PPT states, and the Horodeckis showed in 1998 that none of them can be distilled. Distillation needs a negative partial transpose. The open question was the converse: is a negative partial transpose enough?"
+      ],
+      "source_refs": [
+        2,
+        9
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why were Werner states the suspects?",
+      "paragraphs": [
+        "Werner states are the mixtures \\((I-\\alpha\\,\\mathrm{SWAP})/(d^2-\\alpha d)\\) with \\(-1\\le\\alpha\\le1\\), where SWAP exchanges the two systems. They look the same under any rotation \\(U\\otimes U\\) applied to both sides, which lets any distillation protocol be simplified to act on them in a standard form. They are PPT, and in fact separable, exactly when \\(\\alpha\\le1/d\\). For \\(\\alpha>1/2\\) they are distillable. Projecting both sides onto two dimensions leaves an entangled two-qubit state, and every entangled two-qubit state can be distilled.",
+        "The middle range \\(1/d<\\alpha\\le1/2\\) is NPT, yet in 2000 two groups (DiVincenzo, Shor, Smolin, Terhal and Thapliyal, and Dür, Cirac, Lewenstein and Bruß) showed that single copies there cannot be distilled. They conjectured that no number of copies helps either. Claimed proofs by Simon and by Chattopadhyay and Sarkar in 2006 were found to have gaps, and Hiroshima withdrew his of 2008. Even the two-copy case was proved only in July 2026, and the question was listed as Problem 4 of the five open problems in quantum information chosen by Horodecki, Rudnicki and Życzkowski in 2022."
+      ],
+      "figure": {
+        "file": "werner.svg",
+        "caption": "Werner states in dimension \\(d=8\\). For \\(\\alpha\\le1/8\\) they are separable. For \\(\\alpha>1/2\\) they are distillable. In between they are NPT and were conjectured to be bound entangled. The new state has \\(\\alpha=3/23\\approx0.130\\), just past the separable boundary, where the negative eigenvalue of \\(\\rho^\\Gamma\\) is only \\(-1/1448\\).",
+        "alt": "A number line for the Werner parameter alpha from minus 1 to 1. A grey band from minus 1 to 1/8 is labelled separable (PPT), an orange band from 1/8 to 1/2 is labelled NPT, conjectured bound, and a blue band from 1/2 to 1 is labelled distillable. An orange dot just to the right of 1/8 is labelled the new state, alpha equals 3/23, about 0.130."
+      },
+      "source_refs": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why is undistillability so hard to prove?",
+      "paragraphs": [
+        "A proof must rule out every protocol on every number of copies \\(n\\): Alice and Bob may act on all their \\(n\\) systems at once, talk back and forth, and keep only the runs they like. The space of such protocols grows without bound. A clean sufficient condition exists. If, for every \\(n\\), squeezing \\(\\rho^{\\otimes n}\\) down to a single pair of qubits always yields a PPT state, then no protocol can distill, since every entangled two-qubit state is NPT. But checking this for all \\(n\\) directly is hopeless, and all earlier attacks stalled at small \\(n\\).",
+        "The new paper replaces the infinite family of checks by one finite object. It finds a certificate on a single copy whose properties are preserved under tensor powers, so that one computation on a \\(4096\\)-dimensional matrix controls all \\(n\\) at once."
+      ],
+      "source_refs": [
+        1,
+        10
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How does one matrix cover every number of copies?",
+      "paragraphs": [
+        "First the paper writes every copy as the same vector pushed through two local maps. With \\(\\ket u=\\sum_i\\ket{ii}\\), \\(L(X)=5\\,\\mathrm{Tr}(X)I-3X^{T}\\) and \\(M(X)=18\\,\\mathrm{Tr}(X)I+37X\\), a direct calculation gives \\((L\\otimes M)(\\ket u\\bra u)=37\\cdot1448\\,\\rho\\), and hence \\(\\rho^{\\otimes n}\\) is proportional to \\((L\\otimes M)^{\\otimes n}\\) applied to \\((\\ket u\\bra u)^{\\otimes n}\\). Both maps are completely positive, but their product is not completely copositive, which is the property that would have made undistillability immediate.",
+        "The fix is a stand-in map \\(\\mathcal S\\), given by its Choi matrix \\(Q\\), a combination of the 24 ways to permute four copies of \\(\\mathbb C^8\\) with integer coefficients. Writing \\(J\\) for the Choi matrix of \\(L\\otimes M\\), the certificate must satisfy \\[J+Q\\succeq0,\\qquad J-Q\\succeq0,\\qquad Q^{\\Gamma_{\\rm in}}\\succeq0,\\qquad (J-Q)(\\ket u\\otimes I)=0.\\] The third makes \\(\\mathcal S\\) completely copositive. The fourth makes it agree with the real map wherever the proof needs it. The first two make the real map exceed \\(\\mathcal S\\) by a completely positive amount. All three properties survive tensor powers: \\(J^{\\otimes n}-Q^{\\otimes n}\\), for instance, expands into a sum of products of the positive matrices \\(J\\pm Q\\). So a one-copy computation yields an inequality for every \\(n\\).",
+        "That inequality bounds the coherence of any two-qubit output, \\(|\\langle00|\\tau|11\\rangle|\\), by the geometric mean of its four diagonal entries. With \\(s=\\tau_{00,00}+\\tau_{11,11}\\), the Bell fidelity is then at most \\(\\tfrac12(s+\\sqrt{s(1-s)})\\), whose maximum is \\((1+\\sqrt2)/4\\approx0.604\\). Distillation would need fidelities approaching 1, so \\(\\rho\\) is undistillable."
+      ],
+      "source_refs": [
+        1
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What did we check, and why is 0.604 not the real limit?",
+      "paragraphs": [
+        "We built \\(Q\\) from the 24 printed coefficients and the stated conventions and tested the four conditions numerically in double precision. Everything else in the proof is short analytic argument, which we read and found sound. A symmetry of the problem splits these matrices into five small blocks, and the paper says it checked each by exact integer elimination. It does not include the code, which is what the promised revised version should add.",
+        "The bound of \\(0.604\\) is not tight, and the proof implies more than it states. A two-qubit state with Bell fidelity above \\(\\tfrac12\\) is entangled, and every entangled two-qubit state can be distilled. If some protocol produced fidelity \\(0.55\\), running it on many groups of copies and distilling the outputs would be a single protocol reaching fidelities near 1, contradicting the theorem. So, in our reading, no separable operation on any number of copies produces a two-qubit state with Bell fidelity above \\(\\tfrac12\\), which is the usual form of the undistillability criterion."
+      ],
+      "table": {
+        "columns": [
+          "Condition",
+          "What it gives",
+          "Our numerical check"
+        ],
+        "rows": [
+          [
+            "\\(J+Q\\succeq0\\)",
+            "with the next condition, the real map exceeds the stand-in for all n",
+            "smallest eigenvalue 12.49"
+          ],
+          [
+            "\\(J-Q\\succeq0\\)",
+            "same",
+            "exactly 64 zero eigenvalues, then 0.46"
+          ],
+          [
+            "\\(Q^{\\Gamma_{\\rm in}}\\succeq0\\)",
+            "the stand-in is completely copositive",
+            "smallest eigenvalue 0.075"
+          ],
+          [
+            "\\((J-Q)(\\ket u\\otimes I)=0\\)",
+            "the stand-in agrees with the real map where needed",
+            "zero to \\(3\\times10^{-14}\\)"
+          ]
+        ],
+        "caption": "The four conditions on the certificate matrix Q and our double-precision check of each. The 64-dimensional kernel of J − Q is exactly the one the fourth condition forces."
+      },
+      "source_refs": [
+        1,
+        10
+      ]
+    },
+    {
+      "kicker": "Back to the claim",
+      "heading": "What would follow, and what is still open",
+      "paragraphs": [
+        "If the proof holds, distillable entanglement is neither additive nor convex. Every NPT state becomes distillable when combined with a suitable PPT bound entangled state, as Vollbrecht and Wolf showed, so two undistillable states together can be distilled. Shor, Smolin and Terhal had shown in 2001 that this, and a failure of convexity, would follow from NPT bound entanglement. Operationally, a noisy channel that distributes this state cannot by itself establish usable entanglement, even though the entanglement it carries is visible to the simplest test. The ability to purify entanglement is a resource in its own right, and the partial transpose does not capture it.",
+        "The result is a single example in dimension 8. It does not say where the boundary of distillability lies inside the Werner family, or whether the region \\(1/d<\\alpha\\le1/2\\) is bound entangled throughout. It also does not settle a related question of Müller-Hermes, Reeb and Wolf about tensor-stable positive maps. The paper is a single-author preprint, version 1, written with substantial AI assistance, and the decisive computation still needs to be released and rechecked in exact arithmetic. Because the certificate is explicit, that check is straightforward, and the claim will be settled faster than most."
+      ],
+      "asks": [
+        "Will the exact verification code confirm the four conditions in integer arithmetic?",
+        "Does a similar certificate work for other Werner states, or for all \\(1/d<\\alpha\\le1/2\\)?",
+        "Is there a smaller-dimensional NPT bound entangled state, for example in dimension 3 or 4?",
+        "What does the result imply for the additivity of quantum channel capacities?"
+      ],
+      "source_refs": [
+        1,
+        11,
+        12
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "Islam Faisal: Bound Entanglement with Negative Partial Transpose Exists (arXiv:2611.34921)",
+      "url": "https://arxiv.org/abs/2611.34921"
+    },
+    {
+      "title": "M. Horodecki, P. Horodecki and R. Horodecki: Mixed-state entanglement and distillation: is there a “bound” entanglement in nature? (1998)",
+      "url": "https://doi.org/10.1103/PhysRevLett.80.5239"
+    },
+    {
+      "title": "DiVincenzo, Shor, Smolin, Terhal and Thapliyal: Evidence for bound entangled states with negative partial transpose (2000)",
+      "url": "https://doi.org/10.1103/PhysRevA.61.062312"
+    },
+    {
+      "title": "Dür, Cirac, Lewenstein and Bruß: Distillability and partial transposition in bipartite systems (2000)",
+      "url": "https://doi.org/10.1103/PhysRevA.61.062313"
+    },
+    {
+      "title": "R. F. Werner: Quantum states with Einstein–Podolsky–Rosen correlations admitting a hidden-variable model (1989)",
+      "url": "https://doi.org/10.1103/PhysRevA.40.4277"
+    },
+    {
+      "title": "Horodecki, Rudnicki and Życzkowski: Five open problems in quantum information theory (2022)",
+      "url": "https://doi.org/10.1103/PRXQuantum.3.010101"
+    },
+    {
+      "title": "Fu, Gao and Park: A solution to 2-copy distillability of Werner states (2026)",
+      "url": "https://arxiv.org/abs/2607.21367"
+    },
+    {
+      "title": "R. Simon: NPPT bound entanglement exists (2006 claim, found to have gaps)",
+      "url": "https://arxiv.org/abs/quant-ph/0608250"
+    },
+    {
+      "title": "Asher Peres: Separability criterion for density matrices (1996)",
+      "url": "https://doi.org/10.1103/PhysRevLett.77.1413"
+    },
+    {
+      "title": "M. Horodecki, P. Horodecki and R. Horodecki: Inseparable two spin-1/2 density matrices can be distilled to a singlet form (1997)",
+      "url": "https://doi.org/10.1103/PhysRevLett.78.574"
+    },
+    {
+      "title": "Vollbrecht and Wolf: Activating distillation with an infinitesimal amount of bound entanglement (2002)",
+      "url": "https://doi.org/10.1103/PhysRevLett.88.247901"
+    },
+    {
+      "title": "Shor, Smolin and Terhal: Nonadditivity of bipartite distillable entanglement follows from conjecture on bound entangled Werner states (2001)",
+      "url": "https://doi.org/10.1103/PhysRevLett.86.2681"
+    }
+  ],
+  "related_papers": [
+    "2611.34921",
+    "2611.33317"
+  ],
+  "related_articles": [
+    "mutually-unbiased-bases-dimension-six",
+    "haldane-gap-proof",
+    "unitary-synthesis-boolean-oracle"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "slug": "eu-quantum-act-proposal",
+  "title": "European Commission proposes a Quantum Act",
+  "summary": "On 25 November 2026 the European Commission proposed a Quantum Act: a framework to turn European quantum research into industry, pool access to quantum computers, secure supply chains and require post-quantum cryptography in some public procurement. It sets no budget of its own; money would come from the next EU budget and a new equity fund.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: a ring of linked nodes connected to one central computing block, beside a padlock whose body is a grid of dots."
+  },
+  "key_points": [
+    "On 25 November 2026 the European Commission proposed a Quantum Act, which it calls an enabling framework: it does not regulate quantum technologies but sets conditions for research, shared infrastructure, industrialisation and market uptake.",
+    "Measures include a Union-wide Quantum Excellence Network, quantum grand challenges, a common service platform for access to European quantum computers, and at least one competence and acceleration centre in every Member State.",
+    "Public buyers of quantum technologies would be limited to Union-controlled providers and authorised partners, and public administrations under NIS2 would have to buy post-quantum-ready systems in procurements started six months after the law takes effect.",
+    "The proposal has no budget of its own. Funding would come from existing programmes and the next multiannual budget, and from a new Sovereign Tech Equity Fund that the Commission wants operational by the start of that budget.",
+    "It is a proposal: the European Parliament and the Council must now agree on a final text."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "government",
+  "format": "News",
+  "sections": [
+    {
+      "heading": "What the Commission proposed",
+      "paragraphs": [
+        "On 25 November 2026 the European Commission proposed a Quantum Act, building on the Quantum Europe strategy it launched in July 2025 and its goal of making Europe a global leader in quantum technologies by 2030. The Commission's own explainer describes the act as “an enabling framework”: “it does not regulate quantum but creates framework conditions” for research, shared infrastructure, industrialisation, access to finance and market uptake, and it addresses the move to post-quantum cryptography.",
+        "Henna Virkkunen, the Commission's Executive Vice-President for Tech Sovereignty, Security and Democracy, said, as quoted by The Quantum Insider, that “Europe needs to accelerate now” and that strong foundations must now be turned “into industrial scale”. The Commission's case is that the quantum race is still open but that leadership will depend less on excellent science alone and more on coordinated investment, industrial capacity and a single market for quantum products."
+      ],
+      "source_refs": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "heading": "Research, access and centres in every country",
+      "paragraphs": [
+        "On research, the act would create a Union-wide Quantum Excellence Network linking institutes, universities and laboratories, and launch “quantum grand challenges” on technological and engineering bottlenecks; reported examples include error-tolerant quantum computers and navigation that does not depend on satellites. On access, a European Quantum Service Platform for Science and Industry would give researchers, companies and public bodies one entry point to European emulators, simulators and physical quantum computers, following the infrastructures' existing allocation rules.",
+        "Every Member State would have to set up at least one quantum competence and acceleration centre as a first point of contact for users, and specialised hubs would help start-ups and small companies test and scale technologies. Implementation would be entrusted mainly to the EuroHPC Joint Undertaking, which already runs Europe's network of quantum computers hosted at supercomputing centres, while quantum chips stay with the Chips Joint Undertaking. A Quantum Strategy Board of Member State representatives and a European Quantum Alliance of industry stakeholders would advise."
+      ],
+      "source_refs": [
+        2,
+        3
+      ]
+    },
+    {
+      "heading": "Security: procurement rules and post-quantum cryptography",
+      "paragraphs": [
+        "Two provisions would bind public buyers. For purchases of quantum technologies, eligible providers would be restricted to Union-controlled entities and entities authorised under the act's international-cooperation rules; the Commission stresses that this is “not a blanket requirement that every component be manufactured in the EU”, though specific rules for critical components could follow.",
+        "For cryptography, public administrations covered by the NIS2 cybersecurity directive would have to procure systems able to use post-quantum algorithms in certain digital procurements started six months after the regulation enters into force, with the scope depending on how critical and sensitive the system is. Existing systems need not be replaced, and where no suitable post-quantum product exists a documented migration plan would be required. The Commission could tighten these requirements if quantum computers advance faster than expected. Post-quantum cryptography runs on ordinary computers, and the urgency comes from data that must stay confidential for years and could be recorded now and decrypted later."
+      ],
+      "source_refs": [
+        2,
+        6
+      ]
+    },
+    {
+      "heading": "Money and next steps",
+      "paragraphs": [
+        "The proposal allocates no budget of its own. According to the Commission, implementation would draw on existing EU programmes and on national and private investment under the next Multiannual Financial Framework, the EU budget for 2028–2034. Alongside the act, the Commission is laying the groundwork for a Sovereign Tech Equity Fund, an equity vehicle in which the Union, Member States and other investors could hold shares, to invest in quantum and other technologies it considers essential to sovereignty and economic security. The Commission wants it operational by the start of that budget period. Quantum Computing Report puts the fund at €50 billion; the Commission documents we could read give no size. For scale, the 2025 strategy counted more than €11 billion of public quantum investment by the EU and Member States.",
+        "This is a proposal, not a law. The European Parliament and the Council will examine it under the ordinary legislative procedure, and the final rules and timetable depend on the text they adopt; the proposal would enter into force 20 days after publication in the Official Journal. The European Quantum Industry Consortium welcomed it and announced a planning effort with its members."
+      ],
+      "source_refs": [
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "European Commission: Europe's quantum leap – strengthening industrial capacity and security with new quantum technologies (25 November 2026)",
+      "url": "https://commission.europa.eu/news-and-media/news/europes-quantum-leap-strengthening-industrial-capacity-and-security-new-quantum-technologies-2026-11-25_en"
+    },
+    {
+      "title": "European Commission: The Quantum Act explained (questions and answers)",
+      "url": "https://digital-strategy.ec.europa.eu/en/faqs/quantum-act-explained"
+    },
+    {
+      "title": "The Quantum Insider: European Commission proposes Quantum Act and new Sovereign Tech Equity Fund",
+      "url": "https://thequantuminsider.com/2026/11/25/european-commission-proposes-quantum-act-and-new-sovereign-tech-equity-fund/"
+    },
+    {
+      "title": "Quantum Computing Report: European Commission proposes EU Quantum Act and Sovereign Tech Equity Fund",
+      "url": "https://quantumcomputingreport.com/european-commission-proposes-eu-quantum-act-and-sovereign-tech-equity-fund-to-scale-industrial-capacity-by-2030/"
+    },
+    {
+      "title": "The Quantum Insider: QuIC welcomes the European Quantum Act",
+      "url": "https://thequantuminsider.com/2026/11/25/quic-welcomes-the-european-quantum-act-pledges-to-mobilize-industry/"
+    },
+    {
+      "title": "European Commission: Proposal for a Quantum Act",
+      "url": "https://digital-strategy.ec.europa.eu/en/library/proposal-quantum-act"
+    }
+  ],
+  "related_articles": [
+    "quantum-safe-security",
+    "indias-quantum-mission",
+    "pentagon-quantum-350-million"
+  ]
+}

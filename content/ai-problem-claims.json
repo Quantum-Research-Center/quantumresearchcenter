@@ -1,5 +1,5 @@
 {
-  "reviewed_on": "2026-11-25",
+  "reviewed_on": "2026-11-26",
   "problems": [
     {
       "id": "yang-mills",
@@ -84,12 +84,52 @@
       "field": "Mathematics",
       "problem": "Riemann hypothesis",
       "question": "Do all nontrivial zeros of the Riemann zeta function lie on the critical line?",
-      "scope": "The Lean FRO and Mathlib Initiative certified on 21 November that a 17-million-line Lean library proves Mathlib’s statement of the hypothesis. No human-readable proof has been released, and the claimed extension to the generalized Riemann hypothesis is not covered by that certification.",
+      "scope": "The Lean FRO and Mathlib Initiative certified on 21 November that a 17-million-line Lean library proves Mathlib’s statement of the hypothesis; independent checks also confirm the generalized hypothesis for Dirichlet L-functions, but not for other L-functions. A 76,000-line Lean proof followed on 25 November. No human-readable proof has been released.",
       "category": "claimed",
       "status": "Proof claimed; Lean proof certified",
+      "article": "riemann-hypothesis-lean-proof",
       "source": "https://alpo.ge/remark.pdf",
       "claimant": "Levent Alpöge (Anthropic), with Claude",
       "announced": "2026-11-20"
+    },
+    {
+      "id": "vp-vnp",
+      "field": "Computer science",
+      "problem": "VP versus VNP",
+      "question": "Does the permanent need arithmetic circuits of superpolynomial size?",
+      "claimant": "Anthropic (Claude); OpenAI",
+      "status": "Proofs claimed; Lean proofs published",
+      "scope": "Two AI-written proofs with Lean formalizations, posted the same day. No human check of either has been reported, and the Lean statement files still need expert reading. This would not settle P versus NP.",
+      "source": "https://github.com/anthropics/formal-math/tree/main/vp-vnp",
+      "announced": "2026-11-23",
+      "article": "vp-vnp-valiant-conjecture",
+      "category": "claimed"
+    },
+    {
+      "id": "matrix-multiplication",
+      "field": "Computer science",
+      "problem": "Matrix multiplication exponent",
+      "question": "How fast can two square matrices be multiplied as their size grows?",
+      "claimant": "OpenAI",
+      "status": "Exact value 9/4 claimed",
+      "scope": "The upper bound of 9/4 for the exponent has independent human proofs. The matching lower bound is unreviewed, and its Lean proof covers division-free circuits only.",
+      "source": "https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf",
+      "announced": "2026-11-24",
+      "article": "matrix-multiplication-exponent-nine-fourths",
+      "category": "claimed"
+    },
+    {
+      "id": "npt-bound-entanglement",
+      "field": "Quantum information",
+      "problem": "NPT bound entanglement",
+      "question": "Is there an entangled state with a negative partial transpose from which no entanglement can be distilled?",
+      "claimant": "Islam Faisal, with AI assistance",
+      "status": "Proof claimed",
+      "scope": "An explicit Werner state on two 8-level systems is claimed undistillable for every number of copies, via a certificate matrix that can be checked exactly. Single-author preprint; no independent review yet.",
+      "source": "https://arxiv.org/abs/2611.34921",
+      "announced": "2026-11-25",
+      "article": "npt-bound-entanglement",
+      "category": "claimed"
     },
     {
       "id": "p-vs-np",

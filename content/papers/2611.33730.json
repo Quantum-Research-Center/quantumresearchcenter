@@ -1,0 +1,47 @@
+{
+  "id": "2611.33730",
+  "topic": "computing",
+  "title": "Improved Quantum Algorithms for TSP and More",
+  "authors": "Masayuki Miyamoto",
+  "submitted": "2026-11-25",
+  "version": "v1",
+  "kind": "Theory (AI-assisted)",
+  "problem": "The travelling salesman problem with arbitrary edge weights is solved classically by the 1962 dynamic programme of Bellman and of Held and Karp in \\(O^*(2^n)\\) time, and no \\(O^*(c^n)\\) algorithm with \\(c<2\\) is known. In 2019 Ambainis and coauthors combined Grover-type search with dynamic programming on small subsets to get a quantum algorithm in \\(O^*(1.7274^n)\\), which had remained the best quantum bound. Can it be improved?",
+  "result": "A quantum algorithm in the QRAM model finds a minimum-weight Hamiltonian cycle on \\(n\\) cities in \\(O^*(1.70961^n)\\) time, using \\(O^*(1.70961^n)\\) words of precomputed data and \\(O^*(1.47229^n)\\) words of writable quantum memory. The same bound holds for Minimum Set Cover, Directed Feedback Arc Set, One-Sided Crossing Minimization and Shortest Common Superstring, improving their \\(O^*(1.728^n)\\) bounds. With limited space, the paper gives time \\(1.71700^n\\) at space \\(1.65^n\\) and \\(1.77467^n\\) at space \\(1.40^n\\), improving earlier quantum space–time tradeoffs.",
+  "significance": "It is the first improvement in seven years on the quantum running time for general TSP, and it combines two lines of work that each fail alone: the nested search of Ambainis et al. and the set-system restriction of the Bellman–Held–Karp recurrence introduced this year for classical space–time tradeoffs. A barrier result shows the set-system approach alone gives at best \\(\\sqrt{ST}>1.7837\\), so the gain comes from the combination.",
+  "limitations": "The improvement in the exponent base is small (1.7274 to 1.70961), and the algorithm assumes quantum random-access memory with unit-cost coherent reads of exponentially large classical tables, which is far from current hardware. Running times hide polynomial factors, and the parameters are fixed numerically for \\(n\\) a multiple of 100,000 (with padding). The author states that GPT-6.2 Astra found and optimized the numerical parameters for the running-time and space–time bounds, and that AI assisted with drafting; the central idea of combining set systems with amplitude amplification is credited to the author.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-26: Secs. 1–4, including the four-path decomposition, the coloring probability formula (1), the parameter choice behind Theorem 1, the space–time bounds and the AI disclosure. Appendix A (other problems) was not read in detail. Editorial checks with binary entropy: the precomputation count Σ_{j ≤ 0.22752n} C(n, j) has base 2^{H(0.22752)} = 1.709605; √(N_X N_A) and √(N_X N_C) have exponents 0.558034 and 0.558028 per city, within the stated 0.55805810; and the bound requires the color-sequence count N(4952k, 30099k) to be about 2^{0.2000n}, below the unrestricted count 2^{0.2060n}, so the claimed total is consistent.",
+  "verified_on": "2026-11-26",
+  "methods_source_section": "Sec. 2 (Eq. (1), quantum minimum finding, amplitude amplification); Sec. 3 (splitting a tour into four paths); Sec. 4 (parameters and the coloring probability, Eq. (3))",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "Bellman–Held–Karp computes, for every subset \\(S\\) of cities and every endpoint, the cheapest path through exactly \\(S\\), which takes \\(2^n\\) table entries. Ambainis et al. precompute this table only for small subsets and search over the ways to split an optimal tour into pieces with nested quantum minimum finding, balancing precomputation against search to get \\(1.7274^n\\).",
+    "A recent classical idea restricts the recurrence to a set system, a family of subsets with few members that still contains, as a chain of prefixes, the visiting order of many tours. Jabal Ameli, Nederlof and Wang, and independently Dallant and Kozma, used it to improve classical space–time tradeoffs below \\(ST=4\\). On its own, a quantum version gives time \\(\\sqrt{ST}\\), which a recent barrier puts above \\(1.7837\\).",
+    "The paper cuts the optimal tour into four consecutive paths of sizes \\(0.35051n,\\ 0.22752n,\\ 0.22752n,\\ 0.19445n\\). The three shorter paths come from the precomputed table of small subsets. For the long first path, it colors cities red and blue at random and runs the recurrence only over sets whose red and blue counts lie in a chosen pattern, a set system with size \\(2^{0.558n}\\). The pattern supports the true first path with only small probability \\(p\\), which amplitude amplification boosts at cost \\(1/\\sqrt p\\).",
+    "Balancing the four costs, precomputation \\(1.709605^n\\), per-trial work \\(2^{0.558n}=1.4723^n\\), and \\(1/\\sqrt p\\) trials, gives \\(1.70961^n\\). The same decomposition applies to problems with a Bellman–Held–Karp-style recurrence over subsets, and restricting the precomputed table gives the space–time tradeoffs."
+  ],
+  "methods": [
+    {
+      "technique": "Randomly colored set systems that support the optimal path with small probability",
+      "explanation": "Running the dynamic programme over all subsets of the long path is too expensive, and a fixed small family of subsets misses most tours. Choosing the family through a random coloring makes it small for every coloring, while any fixed optimal path is supported with a probability that can be computed exactly and then amplified quantumly.",
+      "math": [
+        "Color \\(r\\) of the \\(n\\) cities red uniformly at random, and let \\(\\mathcal F_R(\\mathcal D)\\) contain the city sets whose red and blue counts \\((i,j)\\) lie in an allowed set \\(\\mathcal D\\). A visiting order is supported if all its prefixes lie in \\(\\mathcal F_R(\\mathcal D)\\). If \\(N(i,k-i)\\) counts the color sequences of length \\(k\\) whose every prefix has allowed counts, then (Eq. (1)) \\[\\Pr_R[\\text{support and prescribed counts in each block}]=\\frac{N(i,k-i)\\prod_h\\binom{m_h}{r_h}}{\\binom nr}.\\]",
+        "The allowed pairs are those with \\(\\binom{r}{i}\\binom{n-r}{j}\\le2^{0.55805810n}\\), so the table has at most \\((n+1)^22^{0.558n}\\) entries. Editorial check with binary entropy \\(H\\): for \\(n=100000k\\) and \\(r=60606k\\), the candidate counts \\(N_X=\\binom{60606k}{20873k}\\binom{39394k}{36930k}\\) and \\(N_A=\\binom{20873k}{4952k}\\binom{36930k}{30099k}\\) give \\(\\tfrac1{2n}\\log_2(N_XN_A)=0.558034\\), within the stated bound.",
+        "Editorial consistency check of the total: the time is per-trial work times \\(1/\\sqrt p\\). For \\(1.70961^n\\) with per-trial \\(2^{0.558058n}\\), one needs \\(\\log_2p\\approx-0.4312n\\). The binomial factors in Eq. (3) contribute \\(-0.6313n\\), so the color-sequence count must be about \\(2^{0.2000n}\\), below the count \\(\\binom{35051k}{4952k}\\approx2^{0.2060n}\\) of all sequences with the right totals. The prefix constraint costs at most this difference, which is consistent with the claim."
+      ],
+      "transfer": "When a dynamic programme can be restricted to a small family that captures a fixed solution with known probability, quantum amplitude amplification pays only the square root of the inverse probability. This turns a classical space-saving device into a quantum time saving."
+    },
+    {
+      "technique": "Splitting the tour into unequal paths to balance precomputation and search",
+      "explanation": "Precomputing all small subsets costs roughly \\(\\binom{n}{\\max(b,c,d)}\\), while the long path drives the search cost. Choosing four paths of different lengths, with the long one handled by the colored set system and the short ones by table lookup, lets the two costs meet at a common exponent.",
+      "math": [
+        "The precomputation covers every set of at most \\(0.22752n\\) cities. Editorial check: \\(\\sum_{j\\le0.22752n}\\binom nj=2^{nH(0.22752)+o(n)}\\) with \\(2^{H(0.22752)}=1.709605\\), matching the stated base.",
+        "Inside a trial, the search chooses the set \\(X=A\\cup B\\) of the first two paths, then \\(A\\subset X\\), then \\(C\\) outside \\(X\\), using nested quantum minimum finding whose cost is the square root of the product of candidate counts. With \\(r_X=20873k\\) red cities in \\(X\\) and \\(r_A=4952k\\) in \\(A\\), both \\(\\sqrt{N_XN_A}\\) and \\(\\sqrt{N_XN_C}\\) stay within \\(2^{0.558n}\\), so building the restricted table dominates each trial.",
+        "The final bound is the maximum of \\(1.709605^n\\) for precomputation and \\(2^{0.558n}/\\sqrt p\\) for the amplified trials, both about \\(1.70961^n\\). Restricting the precomputation further trades space for time along the curve of Theorem 2."
+      ],
+      "transfer": "Unequal decompositions of a combinatorial object let different subproblems be solved by different methods at matched cost. The balancing is an optimization over a few exponents, which can be done numerically and then checked with entropy estimates."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-26"
+}

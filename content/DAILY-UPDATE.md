@@ -113,6 +113,27 @@ entry for:
   is unverified. Read the claimant's own announcement before writing, and give
   it as the first source.
 
+Watch the three labs every day, whether or not the news search finds
+anything. Run `python3 scripts/ai_lab_watch.py`. It lists every item not seen
+before from these sources:
+
+- OpenAI: the news feed (which carries its science blog), the preprints in
+  `openai/math`, and new `openai` repositories.
+- Google: the DeepMind and Google Research blogs, and new `google-deepmind`
+  repositories.
+- Anthropic: the `/news` and `/research` pages, the projects in
+  `anthropics/formal-math`, and new `anthropics` repositories.
+
+Titles about proofs, algorithms, quantum or mathematics are marked `*`. Open
+every marked item and every new preprint or formal-math project. Judge each
+one: a claim on a known problem goes in the feed, and any other substantial
+quantum result is a candidate for step 5. Also check whether it is a
+write-up of a paper already covered: a lab blog post often repeats an arXiv
+preprint. Then run it again with `--record`, so tomorrow lists only newer
+items. If a source cannot be read, the script says so and keeps that
+source's state; name it in the report. GitHub allows 60 anonymous requests
+an hour; set `GITHUB_TOKEN` if a run is rate-limited.
+
 Recheck the statuses of entries from the past month that are not yet
 `confirmed` or `refuted`, and update them when a review, formalization or
 correction has appeared. For a claim about a problem in
@@ -153,5 +174,6 @@ and push to `main`. The push publishes the site once its checks pass.
 ## 7. Report
 
 End with a short report: the papers approved (ID, title, area), the AI claims
-added or updated, whether an article was published and why or why not, any gate that failed or step that
+added or updated, the new lab items (OpenAI, Google, Anthropic) and what was
+done with each, whether an article was published and why or why not, any gate that failed or step that
 was skipped, and any error found in a paper.

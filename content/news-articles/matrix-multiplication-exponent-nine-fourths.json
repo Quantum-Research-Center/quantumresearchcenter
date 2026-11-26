@@ -1,0 +1,258 @@
+{
+  "slug": "matrix-multiplication-exponent-nine-fourths",
+  "title": "OpenAI claims the matrix multiplication exponent is exactly 9/4",
+  "summary": "OpenAI proved in October that matrices can be multiplied in about n^2.25 operations, and four independent groups have since reproved it. Now it claims the matching lower bound: no arithmetic circuit can do better. What the exponent measures, how each bound works, and what has been checked.",
+  "banner": {
+    "file": "banner.svg",
+    "alt": "Illustration: three grids of squares with a highlighted column, row and product cell, beside three circles joined to one central dot inside a dashed triangle."
+  },
+  "key_points": [
+    "The exponent \\(\\omega\\) describes how the cost of multiplying two \\(n\\times n\\) matrices grows. The schoolbook method gives 3, and before 2026 the best proved bound was about 2.371.",
+    "OpenAI's October preprint proved \\(\\omega\\le 9/4\\). Four independent groups have since published proofs or extensions, including versions valid over every field.",
+    "On 24 November OpenAI claimed the matching lower bound: every arithmetic circuit for the \\(n\\times n\\) product needs at least \\(n^{9/4}/2\\) multiplications or divisions. That would make \\(\\omega\\) exactly \\(9/4\\) and rule out the long-held hope that \\(\\omega=2\\).",
+    "The lower bound has not been independently reviewed. Its Lean proof covers circuits without division, not the full theorem.",
+    "Neither bound changes practical computing. The 9/4 construction is asymptotic, and real libraries still use the schoolbook or Strassen methods."
+  ],
+  "author": "Quantum Research Center",
+  "published": "2026-11-26",
+  "status": "published",
+  "topic": "discoveries",
+  "format": "Explainer",
+  "sections": [
+    {
+      "kicker": "The news",
+      "heading": "What OpenAI claims",
+      "paragraphs": [
+        "On 24 November 2026 OpenAI posted a 111-page preprint, credited simply to “OpenAI”, titled “The matrix multiplication exponent is nine fourths”. It claims to settle one of the oldest questions in algorithms: how fast can two \\(n\\times n\\) matrices be multiplied? The answer it gives is that the cost grows like \\(n^{9/4}\\), and no faster, over every field. OpenAI's repository says its manuscripts were “produced by an unnamed internal OpenAI model” and calls them “raw research data, rather than polished academic papers.”",
+        "The claim has two halves of very different standing. The upper bound, that \\(n^{9/4+\\varepsilon}\\) operations suffice for every \\(\\varepsilon>0\\), comes from a 13-page OpenAI preprint of 2 October. Four groups of mathematicians have since reproved or extended it on arXiv, so it is as close to established as a two-month-old result can be. The new half is the matching lower bound: every arithmetic circuit for the product needs at least \\(\\lceil n^{9/4}/2\\rceil\\) multiplications or divisions. That part has had no independent review, and OpenAI's Lean proof covers only circuits without division.",
+        "Why is a lower bound such a surprise, and how could anyone prove one? The cards below build the question up from the schoolbook method. After them we look at what has been checked."
+      ],
+      "stats": [
+        {
+          "value": "3",
+          "label": "exponent of the schoolbook method"
+        },
+        {
+          "value": "2.371",
+          "label": "best upper bound before 2026"
+        },
+        {
+          "value": "9/4",
+          "label": "claimed exact exponent"
+        },
+        {
+          "value": "111",
+          "label": "pages in the lower-bound preprint"
+        }
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        12
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What does the exponent measure?",
+      "paragraphs": [
+        "Each entry of \\(C=AB\\) is a dot product, \\(c_{ik}=\\sum_j a_{ij}b_{jk}\\): \\(n\\) multiplications, and there are \\(n^2\\) entries. So the schoolbook method costs about \\(n^3\\) operations. Any method must at least produce the \\(n^2\\) outputs, so the true cost lies somewhere between \\(n^2\\) and \\(n^3\\). The exponent \\(\\omega\\) records where: it is the smallest number such that \\(n^{\\omega+\\varepsilon}\\) operations suffice for every \\(\\varepsilon>0\\). Hence \\(2\\le\\omega\\le3\\).",
+        "The model counts additions, subtractions, multiplications and divisions of field elements, and asks that the outputs be correct as formal identities, whatever the entries. Constant factors, memory traffic and hardware are ignored. That makes \\(\\omega\\) a statement about the algebra of the problem rather than about any computer. It matters well beyond multiplication: inverting a matrix and computing a determinant have the same exponent, and solving a linear system needs no more."
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How can anything beat n³?",
+      "paragraphs": [
+        "In 1969 Strassen found that two \\(2\\times2\\) matrices can be multiplied with 7 multiplications instead of 8, at the price of more additions. For example he forms \\(m_1=(a_{11}+a_{22})(b_{11}+b_{22})\\) and recovers all four entries from seven such products. The trick works for blocks too, since it never uses commutativity: split an \\(n\\times n\\) matrix into four blocks and recurse. Then the cost satisfies \\(T(n)=7\\,T(n/2)+O(n^2)\\), which gives \\(n^{\\log_2 7}\\approx n^{2.807}\\).",
+        "The lesson is that only multiplications matter in the exponent, because additions of blocks are cheap. The least number of multiplications in such a scheme is the rank of the matrix multiplication tensor \\[ T_n=\\sum_{i,j,k=1}^{n} e_{ij}\\otimes e_{jk}\\otimes e_{ki}, \\] which has one term for each product \\(a_{ij}b_{jk}\\) contributing to \\(c_{ik}\\). Strassen showed that the rank of \\(T_2\\) is at most 7. Because \\(T_n\\otimes T_m=T_{nm}\\), a saving at one size can be reused at every larger size, and \\(\\omega=\\inf_n\\log_n R(T_n)\\). Every bound in the chart below is, at heart, a cleverer bound on this rank."
+      ],
+      "figure": {
+        "file": "history.svg",
+        "caption": "The best proved upper bound on \\(\\omega\\) over time (blue). It fell quickly to the Coppersmith–Winograd bound of 1990, then by tiny steps for three decades, to \\(2.371\\) in 2024. OpenAI's preprints of September and October 2026 brought it to \\(2.258\\) and then \\(9/4\\). The lower bound (orange) stayed at the trivial \\(2\\); the 24 November preprint claims it rises to \\(9/4\\) (dashed), which would close the gap.",
+        "alt": "Step chart from 1965 to 2030 with omega on the vertical axis from 2 to 3. A blue staircase starts at 3, drops to 2.807 in 1969, falls steeply to about 2.376 by 1990, stays nearly flat at about 2.371 until 2024, then drops to 2.25 in 2026. An orange horizontal line at 2 marks the trivial lower bound; a dashed vertical segment in late 2026 rises from 2 to 2.25."
+      },
+      "source_refs": [
+        7,
+        8
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Why did many expect the answer to be 2?",
+      "paragraphs": [
+        "The output has \\(n^2\\) entries, so \\(\\omega=2\\) would mean multiplying matrices is essentially as cheap as writing the answer down. Many researchers expected exactly that. Strassen formalized one version of the hope as a conjecture about tight tensors, a class that includes \\(T_n\\): their asymptotic rank should equal their largest dimension, which for \\(T_n\\) is \\(n^2\\).",
+        "Progress gave mixed signals. The Coppersmith–Winograd method of 1990 and its refinements kept improving, but by ever smaller amounts. In 2015 Ambainis, Filmus and Le Gall proved that this family of methods can never reach \\(2\\). A barrier for a method, though, says nothing about the problem. The question stayed open: is \\(\\omega\\) equal to \\(2\\), or is there a true obstruction above it?"
+      ],
+      "source_refs": [
+        2,
+        4
+      ]
+    },
+    {
+      "card": true,
+      "heading": "Where does 9/4 come from?",
+      "paragraphs": [
+        "OpenAI's October proof does not attack matrices head on. It studies multiplying polynomials, which is far better understood. Multiplying a polynomial with \\(a\\) coefficients by one with \\(b\\) coefficients gives \\(a+b-1\\) coefficients, and interpolation does it with only \\(a+b-1\\) multiplications.",
+        "The bridge is Strassen's asymptotic spectrum: functions \\(\\lambda\\) on tensors that add over direct sums, multiply over tensor products, never increase under linear maps, and send the single product \\(xyz\\) to 1. Asymptotic rank is the largest value any such \\(\\lambda\\) can take. For each \\(\\lambda\\), \\(\\lambda(T_n)=n^{3t}\\) for some \\(t\\), so it suffices to show \\(t\\le\\tfrac34\\) for every \\(\\lambda\\). The paper measures polynomial multiplication with a profile \\(P(a,b)\\) built from \\(\\lambda\\). Interpolation gives \\(P(a,b)\\le(a+b-1)^{1/t}\\). A new construction that separates blocks sharing a tensor leg gives \\(P(a,3h+a-1)\\ge3P(a,h)\\), and with \\(P(1,b)=b\\) this forces \\(P(a,a)\\ge a^{4/3}\\). Hence \\(a^{4/3}\\le(2a-1)^{1/t}\\) for every \\(a\\), so \\(t\\le\\tfrac34\\) and \\(\\omega\\le 3t=\\tfrac94\\).",
+        "Within weeks the argument was checked and extended by others. Houxi Lü made the separation step work in every characteristic. Amanov, van den Berg and Zuiddam gave a full exposition over every field and proved that these ingredients cannot give anything below \\(9/4\\), a first hint that \\(9/4\\) might be the truth. Doğan, Lysikov, Sakabe and Walter reproved it with a different tool, and Uznański extended it to rectangular matrices. The proof is asymptotic: it does not say at what size the method beats the schoolbook one, and it is not a practical algorithm."
+      ],
+      "source_refs": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "card": true,
+      "heading": "How could anyone prove a lower bound?",
+      "paragraphs": [
+        "A lower bound must rule out every possible circuit, including tricks nobody has thought of. Until now the best results were a constant factor above \\(n^2\\): Bläser proved that the rank of \\(T_n\\) is at least \\(\\tfrac52n^2-3n\\), and Landsberg and Michałek a border-rank bound near \\(2n^2\\). Constant factors vanish in the exponent, so these leave \\(\\omega\\ge2\\) unchanged.",
+        "The new preprint again uses the spectral functions, now read as prices. Take the logarithm of \\(\\lambda\\). A wire, an index shared between two factors of a tensor, then costs a fixed amount per bit, and that cost behaves like a distance between the two factors' sites. \\(T_n\\) is three wires \\(i,j,k\\) joining the sites \\(A,B,C\\) in a triangle, each carrying \\(\\log_2 n\\) bits. A rank decomposition with \\(r\\) terms builds the same tensor from one label \\(\\ell\\) shared by all three sites. Since a tensor cannot cost more than anything it is made from, \\[ \\bigl(|AB|+|BC|+|CA|\\bigr)\\log_2 n\\;\\le\\;D\\,\\log_2 r, \\] where \\(D\\) is the price per bit of the shared label. A geometry with a large ratio of perimeter to \\(D\\) therefore forces \\(r\\) to be large.",
+        "Euclidean geometry gives ratio exactly 2. For an equilateral triangle of side 2 the perimeter is 6, and the paper's companion shows that sharing a bit among three sites costs half the perimeter, 3. That only recovers \\(\\omega\\ge2\\). The ratio \\(9/4\\) appears at the tips of a tripod with unit arms: the tips are 2 apart, and if a shared label costs \\(8/3\\) per bit there, the ratio is \\(6/(8/3)=9/4\\). The paper argues by contradiction. A matrix product with exponent below \\(9/4\\) would make the prices rigid enough to compress tensor networks for one specific task, checking whether the words in each of several lists are all distinct, below a lower bound it proves for that task. Most of the 111 pages, together with an 86-page companion on tensor geometry, build that compression."
+      ],
+      "figure": {
+        "file": "wires.svg",
+        "caption": "Two descriptions of the matrix multiplication tensor \\(T_n\\). Left: three wires, the indices \\(i,j,k\\), each shared by two of the factors \\(A,B,C\\). Right: a rank decomposition with \\(r\\) terms, one label \\(\\ell\\) shared by all three. Pricing both and comparing gives \\((|AB|+|BC|+|CA|)\\log n\\le D\\log r\\). With Euclidean prices this yields only \\(r\\ge n^2\\); the preprint claims that a faster algorithm would force a geometry it can rule out, giving \\(r\\ge n^{9/4}\\).",
+        "alt": "Left: three circles labelled A, B and C joined in a triangle by blue lines labelled j, k and i. Right: the same three circles each joined by an orange line to one small central dot labelled l. A less-than-or-equal sign sits between the two drawings."
+      },
+      "source_refs": [
+        1,
+        9
+      ]
+    },
+    {
+      "card": true,
+      "heading": "What would follow if it is right?",
+      "paragraphs": [
+        "Three things. First, \\(\\omega=9/4\\) exactly: there is a real obstruction a quarter of a power above the size of the output, and the hope of \\(\\omega=2\\) is false. Second, Strassen's conjecture for tight tensors is false, since \\(T_n\\) would have asymptotic rank \\(n^{9/4}\\) rather than \\(n^2\\). Third, the cost of rectangular products is pinned down too. Multiplying an \\(n\\times n^{\\beta}\\) matrix by an \\(n^{\\beta}\\times n\\) one costs about \\(n^2\\) when \\(\\beta\\) is small; the preprint proves that the largest such \\(\\beta\\) lies between \\(\\tfrac12\\) and \\(\\tfrac23\\). OpenAI's Lean scope document goes further and states an exact formula for every rectangular shape. We checked that this formula agrees exactly with the upper bound proved by Amanov, van den Berg and Zuiddam.",
+        "Every algorithm whose running time is quoted in terms of \\(\\omega\\), from linear algebra to shortest paths in graphs, would have its exponent fixed in the algebraic model. Uznański's rectangular bound already gives \\(O(n^{2.5})\\) for Zwick's algorithm for shortest paths between all pairs of vertices in unweighted directed graphs. None of this changes what runs on a GPU. Practical libraries use the schoolbook method or, occasionally, Strassen's, because the constants hidden in the asymptotic constructions are enormous."
+      ],
+      "source_refs": [
+        1,
+        4,
+        6,
+        10
+      ]
+    },
+    {
+      "kicker": "Back to the claim",
+      "heading": "What has been checked",
+      "paragraphs": [
+        "The two halves stand in different places. The table sets out what is public and who has examined it. OpenAI's Lean development proves the exponent \\(9/4\\) in a slightly narrower model than the paper: division-free circuits computing formal polynomial identities, over every field. The paper's main theorem also allows division. We found no report yet of anyone outside OpenAI rerunning that Lean development, and no expert assessment of the lower-bound argument.",
+        "There is one more reason for care. The lower bound rests on the same “Euclidean tensor geometry” that OpenAI used the same week to claim \\(\\mathsf{VP}\\ne\\mathsf{VNP}\\), and on a companion paper that has not been reviewed either. If that framework holds, it is a new method with consequences across complexity theory. If it has a gap, several results fall together."
+      ],
+      "table": {
+        "columns": [
+          "Claim",
+          "Source",
+          "Status"
+        ],
+        "rows": [
+          [
+            "\\(\\omega\\le 9/4\\) over the complex numbers",
+            "OpenAI, 2 October",
+            "Reproved by Doğan, Lysikov, Sakabe and Walter"
+          ],
+          [
+            "\\(\\omega\\le 9/4\\) over every field",
+            "Lü; Amanov, van den Berg and Zuiddam, October",
+            "Independent human proofs on arXiv"
+          ],
+          [
+            "Rectangular upper bounds",
+            "Uznański; Amanov, van den Berg and Zuiddam",
+            "Independent human proofs on arXiv"
+          ],
+          [
+            "\\(\\omega\\ge 9/4\\): at least \\(n^{9/4}/2\\) multiplications",
+            "OpenAI, 24 November",
+            "No independent review reported"
+          ],
+          [
+            "Lean: exponent exactly \\(9/4\\), division-free circuits",
+            "OpenAI, 24 November",
+            "Published; no outside rerun reported"
+          ]
+        ],
+        "caption": "Status as of 26 November 2026."
+      },
+      "asks": [
+        "Will specialists in algebraic complexity confirm the list-distinctness lower bound and the compression argument?",
+        "Does the Lean statement of the exponent match the paper's definition, and can the formalization be extended to circuits with division?",
+        "Is there a short explanation of why the obstruction sits at exactly a quarter above the output size?",
+        "If the shared geometric framework is right, what else does it decide?"
+      ],
+      "source_refs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        9,
+        11
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "OpenAI: The matrix multiplication exponent is nine fourths (24 November 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/paper.pdf"
+    },
+    {
+      "title": "OpenAI: An upper bound of 9/4 for the matrix multiplication exponent (2 October 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/Matrix-Multiplication-Nine-Fourths-October-2-2026/paper.pdf"
+    },
+    {
+      "title": "Houxi Lü: Polynomial separation of a shared tensor leg and matrix multiplication in arbitrary characteristic",
+      "url": "https://arxiv.org/abs/2610.18914"
+    },
+    {
+      "title": "Amanov, van den Berg and Zuiddam: Multiplying matrices via polynomials: exposition and barriers",
+      "url": "https://arxiv.org/abs/2610.30054"
+    },
+    {
+      "title": "Doğan, Lysikov, Sakabe and Walter: Tensor value and the 9/4 bound for matrix multiplication",
+      "url": "https://arxiv.org/abs/2611.09716"
+    },
+    {
+      "title": "Przemysław Uznański: Rectangular matrix multiplication from polynomial products",
+      "url": "https://arxiv.org/abs/2610.10494"
+    },
+    {
+      "title": "Volker Strassen: Gaussian elimination is not optimal (1969)",
+      "url": "https://doi.org/10.1007/BF02165411"
+    },
+    {
+      "title": "Alman, Duan, Vassilevska Williams, Xu, Xu and Zhou: More asymmetry yields faster matrix multiplication",
+      "url": "https://arxiv.org/abs/2404.16349"
+    },
+    {
+      "title": "OpenAI: Euclidean geometry in the asymptotic spectrum of tensors (24 November 2026)",
+      "url": "https://github.com/openai/math/blob/main/preprints/Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026/paper.pdf"
+    },
+    {
+      "title": "OpenAI: Lean formalization scope for the matrix multiplication exponents",
+      "url": "https://github.com/openai/math/blob/main/lean/docs/107.md"
+    },
+    {
+      "title": "OpenAI: README for the nine-fourths preprint, with Lean links",
+      "url": "https://github.com/openai/math/blob/main/preprints/The-matrix-multiplication-exponent-is-nine-fourths-November-24-2026/README.md"
+    },
+    {
+      "title": "OpenAI: math repository README (how the manuscripts were produced)",
+      "url": "https://github.com/openai/math"
+    }
+  ],
+  "related_articles": [
+    "vp-vnp-valiant-conjecture",
+    "openai-exponential-time-hypothesis",
+    "riemann-hypothesis-lean-proof"
+  ]
+}
