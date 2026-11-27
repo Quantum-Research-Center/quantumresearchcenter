@@ -1,0 +1,45 @@
+{
+  "id": "2611.33559",
+  "topic": "foundations",
+  "title": "Robust Certification of Non-projective Qubit Measurements without Inputs",
+  "authors": "Sumit Rout, Paweł Horodecki, Some Sankar Bhattacharya",
+  "submitted": "2026-11-25",
+  "version": "v1",
+  "kind": "Theory (AI-assisted)",
+  "problem": "Measurements that cannot be simulated by randomly choosing projective measurements and post-processing their outcomes, non-projective POVMs, give advantages in state discrimination, tomography and randomness generation. Certifying them from observed statistics usually requires choosing measurement settings at random, which makes input randomness part of the certification. Can two observers sharing an uncharacterised two-qubit state certify that their fixed measurements are non-projective from the joint outcome distribution alone, robustly to noise?",
+  "result": "Yes. In the noiseless case, three- and four-outcome perfect anti-correlations certify that both local measurements lie beyond projective simulation. For noise, a nonlinear covariance witness \\(\\chi(\\Gamma[P])=\\sum_j\\sqrt{s_j(\\Gamma[P])}\\) obeys \\(\\chi\\le D_x/2\\) for every pair of projective-simulable qubit measurements and every two-qubit state, where \\(D_x\\) is the diameter of the outcome encoding. For identical trine or tetrahedral SIC measurements on a noisy singlet this gives exact critical white-noise fractions of \\(1/4\\) and \\(1/3\\): below them no projective-simulable pair reproduces the correlations, and at them explicit projective simulations exist.",
+  "significance": "The certification uses no input randomness at all, only a fixed source and fixed measurements, under a dimension bound and independence of the devices' private randomness. The thresholds are exact, and the witness bound holds for every shared two-qubit state, which makes the test usable with an uncharacterised source.",
+  "limitations": "The scheme assumes qubit systems and that each device's private randomness is independent of the other's and of the source; with shared randomness every distribution could be reproduced. The witness detects that at least one measurement is non-projective in the noisy case, not necessarily both. The authors state that ChatGPT helped work through the covariance factorization and witness bound, checked the projective simulations at the critical noise fractions, supplied a longer derivation of extremality in one example, and helped with editing and literature search.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-27: Secs. I–II, the noiseless criteria of Sec. III in outline, Sec. IV.1–IV.2 (Proposition IV.1, Eqs. (23)–(31)) and the AI statement; the appendix proofs were not read. Editorial checks: with Bloch-vector encodings the diameters are √3 for the trine and √(8/3) for the SIC, so the witness value √v exceeds D/2 exactly when v > 3/4 and v > 2/3, the stated thresholds 1/4 and 1/3; and direct computation for trines on a noisy singlet with v = 0.8 gives p(a, a) = 0.02222 and p(a ≠ b) = 0.15556, matching Eq. (31).",
+  "verified_on": "2026-11-27",
+  "methods_source_section": "Sec. II (projective simulability, Lemma II.2, Corollary II.3); Sec. III (noiseless criteria); Sec. IV.1 (covariance witness, Eqs. (23)–(30), Proposition IV.1); Sec. IV.2 (Eq. (31), thresholds)",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "A POVM is projective-simulable if it can be realized by choosing a projective measurement at random and relabeling its outcomes; the class is the convex hull of projective measurements. An extremal POVM is projective-simulable only if it is itself projective, so the three-outcome trine and four-outcome tetrahedral SIC POVMs on a qubit, which are extremal with more than two outcomes, are genuinely non-projective.",
+    "Alice and Bob share an uncharacterised two-qubit state and each applies one fixed measurement, recording the joint distribution \\(p(a,b)\\). On a singlet, identical trine measurements never give equal outcomes, and the paper shows that this perfect anti-correlation, and its four-outcome analogue, cannot be produced by projective-simulable devices with independent private randomness on any two-qubit state.",
+    "For robustness the authors encode outcomes as vectors, form the cross-covariance matrix \\(\\Gamma[P]\\), and sum the square roots of its singular values. The covariance factorizes as \\(R_AKR_B^T\\), with response matrices of the two measurements and a matrix \\(K\\) determined by the state. Bounding the nuclear norm of the response of any post-processed projective measurement, and the operator norm of \\(K\\) over all two-qubit states, gives \\(\\chi\\le D_x/2\\).",
+    "For a target POVM measured on both halves of a singlet with visibility \\(v\\), the witness equals \\(\\sqrt v\\). The resulting thresholds, \\(v>3/4\\) for trines and \\(v>2/3\\) for SICs, are exact, because explicit projective simulations reproduce the correlations at those noise levels."
+  ],
+  "methods": [
+    {
+      "technique": "A covariance witness that factorizes into measurement and state parts",
+      "explanation": "A noise-robust test needs a quantity that is maximal for the target non-projective measurements and bounded for all projective-simulable ones on every state. Encoding outcomes as vectors makes the covariance a product of two local response matrices and one state matrix, each of which can be bounded separately.",
+      "math": [
+        "With outcome vectors \\(\\mathbf x_a\\), \\(\\Gamma[P]=\\sum_{a,b}[p(a,b)-p_A(a)p_B(b)]\\,\\mathbf x_a\\mathbf x_b^T\\) and \\(\\chi(Z)=\\sum_j\\sqrt{s_j(Z)}\\). Writing \\(A_a=\\alpha_a(I+\\mathbf n_a\\cdot\\vec\\sigma)\\) gives \\(\\sum_a\\mathbf x_a\\otimes A_a=\\mathbf c_A\\otimes I+\\sum_jR_{A,\\cdot j}\\otimes\\sigma_j\\), and the covariance factorizes as \\(\\Gamma[P]=R_AKR_B^T\\) with \\(K=T-\\mathbf r\\mathbf s^T\\) built from the correlation tensor and local Bloch vectors.",
+        "For the target measurement on a noisy singlet, \\(R_A=R_B=G=\\sum_a\\alpha_a\\mathbf n_a\\mathbf n_a^T\\) with \\(\\mathrm{Tr}\\,G=1\\) and \\(K=-vI_3\\), so \\(\\Gamma=-vG^2\\) and \\(\\chi=\\sqrt v\\sum_jg_j=\\sqrt v\\). Projective simulation forces \\(\\chi\\le D_x/2\\). Editorial check: for the trine, \\(|\\mathbf n_a-\\mathbf n_b|=\\sqrt3\\), so \\(\\sqrt v>\\sqrt3/2\\) means \\(v>3/4\\); for the SIC, \\(|\\mathbf n_a-\\mathbf n_b|=\\sqrt{8/3}\\), so \\(v>2/3\\)."
+      ],
+      "transfer": "Splitting a correlation witness into local response factors and a state factor, then bounding each over its own convex set, gives state-independent tests for measurement resources. The same structure may certify other measurement properties, such as incompatibility, without inputs."
+    },
+    {
+      "technique": "Extremality forces perfect anti-correlations to be non-projective",
+      "explanation": "In the noiseless case, perfect anti-correlation with three or four outcomes pins down the measurements' structure. Combined with the fact that extremal POVMs are projective-simulable only if projective, this certifies non-projectiveness directly.",
+      "math": [
+        "For identical rank-one POVMs on the singlet, \\(p(a,b)=\\alpha_a\\alpha_b(1-\\mathbf n_a\\cdot\\mathbf n_b)\\). For trines (\\(\\alpha=1/3\\), \\(\\mathbf n_a\\cdot\\mathbf n_b=-1/2\\)) this gives \\(p(a,a)=0\\) and \\(p(a\\ne b)=1/6\\). With white noise, Eq. (31) gives \\(p(a,a)=(1-v)/9\\) and \\(p(a\\ne b)=(2+v)/18\\). Editorial check: direct computation at \\(v=0.8\\) gives \\(0.02222\\) and \\(0.15556\\), as predicted.",
+        "A projective-simulable device is a mixture of post-processed two-outcome qubit measurements. The paper uses the convex-hull characterisation of Oszmaniec and coauthors and the extremality criterion of D'Ariano, Lo Presti and Perinotti to show that no such mixture, on any two-qubit state with independent private randomness, yields the uniform three- or four-outcome anti-correlations."
+      ],
+      "transfer": "Perfect correlations combined with extremality are a direct route to self-testing-style statements about measurements. The approach can be tried for higher-dimensional symmetric POVMs, with the dimension bound replacing input randomness."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-27"
+}

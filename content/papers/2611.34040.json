@@ -1,0 +1,44 @@
+{
+  "id": "2611.34040",
+  "topic": "information",
+  "title": "Minimal input dimension for superactivation of one-shot zero-error quantum capacity",
+  "authors": "A. V. Shcherbakov",
+  "submitted": "2026-11-25",
+  "version": "v1",
+  "kind": "Theory (AI-assisted)",
+  "problem": "Two channels that each transmit no quantum information with zero error in a single use can sometimes transmit a qubit perfectly when used together, an effect called superactivation. Shirokov's examples act on four-dimensional inputs, and Shirokov and Shulman showed that superactivation of two channels is impossible if one of them has a qubit input. What is the smallest input dimension in which it can occur?",
+  "result": "Three. For any finite collection of channels with two-dimensional inputs, the one-shot zero-error quantum capacity is additive, so qubit channels never superactivate. Two explicit operator systems \\(S,T\\subset M_3\\) have no two-dimensional code individually, while \\(S\\otimes T\\) has the two-dimensional code spanned by \\(\\ket{00}\\) and \\((\\ket{11}+\\ket{22})/\\sqrt2\\). Channels with these noncommutative graphs therefore superactivate with three-dimensional inputs.",
+  "significance": "The result pins down the threshold dimension for the simplest form of superactivation, one of the most striking non-additivity effects in quantum Shannon theory, and replaces a four-dimensional example with a three-dimensional one that can be checked by hand. The qubit additivity theorem extends the earlier two-channel impossibility to any number of channels.",
+  "limitations": "The statement concerns one-shot zero-error capacity, the dimension of a perfect code in a single joint use; the asymptotic zero-error capacity of these channels is not computed. The channels are given only through their noncommutative graphs, realized by a general existence theorem, not as explicit physical channels. The author states that the pair \\(S,T\\) was obtained with the assistance of GPT-6 Astra, and that all statements were then checked in exact algebraic form.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-27: the whole paper, including Lemmas 1–4, Theorem 1, Proposition 1, the code construction of Sec. 4.2 and the AI statement. Editorial checks: for every pair of generators A of S and B of T, the compression P(A ⊗ B)P equals A_00 B_00 P exactly (numerically, to machine precision); and a random search over 20,000 two-dimensional subspaces of C^3 found a smallest Knill–Laflamme defect of 0.29 for S, consistent with Proposition 1's proof that S has no two-dimensional code.",
+  "verified_on": "2026-11-27",
+  "methods_source_section": "Sec. 1 (noncommutative graphs and the Knill–Laflamme condition); Sec. 3 (Lemmas 1–4, Theorem 1); Sec. 4 (Eqs. (2)–(3), Proposition 1)",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "A channel \\(\\Phi(\\rho)=\\sum_kV_k\\rho V_k^\\dagger\\) determines its noncommutative graph \\(S(\\Phi)=\\mathrm{span}\\{V_k^\\dagger V_l\\}\\), an operator system containing the identity and closed under adjoints. A subspace with projector \\(P\\) is a perfect quantum code exactly when \\(PXP\\) is a multiple of \\(P\\) for every \\(X\\in S(\\Phi)\\), the Knill–Laflamme condition. The one-shot zero-error quantum capacity is \\(\\log_2\\) of the largest such code. Graphs of product channels are tensor products, \\(S(\\Phi_1\\otimes\\Phi_2)=S(\\Phi_1)\\otimes S(\\Phi_2)\\).",
+    "For qubit inputs the paper shows that every operator system in \\(M_2\\) is either the scalars, where the whole qubit is a code, or contains a copy of the diagonal algebra \\(D_2\\) after a change of basis. A tensor product of \\(k\\) scalar factors and \\(n-k\\) diagonal factors has largest code dimension exactly \\(2^k\\), so codes for products of qubit channels come only from factors that are already perfect, and the capacity adds.",
+    "In dimension three the construction uses \\(S=\\mathrm{span}\\{I,E_{01},E_{10},H_+\\}\\) and \\(T=\\mathrm{span}\\{I,E_{02},E_{20},H_-\\}\\), with \\(H_\\pm\\) acting on the last two basis vectors as \\(\\begin{pmatrix}1&\\pm1\\\\\\pm1&-1\\end{pmatrix}\\). The rank-one elements \\(E_{01}\\) and \\(E_{02}\\) force any two-dimensional code into a coordinate plane, where \\(H_\\pm\\) compresses to a non-scalar matrix, so neither system has a code. In the product, the off-diagonal generators were chosen so that the cross terms between \\(\\ket{00}\\) and \\((\\ket{11}+\\ket{22})/\\sqrt2\\) vanish, and the trace conditions on the blocks of \\(H_\\pm\\) make the diagonal entries equal."
+  ],
+  "methods": [
+    {
+      "technique": "Every non-scalar qubit graph contains a diagonal algebra",
+      "explanation": "To prove additivity for qubits, one needs a uniform upper bound on codes for any product. Shrinking each non-scalar factor to a diagonal subsystem only enlarges the set of codes, and diagonal algebras have codes that are easy to count.",
+      "math": [
+        "Monotonicity: if \\(T\\subseteq S\\) then every code for \\(S\\) is a code for \\(T\\), so \\(\\alpha_q(S)\\le\\alpha_q(T)\\). A non-scalar \\(S\\subset M_2\\) contains a non-scalar Hermitian \\(H\\) with distinct eigenvalues, and \\(\\mathrm{span}\\{I,H\\}\\) is unitarily equivalent to \\(D_2\\). Hence a product of \\(k\\) scalar and \\(n-k\\) non-scalar factors satisfies \\[\\alpha_q\\Bigl(\\textstyle\\bigotimes_iS_i\\Bigr)\\le\\alpha_q\\bigl(\\mathbb CI_{2^k}\\otimes D_{2^{n-k}}\\bigr).\\]",
+        "For \\(\\mathbb CI_m\\otimes D_r\\), write code vectors as \\(\\ket{\\psi_\\ell}=\\sum_j\\ket{u_{\\ell j}}\\otimes\\ket j\\). The Knill–Laflamme conditions for all diagonal \\(D_r\\) elements give \\(\\langle u_{\\ell j}|u_{sj}\\rangle=0\\) for \\(\\ell\\ne s\\) and equal norms \\(\\|u_{\\ell j}\\|\\) for all \\(\\ell\\). More than \\(m\\) code vectors would require more than \\(m\\) orthogonal vectors of equal norm in \\(\\mathbb C^m\\), forcing them all to zero. So \\(\\alpha_q=m=2^k\\), matched by the code \\((\\mathbb C^2)^{\\otimes k}\\otimes\\ket\\eta\\), and \\(\\overline Q_0\\) is exactly the number of scalar factors."
+      ],
+      "transfer": "Bounding codes for a product by those of a smaller, structured subsystem turns an optimization over subspaces into a counting argument. The same reduction can test additivity of zero-error quantities in other small dimensions."
+    },
+    {
+      "technique": "Designing two graphs whose product admits an entangled code",
+      "explanation": "Superactivation needs a code for \\(S\\otimes T\\) that is not a product of codes. The generators of \\(S\\) and \\(T\\) are chosen so that, on one entangled vector and one product vector, all off-diagonal Knill–Laflamme terms vanish by support and all diagonal terms agree by trace identities.",
+      "math": [
+        "Let \\(\\ket u=\\ket{00}\\) and \\(\\ket v=(\\ket{11}+\\ket{22})/\\sqrt2\\). For \\(A\\in S\\), \\(B\\in T\\), \\[\\langle u|A\\otimes B|v\\rangle=\\tfrac1{\\sqrt2}\\bigl(A_{01}B_{01}+A_{02}B_{02}\\bigr)=0,\\] since \\(S\\) has no \\(E_{02}\\) component and \\(T\\) no \\(E_{01}\\) component; the same holds for \\(\\langle v|A\\otimes B|u\\rangle\\).",
+        "On the lower block, \\(A'=aI_2+xD_+\\) and \\(B'=bI_2+yD_-\\) with \\(a=A_{00}\\), \\(b=B_{00}\\), and \\[\\langle v|A\\otimes B|v\\rangle=\\tfrac12\\mathrm{Tr}\\bigl(A'^{T}B'\\bigr)=ab+\\tfrac{ay}2\\mathrm{Tr}D_-+\\tfrac{bx}2\\mathrm{Tr}D_++\\tfrac{xy}2\\mathrm{Tr}(D_+^TD_-)=ab,\\] because \\(\\mathrm{Tr}D_\\pm=0\\) and \\(\\mathrm{Tr}(D_+^TD_-)=1-1-1+1=0\\). This equals \\(\\langle u|A\\otimes B|u\\rangle=ab\\), so \\(P(S\\otimes T)P=\\mathbb CP\\). Editorial check: the identity \\(P(A\\otimes B)P=A_{00}B_{00}P\\) holds numerically for all 16 generator pairs."
+      ],
+      "transfer": "Choosing generators whose supports avoid each other and whose blocks are trace-orthogonal is a direct recipe for entangled zero-error codes. A computer search over such sparse operator systems, then exact verification, is how this example was found."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-27"
+}

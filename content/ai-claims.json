@@ -1,6 +1,44 @@
 {
-  "reviewed_on": "2026-11-26",
+  "reviewed_on": "2026-11-27",
   "claims": [
+    {
+      "id": "zero-error-superactivation-dimension-three",
+      "date": "2026-11-25",
+      "field": "Quantum information",
+      "problem": "Minimal input dimension for superactivation of one-shot zero-error quantum capacity",
+      "known_since": "Shirokov and Shulman showed that two channels cannot superactivate if one has a qubit input; the smallest dimension where superactivation occurs was open.",
+      "claimant": "A. V. Shcherbakov",
+      "ai": "GPT-6 Astra (found the pair of noncommutative graphs)",
+      "claim": "Construction claimed: superactivation with three-dimensional inputs, and additivity for qubits",
+      "verification": "unverified",
+      "summary": "The paper proves that the one-shot zero-error quantum capacity is additive for any number of qubit-input channels, and gives two operator systems in \\(M_3\\) with no two-dimensional code whose tensor product has one, so the minimum input dimension for superactivation is 3. The author states that the pair was found with GPT-6 Astra and then checked in exact algebraic form; we checked the code condition numerically.",
+      "sources": [
+        {
+          "label": "arXiv:2611.34040",
+          "url": "https://arxiv.org/abs/2611.34040"
+        }
+      ],
+      "paper": "2611.34040"
+    },
+    {
+      "id": "curie-weiss-slow-mixing-huang",
+      "date": "2026-11-25",
+      "field": "Quantum computing",
+      "problem": "Slow mixing of quantum Gibbs sampling for the quantum Curie–Weiss model",
+      "known_since": "Left open by Gamarnik, Kiani and Zlokapa, whose bottleneck theorem for quantum Gibbs samplers relies on spatial locality.",
+      "claimant": "Xiaoyang Huang",
+      "ai": "GPT-6 (used to prototype the results and help prove the converse of Proposition 7)",
+      "claim": "Proof claimed: exponential mixing time for the Chen–Kastoryano–Gilyén sampler",
+      "verification": "unverified",
+      "summary": "At low temperature and weak transverse field, the paper proves that the Chen–Kastoryano–Gilyén Gibbs sampler for the all-to-all quantum Curie–Weiss model needs time \\(\\exp(\\Omega(N))\\) to mix, using a dynamical bottleneck theorem on magnetization shells instead of spatial locality. The author states that GPT-6 was used to prototype the results and to help prove one direction of a proposition, with all outputs verified by the author.",
+      "sources": [
+        {
+          "label": "arXiv:2611.34682",
+          "url": "https://arxiv.org/abs/2611.34682"
+        }
+      ],
+      "paper": "2611.34682"
+    },
     {
       "id": "npt-bound-entanglement-faisal",
       "date": "2026-11-25",
@@ -162,7 +200,7 @@
       "ai": "Claude (Anthropic)",
       "claim": "Proof claimed, with an extension to the generalized Riemann hypothesis",
       "verification": "formal",
-      "summary": "Alpöge says he found a proof with Claude over several weeks and released it only as a Lean library of about 17 million lines. On 21 November the Lean FRO and the Mathlib Initiative certified that the library proves exactly Mathlib's statement of the Riemann hypothesis. Independent checks by Andrew Sutherland (MIT) with several separate kernels passed by 25 November, and confirm that the library also proves the generalized hypothesis for Dirichlet L-functions; other L-functions were not checked. A shorter Lean proof of about 76,000 lines appeared on 25 November and passes the same checks. No human-readable proof has been released. Mathematicians quoted in the press say understanding it will take a long time, and the Association for Human Mathematics objects that no person can take responsibility for it.",
+      "summary": "Alpöge says he found a proof with Claude over several weeks and released it only as a Lean library of about 17 million lines. On 21 November the Lean FRO and the Mathlib Initiative certified that the library proves exactly Mathlib's statement of the Riemann hypothesis. Independent checks by Andrew Sutherland (MIT) with several separate kernels passed by 25 November, and confirm that the library also proves the generalized hypothesis for Dirichlet L-functions; other L-functions were not checked. A shorter Lean proof of about 76,000 lines appeared on 25 November and passes the same checks. No human-readable proof has been released. Mathematicians quoted in the press say understanding it will take a long time, and the Association for Human Mathematics objects that no person can take responsibility for it. A separate, human-written proposed proof of the generalized hypothesis by Alessandro Masullo, announced the same day by Ravi Vakil, is in major revision after problems were reported.",
       "sources": [
         {
           "label": "Alpöge's note (20 Nov)",
@@ -179,6 +217,10 @@
         {
           "label": "Science News (23 Nov)",
           "url": "https://www.sciencenews.org/article/riemann-hypothesis-solved-math-ai"
+        },
+        {
+          "label": "Vakil's announcement of Masullo's draft (20 Nov)",
+          "url": "https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/"
         }
       ],
       "register": [

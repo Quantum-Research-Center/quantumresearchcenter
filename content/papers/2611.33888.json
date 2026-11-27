@@ -1,0 +1,46 @@
+{
+  "id": "2611.33888",
+  "topic": "foundations",
+  "title": "Decoherent Histories from Local Spectral Dephasing in Quantum Many-Body Systems",
+  "authors": "Jie Gu",
+  "submitted": "2026-11-25",
+  "version": "v1",
+  "kind": "Theory and numerics",
+  "problem": "In the decoherent-histories framework, probabilities for sequences of events in a closed quantum system are consistent only when interference between alternative histories is negligible. Environment-induced decoherence and slowly varying hydrodynamic densities are known routes. Can the isolated unitary dynamics of a many-body system suppress history interference for local observables, through the way their frequency components dephase?",
+  "result": "For a local projector \\(P\\), vanishing concentration of its matrix-element-weighted Bohr-frequency spectrum in windows of width \\(1/T\\) is equivalent to vanishing time-averaged absolute memory, with the two-sided estimate \\(a_0M_P(T)\\le h_P(T)\\le\\sqrt{8(1+\\pi^2)v_PM_P(T)}\\). With independently sampled waiting times and stated conditions on the initial state and branch weights, weak local memory suppresses normalized interference across complete fixed-length history families with high probability. For translation-invariant lattices, nondegenerate energies and sparse gap multiplicities guarantee such memory loss at long observation windows.",
+  "significance": "The result gives a concrete, checkable spectral criterion for when an isolated many-body system assigns consistent probabilities to histories of local observations, without an external environment. It separates two notions that are often conflated, single-time relaxation and multi-time consistency, and connects the latter to a property of the local spectral measure that can be computed by exact diagonalization.",
+  "limitations": "The equivalence is asymptotic, along sequences of systems and observation scales, and the interference bound holds in probability over randomly sampled waiting times, under conditions on the initial state and history weights. Consistent probabilities do not by themselves imply classical predictability or a memoryless process. The spin-chain numerics illustrate rather than prove the lattice conditions. No AI-use statement appears in the version read.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-27: Sec. I, Sec. II (the physical picture, the definitions of Eq. (1)–(3), Theorem 1 and its proof sketch, and the history-family theorem in outline) and the summary of Sec. III; the appendices with full proofs, and the dual-unitary appendix, were not read. Editorial check: for an 8-site periodic mixed-field Ising chain with P = (I + Z_0)/2, the two-sided estimate of Theorem 1 holds at T = 0.5, 2, 10 and 40 (for example 0.0153 ≤ h_P = 0.0452 ≤ 0.583 at T = 10). An attempted direct estimate of normalized interference for random waiting times on the same small chain gave a mean of 0.26, which is not informative about the asymptotic statement and is not used as a check.",
+  "verified_on": "2026-11-27",
+  "methods_source_section": "Sec. II.1 (physical picture); Sec. II.2 (Eqs. (1)–(4), Theorem 1); Sec. II.3 (history families); Sec. III (lattice realization and spin chain)",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "A history is a sequence of outcomes of projective alternatives at successive times; its chain operator is the time-ordered product of projectors, and the decoherence functional \\(D(\\alpha,\\alpha')\\) collects overlaps between pairs of histories. When the off-diagonal entries are negligible relative to the diagonal ones, the diagonal entries are consistent probabilities that obey the sum rules under coarse-graining. Relaxation of an observable at one time does not ensure this for multi-time families.",
+    "Local spectral dephasing means that the connected autocorrelation \\(c_P(t)=D^{-1}\\mathrm{Tr}[A_P(t)A_P]\\) of the centered projector \\(A_P=P-q_PI\\), a sum of oscillations at Bohr frequencies, becomes small on average because its components accumulate different phases. What matters is not how many frequencies there are but whether appreciable weight is concentrated within windows of width \\(1/T\\), measured by \\(M_P(T)\\).",
+    "The link to histories goes through the structure of a single step. Two histories that differ at their last differing observation have orthogonal branches there. A later projection onto a common outcome can regenerate overlap only through the traceless part of that projector, since the identity part multiplies the existing overlap. Local memory loss suppresses that contribution for typical waiting times, and sampling each waiting time independently, given the history so far, extends the bound to whole history families despite correlations between steps.",
+    "For translation-invariant lattices the paper gives spectral conditions under which \\(h_P(T)\\) vanishes, and illustrates them with exact diagonalization and sparse time evolution of a spin chain. Dual-unitary circuits give an exactly solvable discrete-time example in an appendix."
+  ],
+  "methods": [
+    {
+      "technique": "A two-sided link between spectral concentration and time-averaged memory",
+      "explanation": "To decide whether a local observable forgets its past, one needs a criterion that can be computed from the spectrum and is equivalent to small average correlations. A triangular time filter detects unresolved spectral clusters from below, and the same filter applied to the squared correlation bounds it from above.",
+      "math": [
+        "Define the spectral measure \\(\\mu_P=D^{-1}\\sum_{m,l}|\\langle m|A_P|l\\rangle|^2\\delta_{E_m-E_l}\\), so that \\(c_P(t)=\\int e^{i\\omega t}\\mu_P(d\\omega)\\) and \\(\\mu_P(\\mathbb R)=v_P=q_P(1-q_P)\\). With \\(M_P(T)=\\sup_\\Omega\\mu_P([\\Omega,\\Omega+1/T])\\) and \\(h_P(T)=\\frac1T\\int_{-T}^T|c_P(t)|\\,dt\\), Theorem 1 states \\[a_0M_P(T)\\le h_P(T)\\le\\sqrt{8(1+\\pi^2)v_PM_P(T)},\\qquad a_0=\\Bigl[\\tfrac{\\sin(1/4)}{1/4}\\Bigr]^2.\\]",
+        "Editorial check: for an 8-site periodic mixed-field Ising chain with \\(P=(I+Z_0)/2\\), so \\(v_P=1/4\\), the estimate holds at all four windows tested, for example \\(0.0153\\le h_P=0.0452\\le0.583\\) at \\(T=10\\) and \\(0.0137\\le0.0285\\le0.551\\) at \\(T=40\\). The lower bound tracks \\(h_P\\) more closely than the upper one, which carries the square root.",
+        "Editorial remark: the criterion is about matrix-element-weighted gaps of one observable, not level statistics. Degenerate gaps add their weights to a single atom, which is why sparse gap multiplicities enter the lattice conditions."
+      ],
+      "transfer": "Converting a time-domain memory condition into a frequency-window concentration, with matching two-sided bounds, gives a computable diagnostic. It can be applied to other multi-time questions, such as Markovianity tests for local processes in closed systems."
+    },
+    {
+      "technique": "From two-time memory loss to whole history families",
+      "explanation": "Interference between histories can reappear whenever a later projection is applied to orthogonal branches. Isolating the part of the projector that can create overlap, and controlling it step by step with independently random waiting times, turns a two-time estimate into a bound for a full family.",
+      "math": [
+        "Write each later projector as \\(P=q_PI+A_P\\). For two branches \\(\\ket{\\phi},\\ket{\\phi'}\\) that are orthogonal after their last differing step, \\[\\langle\\phi|U^\\dagger P U|\\phi'\\rangle=q_P\\langle\\phi|\\phi'\\rangle+\\langle\\phi|A_P(t)|\\phi'\\rangle=\\langle\\phi|A_P(t)|\\phi'\\rangle.\\] Only the centered part can regenerate overlap, and its typical size over random \\(t\\) is controlled by the local autocorrelation.",
+        "Because earlier outcomes change the operators that enter later steps, the steps are not independent. Conditioning on a fixed history prefix and sampling the next waiting time independently lets the same two-time estimate bound each step, and a union over the predetermined family gives suppression of all normalized off-diagonal entries with high probability, provided the branch weights are not too small, as the theorem's conditions require."
+      ],
+      "transfer": "Separating an operator into its identity and centered parts, and randomizing the times at which it acts, is a general way to bound interference terms in sequential measurement problems."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-27"
+}

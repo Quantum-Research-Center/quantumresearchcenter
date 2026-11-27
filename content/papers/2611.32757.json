@@ -1,0 +1,45 @@
+{
+  "id": "2611.32757",
+  "topic": "computing",
+  "title": "Classical sampling of verifiable graph-state quantum advantage experiments",
+  "authors": "Zhongpu Qiu, Yuqi Qing, Jielan Li, Hongxia Hao",
+  "submitted": "2026-11-24",
+  "version": "v1",
+  "kind": "Numerics and theory",
+  "problem": "A convincing quantum advantage experiment must be both hard to reproduce classically and verifiable. Martiel and coauthors proposed preparing random graph states with built-in error detection, so the fidelity can be certified without simulating the circuit, and adding hardness through a non-Clifford measurement basis or T gates placed where the checks cannot see them. IBM and the University of Chicago announced in July 2026 that such an experiment met the criteria for quantum advantage. Can the posted instances be sampled classically?",
+  "result": "Yes, on eight GPUs, with higher quality than the hardware in comparable or shorter time. For the 70-qubit undoped instance (RGS70) the samples are drawn exactly from the ideal distribution, with linear cross-entropy 1.025 against 0.466 for the hardware, in 1,265 s against 1,950 s. For the 64-qubit instance with 314 T gates (DCS64) the samples come with a certified fidelity of at least 0.908, against 0.349 for the hardware, in 864 s against 870 s. The structural reason is that T gates can only sit where the checks are blind, which pushes them to the end of the circuit where they add little classical cost.",
+  "significance": "The result answers the two instances still standing on the Quantum Advantage Tracker and identifies a tension in this design: the checks that make the experiment verifiable also restrict where hardness can be added. It tells future verifiable experiments which quantities, the early axis rank and early entanglement, they must raise to stay out of classical reach.",
+  "limitations": "The analysis concerns these two posted instances and this family of constructions; undoped instances become impractical for GPU clusters somewhere between 80 and 90 qubits, and the authors show that neither the number of checks nor the number of allowed positions alone determines classical cost. Sampling uses single precision; the RGS70 sampler is exact in exact arithmetic but its implementation has no rigorous error bound, and the DCS64 certificate relies on double-precision reference blocks and on pseudorandom prefixes behaving as uniform draws. No AI-use statement appears in the version read.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-27: Secs. I–VI (the two instances, exact conditional sampling, certified uniform-prefix sampling, implementation, results and limitations) and the opening of Sec. VII; the appendices with Theorem 1, Proposition 2 and Theorem 8 were not read in full. Editorial checks: for a random 10-vertex graph with a full-rank balanced cut, after random single-qubit unitaries the marginal on one half is uniform to 3 × 10^-17; the probability that a random 35 × 35 binary matrix is invertible over F_2 is 0.2888, the paper's 0.29; and on the same state with 3 open bits the fidelity formula F = (E_y √(D p_y))² equals the overlap of the uniform-prefix state with the ideal state (0.977040 both).",
+  "verified_on": "2026-11-27",
+  "methods_source_section": "Sec. II (graph states and cut rank); Sec. III (exact sampling, Eq. (1)); Sec. IV (gadget contraction, uniform-prefix sampling, Eq. (2), certificate); Sec. VI (Table 1); Sec. VII (allowed positions)",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "A graph state \\(\\ket G=2^{-n/2}\\sum_x(-1)^{\\sum_{i<j}\\Gamma_{ij}x_ix_j}\\ket x\\) is a stabilizer state, so preparing it is classically easy. Across a bipartition its reduced state has a flat spectrum with \\(2^\\rho\\) nonzero eigenvalues, where \\(\\rho=\\mathrm{rank}_{\\mathbb F_2}\\Gamma_{AB}\\) is the cut rank. In the experiments, alternating CZ layers and random single-qubit Cliffords on a line or ring prepare a random graph state, check qubits detect faults, and only shots in which no check fires are kept. RGS70 then measures in a non-Clifford basis; DCS64 inserts 314 T gates at positions the checks cannot detect.",
+    "For RGS70 the high entanglement that defeats tensor-network methods makes sampling easy. If a balanced cut has full rank, the reduced state of one half is maximally mixed and stays so under local unitaries, so half the output bits are fair coins. The other half is sampled exactly from a conditional state of \\(2^{35}\\) amplitudes, computed with one fast Walsh–Hadamard transform and a relabeling, which fits in the memory of two GPUs.",
+    "For DCS64 each T gate is replaced by a gadget qubit, making an enlarged stabilizer state on 378 qubits, and amplitudes are computed by contracting along an order of vertices whose largest cut rank, 34, sets the memory. Leaving 20 output bits open gives blocks of \\(2^{20}\\) amplitudes; each sample draws a uniform 44-bit prefix and its remaining bits exactly from the block. Sixty-four audits fixed in advance and recomputed in double precision certify the fidelity of the resulting state.",
+    "Section VII explains why this works. A T gate leaves all checks invariant only where a \\(Z\\) fault would go undetected, and good checks cover the early part of the circuit, so only one of the 314 T gates lies in the first 50 of 73 layers. The classical cost depends on the number of independent early T gates and the entanglement before them, not on the total count."
+  ],
+  "methods": [
+    {
+      "technique": "Exact sampling across a full-rank cut of a graph state",
+      "explanation": "Matrix-product methods fail because the state is maximally entangled across the middle. That same property makes one half of the output uniform, so the whole distribution reduces to sampling the other half from a conditional state that can be written down directly.",
+      "math": [
+        "If \\(\\Gamma_{AB}\\) has full rank \\(n/2\\), the reduced state on \\(B\\) is \\(I/2^{n/2}\\), and local unitaries \\(\\bigotimes_jU_j\\) keep it maximally mixed, so a product measurement of \\(B\\) gives uniform bits. Given outcome \\(b\\), the conditional state is \\[\\ket{\\psi_{A|b}}\\propto U_A\\sum_{x_A}(-1)^{q_A(x_A)}\\,g_b(\\Gamma_{AB}x_A)\\,\\ket{x_A},\\] with \\(q_A\\) the edges inside \\(A\\) and \\(g_b\\) a Walsh–Hadamard transform of a function on \\(B\\). The cost per sample is \\(O(n2^{n/2})\\).",
+        "Editorial check: for a random 10-vertex graph with invertible \\(\\Gamma_{AB}\\) and random single-qubit unitaries, the marginal on \\(B\\) is uniform to \\(3\\times10^{-17}\\). A random \\(m\\times m\\) binary matrix is invertible with probability \\(\\prod_{k=1}^m(1-2^{-k})\\to0.2888\\), so full-rank cuts are common; the authors found one for RGS70 in four tries."
+      ],
+      "transfer": "Maximal entanglement across a cut can make sampling easier rather than harder, because it fixes a marginal exactly. Any sampling-based advantage proposal with highly entangled stabilizer structure followed by local measurements should be tested against this conditional sampler."
+    },
+    {
+      "technique": "Uniform-prefix sampling with a fidelity certificate",
+      "explanation": "Computing marginals of a doped circuit is too costly, so the sampler draws the first output bits uniformly instead of from their true distribution. This produces samples of a slightly different pure state, whose fidelity with the ideal one can be estimated from a few audited blocks.",
+      "math": [
+        "With \\(D=2^{44}\\) prefixes \\(y\\) of true probabilities \\(p_y\\), sampling \\(y\\) uniformly and then the rest exactly gives the outputs of \\(\\sum_yD^{-1/2}\\ket y\\ket{\\hat\\psi_y}\\), whose fidelity with the ideal state is \\[F=\\Bigl(\\mathbb E_y\\sqrt{Dp_y}\\Bigr)^2.\\] Editorial check: on a 10-qubit state with 3 open bits, this formula and the direct overlap both give \\(0.977040\\).",
+        "Because \\(y\\) is uniform, the expectation is estimated from the sampler's own prefixes. On 64 audits the mean overlap loss is \\(1.9\\times10^{-4}\\), giving \\(\\sqrt F\\ge0.953\\), so \\(F\\ge0.908\\) at 95% confidence; with only 64 audits the bound could not exceed 0.911 even for a perfect sampler. A separately derived total-variation loss bounds the distance to the ideal distribution by 0.048."
+      ],
+      "transfer": "When the leading output bits of a quantum state are nearly uniform, replacing them by uniform draws costs little fidelity, and the cost can be certified by spot checks. This is a cheap way to sample, with guarantees, from states that are hard to marginalize."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-27"
+}

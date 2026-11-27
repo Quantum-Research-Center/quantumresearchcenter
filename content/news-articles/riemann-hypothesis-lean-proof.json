@@ -186,6 +186,7 @@
       "paragraphs": [
         "A proof does two jobs: it establishes that a statement is true and it explains why. The Lean check settles the first job as firmly as anything in mathematics, provided the kernels and definitions are right, and several independent kernels agree. The second job has not started. No one can yet say in a few pages why the zeros lie on the line, and that understanding is what other mathematicians build on.",
         "Reactions follow that line. Ken Ono told Science News, “As a mathematical landmark, it really doesn't get bigger than this.” Bryna Kra, a critic of AI-only results, accepted this one because “there is someone to stand behind” it. The Association for Human Mathematics, founded in September by mathematicians who refuse to work with AI companies, replied that “no human being can reasonably claim to be responsible for, or even to understand, such a document”, and objected to what it called a corporate model of proof production. The cognitive scientist Gary Marcus questioned how far the method generalizes beyond mathematics.",
+        "A second claim appeared the same day, from a very different direction. On 20 November Ravi Vakil, president of the American Mathematical Society, posted on his blog that Alessandro Masullo, a young Stanford mathematician, has a proposed proof of the generalized Riemann hypothesis that is “all human, with no AI”, on which Brian Conrad had been giving feedback for months. Vakil said he had not yet read it himself, and two days later he reported that several mathematicians had found problems in the draft; Conrad told Scientific American that it is “undergoing major revision”. The draft is in the state of a work in progress, not a checked proof, and the announcement does not mention Alpöge's.",
         "There is also the Millennium Prize. The Clay Institute considers a solution only after it is published in a refereed mathematics journal of worldwide repute, or an outlet its board approves, then two years have passed and the solution has general acceptance. A Lean library alone meets none of these conditions, and we found no statement from the Institute.",
         "What does this mean for quantum computing? Little directly. RSA and other cryptosystems do not rest on the hypothesis, and Shor's algorithm is unaffected. The physics connection is older: the spacings between zeros match the eigenvalue statistics of random quantum Hamiltonians, which led to the hope that the zeros are the energy levels of some quantum system. According to Alpöge's note, this proof runs through automorphic forms, not through such a Hamiltonian, so that hope is neither confirmed nor ruled out."
       ],
@@ -199,7 +200,9 @@
         4,
         5,
         8,
-        9
+        9,
+        15,
+        16
       ]
     }
   ],
@@ -259,6 +262,14 @@
     {
       "title": "Eric Bach: Explicit bounds for primality testing and related problems",
       "url": "https://doi.org/10.1090/S0025-5718-1990-1023756-8"
+    },
+    {
+      "title": "Ravi Vakil: Hurried announcement – Alessandro Masullo, GRH (20 November 2026, updated 22 November)",
+      "url": "https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/"
+    },
+    {
+      "title": "Scientific American: Dueling claims of Riemann hypothesis proofs emerge (20 November 2026)",
+      "url": "https://www.scientificamerican.com/article/dueling-claims-of-riemann-hypothesis-proofs-emerge/"
     }
   ],
   "related_articles": [
@@ -266,5 +277,6 @@
     "openai-exponential-time-hypothesis",
     "psi-aaronson-ambainis-conjecture",
     "mip-star-equals-re-verified"
-  ]
+  ],
+  "updated": "2026-11-27"
 }

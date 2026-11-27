@@ -1,0 +1,45 @@
+{
+  "id": "2611.32514",
+  "topic": "information",
+  "title": "Quantum Capacity with Incoherent Codes",
+  "authors": "Oxana Shaya, Zahra Baghali Khanian",
+  "submitted": "2026-11-24",
+  "version": "v1",
+  "kind": "Theory (AI-assisted)",
+  "problem": "Quantum codes usually assume that encoder and decoder may use arbitrary unitaries, including ones that create superpositions of basis states. In the resource theory of coherence, operations that cannot create such superpositions, incoherent operations, are free and coherence is the resource. How much quantum information can a channel carry when the encoder, the decoder, or both are restricted to incoherent operations in fixed bases, with no coherent ancillas supplied?",
+  "result": "With an incoherent encoder and unrestricted decoder, the capacity has a single-letter formula: the largest Holevo information over input basis states that leave identical states in the channel's environment, and above it the entanglement fidelity decays exponentially. Arbitrarily weak depolarizing noise makes this capacity zero in every input basis; for replacement probability \\(\\varepsilon\\le1/2\\), every code with an incoherent encoder has entanglement fidelity at most \\(1-\\varepsilon/2\\) at every block length. Restricting the decoder to incoherent operations costs at most half the capacity, and the factor \\(1/2\\) is optimal.",
+  "significance": "The result shows that the ability to create coherence locally is not a technicality: without it, quantum capacity becomes discontinuous and vanishes for almost every channel, including erasure and amplitude-damping channels with any nonzero noise. It quantifies which side of a link, encoder or decoder, needs coherent control, which matters for networks of devices with unequal capabilities.",
+  "limitations": "The restrictions refer to fixed reference bases, and no coherent ancillas are allowed; with ancillas, the usual capacity is recovered. The capacity with both sides incoherent is bounded but not computed in general. The most detailed results are for multiqubit Pauli channels. The authors state that Claude Fable assisted with derivations, literature review and manuscript preparation, and that they reviewed its contributions line by line.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-27: the introduction, Theorem 1, Corollary 3, Theorems 4–5 and Sec. V examples in outline, and the acknowledgements; the long appendices with proofs (Lemmas 8–9, Proposition 10) were not read in full. Editorial check: for the qubit identity channel with depolarizing replacement probability ε, the code with basis codewords and identity decoding has entanglement fidelity 1 − 3ε/4 (0.925, 0.775, 0.625 at ε = 0.1, 0.3, 0.5), below the bound 1 − ε/2 of Corollary 3 in every case.",
+  "verified_on": "2026-11-27",
+  "methods_source_section": "Sec. III (Theorem 1, Eq. (9), Corollary 3); Sec. IV (Theorems 4–5); Appendix B.3 (Lemma 9, fidelity bound)",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "An incoherent operation has Kraus operators that each map a reference basis state to a multiple of a basis state, so it cannot create superpositions in that basis. An incoherent encoder can still map logical basis states to basis codewords and preserve existing superpositions of the input, but it cannot spread a logical state over a coherent combination of codewords. The question is what rates remain for an arbitrary memoryless channel.",
+    "Theorem 1 groups input basis states by the state they leave in the environment of the channel. Within a group the environment learns nothing about which input was sent, so a classical code built from these inputs can be decoded coherently, through Uhlmann's theorem, into a quantum code. The capacity is the largest Holevo information \\(\\chi(p)\\) over distributions supported on one group. If every basis input leaves a different environment state, each group has one member and the capacity is zero.",
+    "Mixing in any replacement channel, \\(\\mathcal N_\\varepsilon=(1-\\varepsilon)\\mathcal N+\\varepsilon\\,\\mathrm{tr}(\\cdot)\\sigma\\), gives the environment a copy of the input with probability \\(\\varepsilon\\), so all environment states differ and the capacity with incoherent encoding is zero for every \\(\\varepsilon>0\\). These channels are exactly those with full-rank Choi matrix, a dense open set. Qubit dephasing shows the discontinuity: its usual capacity \\(1-h_2(p)\\) tends to one as \\(p\\to0\\), while with an incoherent encoder in the computational basis it is zero for every \\(0<p<1/2\\).",
+    "On the decoding side, Theorem 4 shows that an incoherent decoder loses at most a factor of two, with a quantum Fourier transform channel and a family of flagged channels showing that the factor cannot be improved. With an incoherent encoder, one channel use can supply the coherence needed to decode another, which is the origin of the factor."
+  ],
+  "methods": [
+    {
+      "technique": "Identical environment outputs turn classical codes into quantum codes",
+      "explanation": "An incoherent encoder can only map logical basis states to basis codewords. Superpositions of such codewords survive the channel only if the environment cannot tell the codewords apart. So the right classical code uses inputs with identical environment states, and coherent decoding follows from the purification picture.",
+      "math": [
+        "Achievability. Choose \\(p\\) on one class of inputs, so that \\(I(X;E)=0\\). The classical-quantum coding theorem gives codewords whose receiver states can be distinguished with error tending to zero. Because their environment states coincide, their purifications differ only by a unitary on the receiver's side (Uhlmann's theorem), and a coherent implementation of the decoding measurement followed by these unitaries recovers superpositions. Lemma 8 bounds the entanglement fidelity below by the square of the classical success probability.",
+        "Converse for weak noise. For distinct basis inputs \\(\\ket x,\\ket y\\), the replacement term kills the off-diagonal operator \\(\\ket x\\bra y\\), so \\(\\|\\mathcal N_\\varepsilon(\\ket x\\bra y)\\|_1\\le1-\\varepsilon\\). Two distinct codewords differ in at least one position, so the coherence between their outputs is at most \\(1-\\varepsilon\\), and Lemma 9 turns this into \\(F_e\\le1-\\varepsilon/2\\) for any logical dimension at least two. Editorial check for one qubit through the depolarized identity channel: basis codewords and identity decoding give \\(F_e=1-\\tfrac{3\\varepsilon}4\\), below \\(1-\\tfrac\\varepsilon2\\) for all \\(0<\\varepsilon\\le\\tfrac12\\)."
+      ],
+      "transfer": "Asking which inputs look identical to the environment reduces a restricted quantum coding problem to a classical one plus a coherence condition. The same reasoning applies to other resource-restricted encoders, such as ones limited to stabilizer or Gaussian operations."
+    },
+    {
+      "technique": "An incoherent decoder costs at most half",
+      "explanation": "A decoder that cannot create coherence must find it in the channel outputs. Splitting the uses of the channel, so that half carry data and half carry a coherent resource prepared through the channel itself, shows that at most half the rate is lost.",
+      "math": [
+        "Theorem 4: \\(Q^{\\rm all,IO}(\\mathcal N)\\ge\\tfrac12Q(\\mathcal N)\\) and \\(Q^{\\rm IO,IO}(\\mathcal N)\\ge\\tfrac12Q^{\\rm IO,all}(\\mathcal N)\\). The proof uses a relaxation of incoherent decoding by trace-decreasing maps whose Kraus columns satisfy an \\(\\ell_1\\)-norm constraint, which gives the fidelity bound of Theorem 5 and its achievability.",
+        "For the quantum Fourier transform channel the factor has a concrete origin: with an incoherent encoder, one channel use transmits the coherence that the decoder needs to undo the transform on another use, and the paper proves no code does better, so the factor \\(1/2\\) is attained. Editorial remark: this mirrors the classical fact that a shared reference frame can cost a fixed fraction of a communication budget."
+      ],
+      "transfer": "Using some channel uses to deliver a resource that a restricted receiver lacks, and the rest for data, gives simple universal lower bounds in many resource theories of communication."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-27"
+}

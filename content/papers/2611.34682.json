@@ -1,0 +1,45 @@
+{
+  "id": "2611.34682",
+  "topic": "computing",
+  "title": "Slow mixing of Gibbs sampling for the quantum Curie-Weiss model",
+  "authors": "Xiaoyang Huang",
+  "submitted": "2026-11-25",
+  "version": "v1",
+  "kind": "Theory (AI-assisted)",
+  "problem": "Quantum Gibbs samplers prepare thermal states by running a Lindbladian whose fixed point is the Gibbs state; their cost is set by the mixing time. Proving exponential lower bounds on mixing times, as for classical Glauber dynamics in ordered phases, has relied on spatial locality, through Lieb–Robinson bounds. In the all-to-all quantum Curie–Weiss model, Hamiltonian evolution spreads operators across the whole system, and Gamarnik, Kiani and Zlokapa left its slow mixing as an open problem. Does the Chen–Kastoryano–Gilyén sampler mix slowly there?",
+  "result": "Yes. At fixed low temperature and weak transverse field, the Chen–Kastoryano–Gilyén Gibbs sampler for the quantum Curie–Weiss model has mixing time at least \\(\\exp(\\Omega(N))\\). The proof is a dynamical bottleneck theorem, \\(t_{\\rm mix,\\epsilon}\\ge(p_A/J_{A^c})(p_{A^c}-q_{A^c}-\\epsilon/2)\\), applied to sectors defined by magnetization shells rather than spatial regions, together with exponential suppression of the bottleneck shells in equilibrium. The paper also shows that the earlier geometric bottleneck theorem is equivalent to the dynamical one with a suitable geometry.",
+  "significance": "The result shows that the global support of Heisenberg-evolved operators does not remove thermodynamic bottlenecks: locality in energy shells suffices. It closes an open problem of Gamarnik, Kiani and Zlokapa and gives a template for lower bounds on quantum Gibbs samplers in mean-field and other nonlocal models, which matters for assessing when quantum thermal-state preparation is expensive.",
+  "limitations": "The bound holds for fixed large \\(\\beta\\) and small transverse field \\(h\\), with unspecified constants, and for one sampler family with finitely supported seed jump operators. It is a lower bound in the ordered phase, as expected physically; it does not address the cost of preparing one symmetry-broken branch. The author states that GPT-6 was used to prototype the results and to help prove the converse direction of Proposition 7, with all outputs verified by the author.",
+  "summary_basis": "Description based on the full arXiv HTML of v1, read 2026-11-27: Secs. 1–5 (model, sampler, Theorem 2, the dynamical bottleneck Theorem 3 with its proof, Propositions 4–5, Lemma 6 and Proposition 7) and the acknowledgements; the appendices with full proofs and the Fokker–Planck picture were read only in outline. Editorial checks: for N = 6 spins, H_0 = −(1/N)Σ_{i<j} Z_i Z_j equals 2K(N − K)/N plus a multiple of the identity, as used in Eq. (16); and at h = 0, β = 3 the equilibrium weight of the middle shell k = N/2 is 1.5 × 10^-19, 2.8 × 10^-37 and 1.4 × 10^-72 for N = 50, 100, 200, decaying exponentially as the bottleneck requires.",
+  "verified_on": "2026-11-27",
+  "methods_source_section": "Sec. 2 (model, CKG sampler, Theorem 2); Sec. 3 (Theorem 3 and proof, Eqs. (7)–(15)); Sec. 4 (Eqs. (16)–(24), Propositions 4–5, Lemma 6); Sec. 5 (Proposition 7)",
+  "methods_basis": "Based on the linked paper version. Derivations marked as editorial, and suggested uses in other problems, are editorial guidance rather than results of the paper.",
+  "description": [
+    "The quantum Curie–Weiss model \\(H=-\\frac1N\\sum_{i<j}Z_iZ_j-h\\sum_iX_i\\) couples every spin to every other. Up to a constant, \\(H_0=2K(N-K)/N\\), where \\(K\\) counts down spins, and the transverse field moves \\(K\\) by one. The spectrum of \\(H_0\\) is therefore a chain of \\(N+1\\) shells with energy barrier \\(e_k=2k(N-k)/N\\), peaked at \\(k=N/2\\). At low temperature the Gibbs state sits near \\(k=0\\) and \\(k=N\\), the two ferromagnetic phases.",
+    "The Chen–Kastoryano–Gilyén (CKG) Lindbladian builds jump operators \\(J_a(\\omega)\\) from Heisenberg-evolved seed operators filtered by a time kernel, and satisfies \\(\\mathcal L(\\rho_\\beta)=0\\). The mixing time is the first time at which every initial state is within trace distance \\(1/4\\) of \\(\\rho_\\beta\\). Because \\(A_a(t)\\) spreads over all spins, the spatial-locality argument of earlier bottleneck theorems does not apply.",
+    "The paper starts from \\(\\sigma_0=\\rho^{1/2}P_A\\rho^{1/2}/p_A\\), the Gibbs state restricted to sector \\(A\\) of low \\(K\\), and bounds how fast its weight can leak to the complementary sector. The leak rate is the edge flow \\(J_{A^c}=\\|\\rho^{1/2}\\mathcal L^\\dagger(P_{A^c})\\rho^{1/2}\\|_1\\). With \\(A\\) and \\(C\\) the shells near either end and \\(B\\) the middle, equilibrium suppresses \\(B\\) exponentially, and jump operators inject only finite energy per use, so they cannot carry low-energy states across the middle shells. The edge flow is \\(e^{-\\Omega(N)}\\), and the mixing time is exponential.",
+    "Section 5 shows that the geometric bottleneck theory of Gamarnik, Kiani and Zlokapa is a special case: if the Lindbladian is exponentially close to one that never connects \\(A\\) to \\(C\\) in one step, the dynamical theorem gives the geometric one. A complementary picture describes slow mixing as diffusion over a free-energy barrier in a mean-field Fokker–Planck equation."
+  ],
+  "methods": [
+    {
+      "technique": "A dynamical bottleneck theorem without spatial locality",
+      "explanation": "A mixing-time lower bound needs an initial state that stays far from equilibrium for a long time. Starting from the Gibbs state restricted to one sector, the rate at which its weight can enter the other sector is bounded by an equilibrium quantity, the edge flow, which can be estimated without solving the dynamics.",
+      "math": [
+        "Since \\(0\\le\\rho^{1/2}P_A\\rho^{1/2}\\le\\rho\\) and CPTP maps preserve the Löwner order, \\(0\\le\\sigma_t\\le\\rho/p_A\\), so \\(Y_t=p_A\\rho^{-1/2}\\sigma_t\\rho^{-1/2}\\) satisfies \\(0\\le Y_t\\le I\\). Then \\[\\frac{d}{dt}\\mathrm{tr}(P_{A^c}\\sigma_t)=p_A^{-1}\\mathrm{tr}\\bigl(Y_t\\,\\rho^{1/2}\\mathcal L^\\dagger(P_{A^c})\\rho^{1/2}\\bigr)\\le p_A^{-1}J_{A^c},\\] and integrating gives \\(\\mathrm{tr}(P_{A^c}\\sigma_t)\\le q_{A^c}+tJ_{A^c}/p_A\\).",
+        "Helstrom's bound \\(\\|\\sigma_t-\\rho\\|_1\\ge2|\\mathrm{tr}(P_{A^c}(\\sigma_t-\\rho))|\\) then gives \\(t_{\\rm mix,\\epsilon}\\ge\\frac{p_A}{J_{A^c}}(p_{A^c}-q_{A^c}-\\epsilon/2)\\). For classical rates \\(r(x,y)\\) the edge flow reduces to \\(\\sum_{x\\in A}\\pi(x)r(x,A^c)\\), the classical edge measure; the quantum version adds the overlap \\(q_{A^c}\\), which is nonzero because \\(P_A\\) does not commute with \\(\\rho\\)."
+      ],
+      "transfer": "Bounding leakage between sectors by an equilibrium edge flow works for any Lindbladian with the right fixed point. Choosing sectors in energy or other conserved-quantity space, rather than in real space, extends bottleneck arguments to nonlocal models."
+    },
+    {
+      "technique": "Equilibrium suppression of the middle shells",
+      "explanation": "The edge flow is small only if the bottleneck region is rarely occupied in equilibrium and the dynamics cannot jump across it. Both follow from the shell structure: the barrier \\(e_k\\) suppresses middle shells, and each jump injects bounded energy.",
+      "math": [
+        "Proposition 4: if \\(2b(1-b)>2h+\\eta\\), the low-energy projector \\(\\Pi_{(-\\infty,E_0+\\eta N]}(H)\\) has exponentially small weight on every shell inside \\(I_b=[bN,(1-b)N]\\), decaying with depth into the interval. With \\(\\beta\\eta>\\log2\\), thermal weight above \\(E_0+\\eta N\\) is also exponentially small, so \\(p_B\\le e^{-\\Omega(N)}\\), and the spin-flip symmetry \\(\\prod_iX_i\\) gives \\(p_A=p_C=(1-p_B)/2\\). Editorial check at \\(h=0\\), \\(\\beta=3\\): the middle-shell weight \\(\\binom N{N/2}e^{-\\beta N/2}/Z\\) is \\(1.5\\times10^{-19}\\), \\(2.8\\times10^{-37}\\) and \\(1.4\\times10^{-72}\\) for \\(N=50,100,200\\).",
+        "The CKG time kernel is Gaussian, so truncating it to \\(|t|\\le\\beta N\\) changes the Lindbladian by \\(e^{-\\Omega(N)}\\) in diamond norm (Proposition 5). Each local term injects energy at most \\(\\Lambda=\\frac{N-1}N+h\\), so a bounded product of evolved jump operators cannot take low-energy states near the cut beyond \\(I_b\\) (Lemma 6). Together these give \\(J_C\\le e^{-\\Omega(N)}\\) and the theorem."
+      ],
+      "transfer": "Bounded energy injection per step plays the role that a Lieb–Robinson bound plays for spatially local models. The same pair of estimates can bound mixing of quantum samplers for other mean-field or long-range models with symmetry-broken phases."
+    }
+  ],
+  "status": "approved",
+  "approved_on": "2026-11-27"
+}
