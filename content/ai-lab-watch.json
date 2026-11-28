@@ -1,5 +1,5 @@
 {
- "checked_on": "2026-11-27",
+ "checked_on": "2026-11-28",
  "seen": {
   "openai-news": [
    "https://openai.com/academy/applications-of-ai",
@@ -2435,6 +2435,7 @@
    "https://github.com/google-deepmind/alphaevolve",
    "https://github.com/google-deepmind/alphaprotein-novo",
    "https://github.com/google-deepmind/amplio",
+   "https://github.com/google-deepmind/arrow",
    "https://github.com/google-deepmind/code-verification",
    "https://github.com/google-deepmind/cryptids",
    "https://github.com/google-deepmind/datadiver",
